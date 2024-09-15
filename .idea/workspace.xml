@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;created class DBManager (with part of methods); created some objs in config.py; created models [Users, Events]; created class in userstatus&quot;">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/database/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/database/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/database/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/database/db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/models/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/models/userstatus.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-    </list>
+    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;added new fields into base model; added usermanager (fastapi_users) to register-verify-login-logout a user; added a verification of identity by an email&quot;" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -184,7 +176,14 @@
       <option name="project" value="LOCAL" />
       <updated>1725994512681</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="&quot;added new fields into base model; added usermanager (fastapi_users) to register-verify-login-logout a user; added a verification of identity by an email&quot;">
+      <created>1726423327239</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1726423327239</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -214,6 +213,7 @@
     <MESSAGE value="&quot;first commit&quot;" />
     <MESSAGE value="&quot;created a main structure of app&quot;" />
     <MESSAGE value="&quot;created class DBManager (with part of methods); created some objs in config.py; created models [Users, Events]; created class in userstatus&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;created class DBManager (with part of methods); created some objs in config.py; created models [Users, Events]; created class in userstatus&quot;" />
+    <MESSAGE value="&quot;added new fields into base model; added usermanager (fastapi_users) to register-verify-login-logout a user; added a verification of identity by an email&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;added new fields into base model; added usermanager (fastapi_users) to register-verify-login-logout a user; added a verification of identity by an email&quot;" />
   </component>
 </project>
