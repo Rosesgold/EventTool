@@ -2,19 +2,27 @@ from fastapi import FastAPI, Depends, APIRouter, Form
 from fastapi_users import FastAPIUsers
 from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
 from sqlalchemy.ext.asyncio import AsyncSession
-from starlette.responses import HTMLResponse
+from starlette.requests import Request
+from starlette.responses import HTMLResponse, Response
 from fastapi import HTTPException
-from app.src.auth.aurhschemas import UserRead, UserCreate
+from app.src.auth.authschemas import UserRead, UserCreate, UserUpdate
 from app.src.auth.cookie_jwt_config import auth_backend
 from app.src.auth.usermanager import UserManager
 from app.src.models.models import UserORM, EventORM
 from sqlalchemy import select
 from app.src.models.schemas import *
 from app.src.database.config import async_session_maker
+from fastapi.templating import Jinja2Templates
 
 
 app = FastAPI()
+
 verify = APIRouter()
+verify_email = APIRouter()
+delete_current_user = APIRouter()
+update_current_user = APIRouter()
+
+templates = Jinja2Templates(directory="app/templates")
 
 
 async def get_async_session() -> AsyncSession:
@@ -34,20 +42,6 @@ async def get_user_manager(user_db=Depends(get_user_db)):
 fastapi_users = FastAPIUsers[UserORM, int](
     get_user_manager,
     [auth_backend],
-)
-
-
-app.include_router(
-    fastapi_users.get_register_router(UserRead, UserCreate),
-    prefix="/auth",
-    tags=["auth"],
-)
-
-
-app.include_router(
-    fastapi_users.get_auth_router(auth_backend),
-    prefix="/auth",
-    tags=["auth"],
 )
 
 
@@ -75,31 +69,94 @@ async def verify_user(token: str = Form(...), user_manager: UserManager = Depend
     return {"detail": "Email successfully verified"}
 
 
-@app.get("/auth/verify-email")
-async def serve_verification_page(token: str):
-    html_content = f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Email Verification</title>
-    </head>
-    <body>
-        <h1>Email Verification</h1>
-        <p>Click the button below to verify your email:</p>
-        <form action="/auth/verify" method="POST">
-            <input type="hidden" name="token" value="{token}">
-            <button type="submit">Verify Email</button>
-        </form>
-    </body>
-    </html>
-    """
-    return HTMLResponse(content=html_content)
+@delete_current_user.delete('/delete/me')
+async def delete_my_account(
+        user: UserORM = Depends(fastapi_users.current_user(active=True, verified=True)),
+        user_manager: UserManager = Depends(get_user_manager),
+        response: Response = None):
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
 
+    await user_manager.delete(user)
+
+    response.delete_cookie("fastapiusersauth")
+    return {"detail": f"User {user.username} deleted successfully!"}
+
+
+@update_current_user.post('/update/me')
+async def update_my_account(
+        user_update: UserUpdate,
+        user: UserORM = Depends(fastapi_users.current_user(active=True, verified=True)),
+        user_manager: UserManager = Depends(get_user_manager),
+        response: Response = None):
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Если предоставлено новое имя пользователя, обновляем его
+    if user_update.username:
+        user.username = user_update.username
+
+    # Если предоставлен новый пароль, обновляем его
+    if user_update.password:
+        hashed_password = user_manager.password_helper.hash(user_update.password)
+        user.hashed_password = hashed_password
+
+    await user_manager.update(user_update, user, safe=True)
+
+    return {"detail": f"User {user.username} updated his data"}
+
+
+@verify_email.get("/verify-email")
+async def serve_verification_page(request: Request, token: str):
+    return templates.TemplateResponse("email_verification.html", {"request": request, "token": token})
+
+
+app.include_router(
+    fastapi_users.get_register_router(UserRead, UserCreate),
+    prefix="/auth",
+    tags=["auth"],
+)
+
+app.include_router(
+    fastapi_users.get_auth_router(auth_backend),
+    prefix="/auth",
+    tags=["auth"],
+)
+
+app.include_router(
+    fastapi_users.get_reset_password_router(),
+    prefix="/auth",
+    tags=["auth"],
+)
+
+# app.include_router(
+#     fastapi_users.get_users_router(UserRead, UserUpdate, requires_verification=False),
+#     prefix="/auth",
+#     tags=["auth"]
+# )
 
 app.include_router(
     verify,
     prefix="/auth",
     tags=["auth"],
+)
+
+app.include_router(
+    verify_email,
+    prefix="/auth",
+    tags=["auth"],
+)
+
+app.include_router(
+    delete_current_user,
+    prefix="/auth",
+    tags=["auth"]
+)
+
+app.include_router(
+    update_current_user,
+    prefix="/auth",
+    tags=["auth"]
 )
 
 
@@ -121,7 +178,3 @@ async def get_users(id_: int = None, db: AsyncSession = Depends(get_async_sessio
         result = await db.execute(select(UserORM).filter_by(id=id_))
     users = result.scalars().all()
     return users
-
-
-
-

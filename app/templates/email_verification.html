@@ -1,32 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email Verification</title>
 </head>
 <body>
     <h1>Email Verification</h1>
     <p>Click the button below to verify your email:</p>
-
-    <!-- Форма для отправки POST-запроса -->
-    <form id="verify-form" action="/auth/verify" method="POST">
-        <!-- Скрытое поле с токеном -->
-        <input type="hidden" name="token" id="token" value="{{ token }}">
-
-        <!-- Кнопка для отправки формы -->
+    <form action="/auth/verify" method="POST">
+        <input type="hidden" name="token" value="{{ token }}">
         <button type="submit">Verify Email</button>
     </form>
-
-    <script>
-        // Этот скрипт автоматически заполняет поле токена (если токен передан через параметры URL)
-        document.addEventListener("DOMContentLoaded", function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const token = urlParams.get('token');
-            if (token) {
-                document.getElementById('token').value = token;
-            }
-        });
-    </script>
 </body>
 </html>

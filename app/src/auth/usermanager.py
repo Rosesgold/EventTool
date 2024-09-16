@@ -7,36 +7,8 @@ from itsdangerous import URLSafeTimedSerializer
 from sqlalchemy import select
 from app.src.auth.cookie_jwt_config import encode_jwt, decode_jwt
 from app.src.database.config import SECRET_KEY as SECRET, async_session_maker
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from pydantic import EmailStr
-from app.src.database.config import SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD
 from app.src.models.models import UserORM
-
-
-async def send_verification_email(email: EmailStr, token: str):
-    # Ссылка для подтверждения
-    verification_link = f"http://127.0.0.1:8000/auth/verify-email?token={token}"
-    # print(f"Verification link: {verification_link}")  # Для проверки URL
-    # Формирование сообщения
-    msg = MIMEMultipart()
-    msg['From'] = SMTP_USERNAME
-    msg['To'] = email
-    msg['Subject'] = "Please confirm your email"
-
-    body = f"Click on the following link to verify your email: {verification_link}"
-    msg.attach(MIMEText(body, 'html'))
-
-    try:
-        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
-        server.starttls()
-        server.login(SMTP_USERNAME, SMTP_PASSWORD)
-        server.sendmail(SMTP_USERNAME, email, msg.as_string())
-        server.quit()
-
-        print("Verification email sent successfully!")
-    except Exception as e:
-        print(f"Failed to send email: {e}")
+from app.src.auth.send_email import send_verification_email, send_updated_data_email
 
 
 class UserManager(IntegerIDMixin, BaseUserManager[UserORM, int]):
@@ -91,6 +63,11 @@ class UserManager(IntegerIDMixin, BaseUserManager[UserORM, int]):
     ):
         print(f"User {user.id} has forgot their password. Reset token: {token}")
 
+    async def on_after_reset_password(
+            self, user: UserORM, request: Optional[Request] = None
+    ):
+        print(f"User {user.id}, email: {user.email} has got a new password")
+
     async def on_after_request_verify(
             self, user: UserORM, token: str, request: Optional[Request] = None
     ):
@@ -100,8 +77,14 @@ class UserManager(IntegerIDMixin, BaseUserManager[UserORM, int]):
         await self.confirm(user)
         print(f"Verification requested for user {user.id}. Verification token: {token}")
 
-    async def on_after_login(self, user: UserORM, request: Optional[Request] = None,
-                             response: Optional[Response] = None, ):
+    async def on_after_login(
+            self, user: UserORM, request: Optional[Request] = None, response: Optional[Response] = None, ):
         if not user.is_active:
             raise HTTPException(status_code=400, detail="Please verify your email before logging in")
         print(f"User {user.email} has logged in.")
+
+    async def on_after_update(
+            self, user: UserORM, update_dict: dict, request: Optional[Request] = None) -> None:
+        print(f"User: {user.username} updated his data: {update_dict}")
+
+        await send_updated_data_email(update_dict, user.email)
