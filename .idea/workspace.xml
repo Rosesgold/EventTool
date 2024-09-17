@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;added usermanager (fastapi_users); logic of jwt-cookie; verification email&quot;">
+    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;added update, delete and routes im main.py&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/auth/aurhschemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/auth/authschemas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/auth/authschemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/auth/authschemas.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/auth/usermanager.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/auth/usermanager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/email_verification.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/email_verification.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -196,7 +196,14 @@
       <option name="project" value="LOCAL" />
       <updated>1726423834690</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="&quot;added update, delete and routes im main.py&quot;">
+      <created>1726512976227</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1726512976227</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -228,6 +235,7 @@
     <MESSAGE value="&quot;created class DBManager (with part of methods); created some objs in config.py; created models [Users, Events]; created class in userstatus&quot;" />
     <MESSAGE value="&quot;added new fields into base model; added usermanager (fastapi_users) to register-verify-login-logout a user; added a verification of identity by an email&quot;" />
     <MESSAGE value="&quot;added usermanager (fastapi_users); logic of jwt-cookie; verification email&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;added usermanager (fastapi_users); logic of jwt-cookie; verification email&quot;" />
+    <MESSAGE value="&quot;added update, delete and routes im main.py&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;added update, delete and routes im main.py&quot;" />
   </component>
 </project>

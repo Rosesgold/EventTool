@@ -83,27 +83,28 @@ async def delete_my_account(
     return {"detail": f"User {user.username} deleted successfully!"}
 
 
-@update_current_user.post('/update/me')
+@update_current_user.patch('/update/me')
 async def update_my_account(
-        user_update: UserUpdate,
+        user_update_data: UserUpdate,
         user: UserORM = Depends(fastapi_users.current_user(active=True, verified=True)),
         user_manager: UserManager = Depends(get_user_manager),
         response: Response = None):
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    # Если предоставлено новое имя пользователя, обновляем его
-    if user_update.username:
-        user.username = user_update.username
+    if user_update_data.username is None or user_update_data.username == "string":
+        user_update_data.username = user.username
 
-    # Если предоставлен новый пароль, обновляем его
-    if user_update.password:
-        hashed_password = user_manager.password_helper.hash(user_update.password)
-        user.hashed_password = hashed_password
+    if user_update_data.email is None or user_update_data.email == "string":
+        user_update_data.email = user.email
 
-    await user_manager.update(user_update, user, safe=True)
+    if user_update_data.password == "string":
+        user_update_data.password = None
 
-    return {"detail": f"User {user.username} updated his data"}
+    # Обновляем пользователя в базе данных
+    await user_manager.update(user_update_data, user, safe=True)
+
+    return {"detail": f"User {user.username} updated their data"}
 
 
 @verify_email.get("/verify-email")

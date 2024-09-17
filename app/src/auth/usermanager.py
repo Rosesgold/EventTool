@@ -85,6 +85,9 @@ class UserManager(IntegerIDMixin, BaseUserManager[UserORM, int]):
 
     async def on_after_update(
             self, user: UserORM, update_dict: dict, request: Optional[Request] = None) -> None:
-        print(f"User: {user.username} updated his data: {update_dict}")
 
         await send_updated_data_email(update_dict, user.email)
+
+        if not user.is_verified:
+            verification_token = await self.generate_verification_token(user)
+            await send_verification_email(user.email, verification_token)
