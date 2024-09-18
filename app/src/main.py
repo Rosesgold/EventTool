@@ -11,7 +11,7 @@ from app.src.auth.usermanager import UserManager
 from app.src.models.models import UserORM, EventORM
 from sqlalchemy import select
 from app.src.models.schemas import *
-from app.src.database.config import async_session_maker
+from app.src.settings.config import async_session_maker
 from fastapi.templating import Jinja2Templates
 
 
@@ -45,9 +45,8 @@ fastapi_users = FastAPIUsers[UserORM, int](
 )
 
 
-@verify.post("/verify")
-async def verify_user(token: str = Form(...), user_manager: UserManager = Depends(get_user_manager)):
-    print(f"Received token: {token}")  # Проверка значения токена
+@verify.get("/verify")
+async def verify_user(token: str, user_manager: UserManager = Depends(get_user_manager)):
     if not token:
         raise HTTPException(status_code=400, detail="Token is missing")
 
@@ -67,6 +66,11 @@ async def verify_user(token: str = Form(...), user_manager: UserManager = Depend
         raise HTTPException(status_code=500, detail="Error confirming user")
 
     return {"detail": "Email successfully verified"}
+
+
+# @verify_email.get("/verify-email")
+# async def serve_verification_page(request: Request, token: str):
+#     return templates.TemplateResponse("email_verification.html", {"request": request, "token": token})
 
 
 @delete_current_user.delete('/delete/me')
@@ -95,7 +99,7 @@ async def update_my_account(
     if user_update_data.username is None or user_update_data.username == "string":
         user_update_data.username = user.username
 
-    if user_update_data.email is None or user_update_data.email == "string":
+    if user_update_data.email is None or user_update_data.email == "user@example.com":
         user_update_data.email = user.email
 
     if user_update_data.password == "string":
@@ -105,11 +109,6 @@ async def update_my_account(
     await user_manager.update(user_update_data, user, safe=True)
 
     return {"detail": f"User {user.username} updated their data"}
-
-
-@verify_email.get("/verify-email")
-async def serve_verification_page(request: Request, token: str):
-    return templates.TemplateResponse("email_verification.html", {"request": request, "token": token})
 
 
 app.include_router(

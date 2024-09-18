@@ -3,14 +3,14 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
 from app.src.models.models import * # noqa
-from app.src.database.config import DATABASE_URL, Base
+from app.src.settings.config import DATABASE_URL, Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 config.set_main_option('sqlalchemy.url', DATABASE_URL + '?async_fallback=True')
 
-# Interpret the config file for Python logging.
+# Interpret the settings file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
@@ -21,9 +21,9 @@ if config.config_file_name is not None:
 # target_metadata = mymodel.Base.metadata
 target_metadata = Base.metadata
 
-# other values from the config, defined by the needs of env.py,
+# other values from the settings, defined by the needs of env.py,
 # can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
+# my_important_option = settings.get_main_option("my_important_option")
 # ... etc.
 
 

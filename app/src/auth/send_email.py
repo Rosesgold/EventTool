@@ -1,6 +1,6 @@
 import smtplib
 from pydantic import EmailStr
-from app.src.database.config import SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD
+from app.src.settings.config import SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -29,7 +29,7 @@ async def send_email(email: EmailStr, subject: str, send_body: str, type_email: 
 
 
 async def send_verification_email(email: EmailStr, token: str):
-    verification_link = f"http://127.0.0.1:8000/auth/verify-email?token={token}"
+    verification_link = f"http://127.0.0.1:8000/auth/verify?token={token}"
     body = f"Click on the following link to verify your email: {verification_link}"
 
     await send_email(

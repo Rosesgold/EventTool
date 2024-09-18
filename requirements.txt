@@ -10,3 +10,5 @@ PyJWT~=2.8.0
 starlette~=0.38.5
 jinja2~=3.1.4
 aiofiles~=24.1.0
+celery~=5.4.0
+redis~=5.0.8

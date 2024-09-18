@@ -6,7 +6,7 @@ from fastapi_users import BaseUserManager, IntegerIDMixin
 from itsdangerous import URLSafeTimedSerializer
 from sqlalchemy import select
 from app.src.auth.cookie_jwt_config import encode_jwt, decode_jwt
-from app.src.database.config import SECRET_KEY as SECRET, async_session_maker
+from app.src.settings.config import SECRET_KEY as SECRET, async_session_maker
 from app.src.models.models import UserORM
 from app.src.auth.send_email import send_verification_email, send_updated_data_email
 
@@ -20,14 +20,17 @@ class UserManager(IntegerIDMixin, BaseUserManager[UserORM, int]):
 
     @staticmethod
     async def generate_verification_token(user: UserORM) -> str:
-        data = {"email": user.email}
+        # data = {"email": user.email}
+        data = {"id": user.id}
         return encode_jwt(data)
 
     async def get_user_by_verification_token(self, token: str):
         try:
             data = decode_jwt(token)
-            email = data.get("email")
-            return await self.user_db.get_by_email(email)
+            # email = data.get("email")
+            # return await self.user_db.get_by_email(email)
+            id_user = data.get("id")
+            return await self.user_db.get(id_user)
         except HTTPException as e:
             raise e
 

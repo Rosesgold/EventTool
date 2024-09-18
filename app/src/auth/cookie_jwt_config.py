@@ -1,6 +1,6 @@
 import jwt
 from fastapi_users.authentication import AuthenticationBackend, JWTStrategy
-from app.src.database.config import SECRET_KEY, ALGORITHM
+from app.src.settings.config import SECRET_KEY, ALGORITHM
 from fastapi_users.authentication import CookieTransport
 from fastapi import HTTPException
 

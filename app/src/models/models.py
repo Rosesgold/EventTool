@@ -1,4 +1,4 @@
-from app.src.database.config import Base
+from app.src.settings.config import Base
 from sqlalchemy.orm import Mapped, mapped_column
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from datetime import datetime
