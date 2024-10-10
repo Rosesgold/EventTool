@@ -20,15 +20,12 @@ class UserManager(IntegerIDMixin, BaseUserManager[UserORM, int]):
 
     @staticmethod
     async def generate_verification_token(user: UserORM) -> str:
-        # data = {"email": user.email}
         data = {"id": user.id}
         return encode_jwt(data)
 
     async def get_user_by_verification_token(self, token: str):
         try:
             data = decode_jwt(token)
-            # email = data.get("email")
-            # return await self.user_db.get_by_email(email)
             id_user = data.get("id")
             return await self.user_db.get(id_user)
         except HTTPException as e:
