@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
 </head>
 <body>
     <div class="container">
@@ -53,6 +54,11 @@
         let isDragging = false;
         let startX, startY; // Начальные позиции мыши
         let minTime, maxTime; // Минимальное и максимальное время
+        let currentPrice = 0; // Переменная для текущей цены
+
+        // Дата начала и конца
+        const startDate = new Date("2010-01-01");
+        const endDate = new Date();
 
         async function loadChartData() {
             const selectedCurrency = document.getElementById('currency').value;
@@ -62,16 +68,37 @@
                 document.getElementById('loading').style.display = 'block';
                 document.getElementById('chart').style.display = 'none';
 
-                const response = await fetch(`https://min-api.cryptocompare.com/data/v2/histoday?fsym=${selectedCurrency}&tsym=USD&limit=2000&api_key={dff4279ecfa772b8619876cffef0dcc3b74ae1c9fb3fcbbac2f9358ec3ffb79c}`);
-                const data = await response.json();
+                // Начинаем с самой ранней даты
+                let currentStartDate = Math.floor(startDate.getTime() / 1000);
+                let currentEndDate = Math.floor(endDate.getTime() / 1000);
+                let allData = [];
+                const fetchSize = 2000; // Максимальное количество данных за один запрос
 
-                if (data.Response !== "Success") {
-                    throw new Error(data.Message);
+                while (currentStartDate < currentEndDate) {
+                    // Запрос данных
+                    const response = await fetch(`https://min-api.cryptocompare.com/data/v2/histoday?fsym=${selectedCurrency}&tsym=USD&limit=${fetchSize}&toTs=${currentEndDate}&api_key=YOUR_API_KEY`);
+                    const data = await response.json();
+
+                    if (data.Response !== "Success") {
+                        throw new Error(data.Message);
+                    }
+
+                    const fetchedData = data.Data.Data;
+                    if (fetchedData.length === 0) break; // Если нет данных, выходим из цикла
+
+                    fetchedData.forEach(price => {
+                        allData.push({ time: price.time * 1000, close: price.close }); // Сохраняем данные
+                    });
+
+                    // Обновляем конечную дату для следующего запроса
+                    currentEndDate = fetchedData[0].time; // Устанавливаем конец на дату первого полученного значения
                 }
 
-                data.Data.Data.forEach(price => {
-                    ohlcData.labels.push(new Date(price.time * 1000));
-                    ohlcData.data.push(price.close);
+                // Сортируем данные по времени
+                allData.sort((a, b) => a.time - b.time);
+                allData.forEach(entry => {
+                    ohlcData.labels.push(new Date(entry.time));
+                    ohlcData.data.push(entry.close);
                 });
 
                 minTime = ohlcData.labels[0].getTime();
@@ -80,6 +107,8 @@
                 if (chart) {
                     chart.destroy();
                 }
+
+                currentPrice = ohlcData.data[ohlcData.data.length - 1]; // Получаем текущую цену
 
                 chart = new Chart(ctx, {
                     type: 'line',
@@ -138,6 +167,23 @@
                                         maxTime = chart.options.scales.x.max;
                                     }
                                 }
+                            },
+                            annotation: {
+                                annotations: {
+                                    currentPriceLine: {
+                                        type: 'line',
+                                        yMin: currentPrice,
+                                        yMax: currentPrice,
+                                        borderColor: 'green',
+                                        borderWidth: 0.5, // Уменьшаем ширину линии
+                                        borderDash: [5, 5], // Делаем линию пунктирной
+                                        label: {
+                                            content: `Current Price: $${currentPrice.toFixed(2)}`,
+                                            enabled: true,
+                                            position: 'end'
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -146,7 +192,7 @@
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('chart').style.display = 'block';
 
-                setupDragging();
+                setupDragging(); // Включаем функцию перетаскивания
             } catch (error) {
                 console.error("Ошибка загрузки данных:", error);
                 document.getElementById('loading').textContent = "Ошибка загрузки данных. Попробуйте еще раз.";
