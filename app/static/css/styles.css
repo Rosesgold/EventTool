@@ -1,0 +1,143 @@
+/* Установка 100% высоты для html и body */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif; /* Шрифт для всего документа */
+}
+
+/* Контейнер Flexbox */
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Высота контейнера равна высоте окна */
+}
+
+/* Стиль для header */
+header {
+    background-color: #FFFAFA;
+    height: 5%; /* Высота хедера */
+    display: flex;
+    align-items: center;
+    padding: 1%;
+    border-bottom: 1px solid gray; /* Граница снизу */
+}
+
+.header-module-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* Логотип */
+.logo {
+    width: 15%;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Меню навигации */
+.nav {
+    width: 60%;
+}
+
+.nav ul {
+    display: flex;
+    justify-content: space-around;
+    list-style-type: none;
+    padding: 0;
+}
+
+.nav li {
+    margin: 0 10px;
+}
+
+.nav a {
+    text-decoration: none;
+    color: #000;
+    font-weight: 600;
+}
+
+/* Элементы управления */
+.user-controls {
+    width: 25%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.login-btn, .signup-btn {
+    margin-left: 15px;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.login-btn {
+    background-color: #f0f0f0;
+}
+
+.signup-btn {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Main динамически занимает оставшееся пространство */
+main {
+    flex-grow: 1;  /* Заставляем main занимать всё доступное пространство */
+    display: flex;
+}
+
+/* aside и section растягиваются на всю высоту */
+aside {
+    width: 20%;
+    background-color: #FFFAFA;
+    border-right: 0.1px solid gray; /* Тонкая граница справа */
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение */
+}
+
+section {
+    width: 80%;
+    background-color: #FFFAFA;
+    padding: 20px; /* Отступы для содержимого */
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение */
+}
+
+/* Футер фиксированной высоты */
+footer {
+    background-color: #F0F0F0;
+    height: 20%; /* Футер занимает 20% высоты контейнера */
+    text-align: center; /* Центрируем текст футера */
+    padding: 10px; /* Отступы для футера */
+}
+
+/* Индикатор загрузки */
+#loading {
+    display: none; /* Скрываем индикатор по умолчанию */
+    font-size: 24px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Контейнер для графика */
+#chart {
+    height: 500px; /* Высота графика */
+    width: 100%; /* Ширина графика занимает 100% родительского элемента */
+    display: block; /* Показываем график */
+}
+
+/* Оформление осей графика */
+.axis line,
+.axis path {
+    fill: none;
+    shape-rendering: crispEdges; /* Четкое отображение линий */
+}
+
+.line {
+    fill: none;
+    stroke: steelblue; /* Цвет линии */
+    stroke-width: 2; /* Ширина линии */
+}
