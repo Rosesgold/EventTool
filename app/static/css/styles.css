@@ -3,7 +3,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif; /* Шрифт для всего документа */
+    font-family: 'Inter', 'Helvetica Rounded', 'Arial', 'sans-serif'; /* Шрифт для всего документа */
 }
 
 /* Контейнер Flexbox */
@@ -13,15 +13,118 @@ html, body {
     height: 100vh; /* Высота контейнера равна высоте окна */
 }
 
+#additional-info {
+    margin-top: 20px; /* Отступ сверху */
+    padding: 10px; /* Отступы внутри div */
+    background-color: #FFFFFF; /* Цвет фона */
+    border: 1px solid #dcdcdc; /* Граница */
+    border-radius: 5px; /* Закругленные углы */
+    text-align: center; /* Центрируем текст */
+}
+
 /* Стиль для header */
 header {
-    background-color: #FFFAFA;
+    background-color: #FFFFFF;
     height: 5%; /* Высота хедера */
     display: flex;
     align-items: center;
     padding: 1%;
-    border-bottom: 1px solid gray; /* Граница снизу */
+    border-bottom: 1px solid #dcdcdc; /* Граница снизу */
 }
+
+body.dark-mode #additional-info {
+    border: 1px solid #dcdcdc; /* Цвет границы для дополнительной информации в темном режиме */
+    # color: #000000; /* Цвет текста черный при переходе на темный режим */
+    background-color: #282828;
+}
+
+body.dark-mode header {
+    background-color: #282828; /* Цвет фона хедера в темном режиме */
+    color: #FFFFFF;
+}
+
+body.dark-mode header nav a {
+    color: #FFFFFF; /* Цвет текста для ссылок в темном режиме */
+}
+
+/* Обычные стили для меню иконки */
+.menu-icon {
+    transition: filter 0.1s; /* Добавьте плавный переход для фильтра */
+}
+
+/* Стили для темного режима */
+body.dark-mode .menu-icon {
+    filter: brightness(0) invert(1); /* Изменяет цвет изображения на белый */
+}
+
+body.dark-mode header .dropdown-menu a {
+    color: #FFFFFF; /* Цвет текста для ссылок в выпадающем меню */
+}
+
+/* Цвет фона для выпадающего меню в темном режиме */
+body.dark-mode header .dropdown-menu {
+    background-color: #2E3440; /* Цвет фона для выпадающего меню */
+}
+
+/* Изменение цвета текста для theme-mode-label в темном режиме */
+body.dark-mode .theme-mode-label {
+    color: #FFFFFF; /* Цвет текста на белый */
+}
+
+body.dark-mode .menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Полупрозрачный белый фон при наведении */
+    color: #FFFFFF; /* Цвет текста, если нужно */
+    /* Добавьте другие свойства, если необходимо, например, тени */
+}
+
+body.dark-mode .menu-item.support:hover {
+    background-color: transparent !important; /* Прозрачный фон для кнопок */
+    outline: none; /* Убираем обводку для кнопок */
+    box-shadow: none; /* Убираем тень для кнопок */
+}
+
+/* Изменение цвета изображений в темном режиме */
+body.dark-mode .menu-item img {
+    filter: brightness(0) invert(1); /* Применение фильтров для изменения цвета на белый */
+}
+
+body.dark-mode aside {
+    background-color: #282828; /* Цвет фона для темного режима */
+    color: #FFFFFF; /* Цвет текста для темного режима */
+}
+
+body.dark-mode section {
+    background-color: #545151; /* Цвет фона для темного режима */
+    color: #FFFFFF; /* Цвет текста для темного режима */
+}
+
+body.dark-mode footer {
+    background-color: #282828; /* Цвет фона для темного режима */
+    color: #FFFFFF; /* Цвет текста для темного режима */
+}
+
+/* Стиль для графика в темном режиме */
+body.dark-mode #chart {
+    background-color: #282828; /* Темный фон */
+    border: 1ps solid #FFFFFF; /* Более темная граница */
+    color: #FFFFFF; /* Белый текст */
+}
+
+/* Оси и текстовые метки для графика */
+body.dark-mode .axis line,
+body.dark-mode .axis path {
+    stroke: #FFFFFF; /* Белые линии для осей */
+}
+
+body.dark-mode .axis text {
+    fill: #FFFFFF; /* Белые метки осей */
+}
+
+/* Линия графика */
+body.dark-mode .line {
+    stroke: #00FF7F; /* Изменение цвета линии в темном режиме */
+}
+
 
 .header-module-container {
     display: flex;
@@ -78,9 +181,186 @@ header {
 }
 
 .signup-btn {
-    background-color: #007bff;
+    background-color: #17B169;
     color: #fff;
+    margin-right: 20px; /* Отступ справа от кнопки */
+    border-radius: 7px;
 }
+
+.menu-icon {
+    width: 30px; /* Ширина изображения */
+    height: auto; /* Автоматическая высота */
+    cursor: pointer; /* Курсор для кликабельности */
+}
+
+/* Hidden class for dropdown menu */
+.hidden {
+    display: none;
+}
+
+/* Dropdown menu styles */
+.dropdown-menu {
+    position: absolute;
+    margin-top: 15px;
+    top: 45px;
+    right: 10px;
+    width: 12%;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid grey;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    padding: 15px;
+}
+
+/* Dropdown menu items */
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.menu-item-theme-mode {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.menu-item img {
+    width: 20px;
+    height: 20px;
+    margin-right: 7%;
+    margin-left: 10%;
+}
+
+.menu-item:hover {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+}
+
+/* Menu header */
+.menu-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Центрирование кнопки поддержки */
+.menu-item.support {
+    display: flex;
+    justify-content: center; /* Центрирование по горизонтали */
+    align-items: center; /* Центрирование по вертикали (если нужно) */
+    height: 100%; /* Устанавливаем высоту, если нужно центрировать по вертикали */
+    background-color: transparent !important; /* Прозрачный фон для кнопок */
+}
+
+/* Support button */
+.menu-item.support button {
+    background-color: #8b5cf6;
+    width: 70%;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.menu-item.support button:hover {
+    background-color: #7c3aed;
+}
+
+/* Стили для переключателя */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px; /* Увеличиваем ширину */
+    height: 34px; /* Увеличиваем высоту */
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.theme-mode-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333; /* Цвет текста */
+    margin-right: 20px;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc; /* Цвет фона выключенного состояния */
+    border-radius: 34px; /* Закругленные края */
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px; /* Высота ползунка */
+    width: 26px; /* Ширина ползунка */
+    left: 4px; /* Отступ от левого края */
+    bottom: 4px; /* Отступ от нижнего края */
+    background-color: white; /* Цвет фона ползунка */
+    border-radius: 50%; /* Круглая форма ползунка */
+    transition: .4s;
+}
+
+/* Иконки */
+.icon {
+    position: absolute;
+    width: 26px; /* Ширина иконок */
+    height: 26px; /* Высота иконок */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon.sun {
+    left: 1px; /* Положение иконки солнца */
+    bottom: 4px; /* Центрирование по вертикали */
+}
+
+.icon.moon {
+    right: 3px; /* Положение иконки луны */
+    bottom: 4px; /* Центрирование по вертикали */
+}
+
+/* Эффект переключения */
+input:checked + .slider {
+    background-color: #2196F3; /* Цвет фона включенного состояния */
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px); /* Перемещение ползунка вправо */
+}
+
+/* Скрытие иконок при переключении */
+input:checked + .slider .icon.sun {
+    display: none; /* Скрыть солнце при включенном режиме */
+}
+
+input:checked + .slider .icon.moon {
+    display: flex; /* Показать луну при включенном режиме */
+}
+
+input:not(:checked) + .slider .icon.sun {
+    display: flex; /* Показать солнце при выключенном режиме */
+}
+
+input:not(:checked) + .slider .icon.moon {
+    display: none; /* Скрыть луну при выключенном режиме */
+}
+
 
 /* Main динамически занимает оставшееся пространство */
 main {
@@ -91,8 +371,8 @@ main {
 /* aside и section растягиваются на всю высоту */
 aside {
     width: 20%;
-    background-color: #FFFAFA;
-    border-right: 0.1px solid gray; /* Тонкая граница справа */
+    background-color: #FFFFFF;
+    border-right: 0.1px solid #dcdcdc; /* Тонкая граница справа */
     padding: 20px;
     display: flex;
     flex-direction: column; /* Вертикальное расположение */
@@ -100,7 +380,7 @@ aside {
 
 section {
     width: 80%;
-    background-color: #FFFAFA;
+    background-color: #FFFFFF;
     padding: 20px; /* Отступы для содержимого */
     display: flex;
     flex-direction: column; /* Вертикальное расположение */
@@ -108,10 +388,11 @@ section {
 
 /* Футер фиксированной высоты */
 footer {
-    background-color: #F0F0F0;
+    background-color: #FFFFFF;
     height: 20%; /* Футер занимает 20% высоты контейнера */
     text-align: center; /* Центрируем текст футера */
     padding: 10px; /* Отступы для футера */
+    border-top: 1px solid #dcdcdc;
 }
 
 /* Индикатор загрузки */
@@ -122,11 +403,13 @@ footer {
     margin-top: 20px;
 }
 
-/* Контейнер для графика */
+/* Додаємо стилі для canvas */
 #chart {
-    height: 500px; /* Высота графика */
-    width: 100%; /* Ширина графика занимает 100% родительского элемента */
-    display: block; /* Показываем график */
+    border: 2px solid #D0D0D0; /* Додаємо синій контур */
+    border-radius: 15px; /* Заокруглення кутів */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Легке тінювання */
+    padding: 10px; /* Відступ всередині */
+    background-color: #fff; /* Задаємо білий фон для канваса */
 }
 
 /* Оформление осей графика */
