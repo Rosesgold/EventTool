@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;updated html, added dark mode. added register page&quot;">
+    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;updated styles&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/auth/authschemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/auth/authschemas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/models/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/models/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/models/schemas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/services/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/services/tasks.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/css/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/celerybeat-schedule.bak" beforeDir="false" afterPath="$PROJECT_DIR$/celerybeat-schedule.bak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/celerybeat-schedule.dat" beforeDir="false" afterPath="$PROJECT_DIR$/celerybeat-schedule.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/celerybeat-schedule.dir" beforeDir="false" afterPath="$PROJECT_DIR$/celerybeat-schedule.dir" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/register.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -280,7 +274,14 @@
       <option name="project" value="LOCAL" />
       <updated>1729005280662</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="&quot;updated styles&quot;">
+      <created>1729063713861</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1729063713861</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -320,6 +321,7 @@
     <MESSAGE value="&quot;updated html&quot;" />
     <MESSAGE value="&quot;updated html, added parsing by parts&quot;" />
     <MESSAGE value="&quot;updated html, added dark mode. added register page&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;updated html, added dark mode. added register page&quot;" />
+    <MESSAGE value="&quot;updated styles&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;updated styles&quot;" />
   </component>
 </project>

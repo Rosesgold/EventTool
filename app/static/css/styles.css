@@ -24,7 +24,7 @@ header {
 }
 
 body.dark-mode #additional-info {
-    border: 1px solid #dcdcdc; /* Цвет границы для дополнительной информации в темном режиме */
+    border: 1px solid grey; /* Цвет границы для дополнительной информации в темном режиме */
     # color: #000000; /* Цвет текста черный при переходе на темный режим */
     background-color: #282828;
 }
@@ -102,7 +102,7 @@ body.dark-mode footer {
 /* Стиль для графика в темном режиме */
 body.dark-mode #chart {
     background-color: #0d0b0e; /* Темный фон */
-    border: 1px solid #FFFFFF; /* Более темная граница */
+    border: 1px solid grey; /* Более темная граница */
     color: #FFFFFF; /* Белый текст */
 }
 
@@ -132,7 +132,6 @@ body.dark-mode .grid line {
 .grid {
     stroke-dasharray: none; /* Убираем пунктирные линии */
 }
-
 
 .header-module-container {
     display: flex;
@@ -395,15 +394,47 @@ section {
     flex-direction: column; /* Вертикальное расположение */
 }
 
+
 #additional-info {
-    margin-top: 5px; /* Отступ сверху */
-    padding: 10px; /* Отступы внутри div */
-    background-color: #FFFFFF; /* Цвет фона */
+    display: flex; /* Используем flexbox для выравнивания */
+    justify-content: space-between; /* Распределение пространства между элементами */
+    align-items: center; /* Вертикальное выравнивание */
+    margin-top: 10px; /* Отступ сверху для визуального разделения */
     border: 1px solid #dcdcdc; /* Граница */
-    border-radius: 5px; /* Закругленные углы */
-    text-align: center; /* Центрируем текст */
-    #height: 40px;
+    height: 40px;
+    border-radius: 10px;
 }
+
+#additional-info-data-container {
+    display: flex; /* Используем flexbox для выравнивания и размещения иконки и поля ввода */
+    align-items: center; /* Вертикальное выравнивание */
+    height: 100%;
+}
+
+#additional-info-data-container i {
+    margin-left: 3%; /* Отступ слева от иконки */
+    margin-right: 1%; /* Отступ справа от иконки */
+}
+
+#additional-info-data-container input {
+    border-radius: 5px; /* Скругленные углы */
+    text-align: center; /* Центрирование текста */
+    height: 70%; /* Высота на 100% */
+    min-width: 150px; /* Минимальная ширина для поля ввода */
+}
+
+#additional-info-button-apply {
+    margin-left: 10px; /* Отступ слева от кнопки */
+    padding: 10px 15px; /* Внутренние отступы для кнопки */
+    background-color: #007BFF; /* Цвет фона кнопки */
+    color: white; /* Цвет текста */
+    border: none; /* Убираем рамку */
+    border-radius: 5px; /* Скругляем углы кнопки */
+    cursor: pointer; /* Указатель курсора при наведении */
+    height: 85%;
+    width: 7%;
+}
+
 
 /* Футер фиксированной высоты */
 footer {
@@ -420,6 +451,10 @@ footer {
     font-size: 24px;
     text-align: center;
     margin-top: 20px;
+}
+
+#loading img {
+    margin-top: 15%;
 }
 
 /* Додаємо стилі для canvas */
@@ -443,3 +478,61 @@ footer {
     stroke: steelblue; /* Цвет линии */
     stroke-width: 2; /* Ширина линии */
 }
+
+
+
+
+
+/* Стиль для модального окна */
+#modal-form {
+    display: none; /* По умолчанию скрыто */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 2px solid #ccc;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Задний фон при открытом модальном окне */
+#modal-overlay {
+    display: none; /* По умолчанию скрыто */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* Кнопка закрытия */
+.close-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* Стиль для кнопок криптовалют */
+.crypto-button {
+    display: block; /* Блоковое отображение, чтобы кнопки были в столбик */
+    width: 100%; /* Занимает всю ширину формы */
+    margin: 10px 0; /* Отступы между кнопками */
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.crypto-button:hover {
+    background-color: #0056b3;
+}
+
+
