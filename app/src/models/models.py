@@ -33,6 +33,6 @@ class EventORM(Base):
     roe: Mapped[float] = mapped_column(nullable=True)
     title: Mapped[str] = mapped_column(nullable=False)
     category: Mapped[str] = mapped_column(nullable=True)
-    date: Mapped[datetime] = mapped_column(nullable=False)
+    date: Mapped[str] = mapped_column(nullable=False)
     url: Mapped[str] = mapped_column(nullable=True)
 

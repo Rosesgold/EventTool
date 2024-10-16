@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;updated send email logic&quot;">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;updated html, added dark mode. added register page&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/auth/usermanager.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/auth/usermanager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/settings/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/settings/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/auth/authschemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/auth/authschemas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/models/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/models/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/models/schemas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/services/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/services/tasks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/css/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/celerybeat-schedule.bak" beforeDir="false" afterPath="$PROJECT_DIR$/celerybeat-schedule.bak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/celerybeat-schedule.dat" beforeDir="false" afterPath="$PROJECT_DIR$/celerybeat-schedule.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/celerybeat-schedule.dir" beforeDir="false" afterPath="$PROJECT_DIR$/celerybeat-schedule.dir" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,11 +52,12 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\1\PycharmProjects\EventTool\app\static\images" />
       <recent name="C:\Users\1\PycharmProjects\EventTool" />
       <recent name="C:\Users\1\PycharmProjects\EventTool\app" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.tasks">
+  <component name="RunManager" selected="Python.main">
     <configuration name="app_celery" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="EventTool" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -159,10 +165,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.tasks" />
         <item itemvalue="Python.app_celery" />
         <item itemvalue="Python.db" />
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.env" />
       </list>
     </recent_temporary>
@@ -239,7 +245,42 @@
       <option name="project" value="LOCAL" />
       <updated>1726652212137</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="&quot;added celery tasks, todo txt; updated config.py, usermanager.py, req..&quot;">
+      <created>1728559777309</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1728559777309</updated>
+    </task>
+    <task id="LOCAL-00011" summary="&quot;added html + css + js&quot;">
+      <created>1728913448324</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1728913448324</updated>
+    </task>
+    <task id="LOCAL-00012" summary="&quot;updated html&quot;">
+      <created>1728918871233</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1728918871233</updated>
+    </task>
+    <task id="LOCAL-00013" summary="&quot;updated html, added parsing by parts&quot;">
+      <created>1728924784353</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1728924784353</updated>
+    </task>
+    <task id="LOCAL-00014" summary="&quot;updated html, added dark mode. added register page&quot;">
+      <created>1729005280662</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1729005280662</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -274,6 +315,11 @@
     <MESSAGE value="&quot;added update, delete and routes im main.py&quot;" />
     <MESSAGE value="&quot;added an update of update function, updated usermanager; updated auth schemas; added send email possibility&quot;" />
     <MESSAGE value="&quot;updated send email logic&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;updated send email logic&quot;" />
+    <MESSAGE value="&quot;added celery tasks, todo txt; updated config.py, usermanager.py, req..&quot;" />
+    <MESSAGE value="&quot;added html + css + js&quot;" />
+    <MESSAGE value="&quot;updated html&quot;" />
+    <MESSAGE value="&quot;updated html, added parsing by parts&quot;" />
+    <MESSAGE value="&quot;updated html, added dark mode. added register page&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;updated html, added dark mode. added register page&quot;" />
   </component>
 </project>

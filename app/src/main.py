@@ -1,15 +1,20 @@
-from fastapi import FastAPI, Depends, APIRouter, Form
+import json
+from datetime import datetime
+
+from fastapi import FastAPI, Depends, APIRouter, Form, Query, Response
 from fastapi_users import FastAPIUsers
 from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
-from starlette.responses import HTMLResponse, Response
+from starlette.responses import HTMLResponse, FileResponse
 from fastapi import HTTPException
+from starlette.staticfiles import StaticFiles
+
 from app.src.auth.authschemas import UserRead, UserCreate, UserUpdate
 from app.src.auth.cookie_jwt_config import auth_backend
 from app.src.auth.usermanager import UserManager
 from app.src.models.models import UserORM, EventORM
-from sqlalchemy import select
+from sqlalchemy import select, func
 from app.src.models.schemas import *
 from app.src.settings.config import async_session_maker
 from fastapi.templating import Jinja2Templates
@@ -23,6 +28,8 @@ delete_current_user = APIRouter()
 update_current_user = APIRouter()
 
 templates = Jinja2Templates(directory="app/templates")
+# Подключаем папку "static" для обслуживания CSS и других статических файлов
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 
 async def get_async_session() -> AsyncSession:
@@ -161,8 +168,9 @@ app.include_router(
 
 
 @app.get("/")
-async def main_page():
-    return {"status": 200}
+async def main_page(request: Request):
+    # Рендерим index.html с переданными параметрами (если нужно)
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 @app.get("/profile")
@@ -178,3 +186,79 @@ async def get_users(id_: int = None, db: AsyncSession = Depends(get_async_sessio
         result = await db.execute(select(UserORM).filter_by(id=id_))
     users = result.scalars().all()
     return users
+
+
+@app.get("/tools", response_model=list[EventSchema])
+async def get_events_by_date(
+        from_date: str = None,
+        to_date: str = None,
+        session: AsyncSession = Depends(get_async_session),
+        user: UserORM = Depends(fastapi_users.current_user(active=True, verified=True)),
+        response: Response = None):
+
+    """
+        Function for getting results [events] by date
+    :param from_date: start date
+    :param to_date: end date
+    :param session: async DB session
+    :param user: current user
+    :param response:
+    :return: list of dicts [events]
+    """
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    if not from_date and not to_date:
+        return []
+
+    async with session:
+        if from_date and to_date and from_date == to_date:
+            result = await session.execute(
+                select(EventORM).where(EventORM.date.like(f"{from_date}%"))
+            )
+            events = result.scalars().all()
+
+        elif from_date and not to_date:
+            result = await session.execute(
+                select(EventORM).where(EventORM.date >= from_date)
+            )
+            events = result.scalars().all()
+
+        elif to_date and not from_date:
+            result = await session.execute(
+                select(EventORM).where(EventORM.date <= to_date)
+            )
+            events = result.scalars().all()
+
+        else:
+            result = await session.execute(
+                select(EventORM).where(EventORM.date >= from_date, EventORM.date <= to_date)
+            )
+            events = result.scalars().all()
+
+    # setting cookies that will be restored for some different func like (sorting...)
+    events_for_response_cookie = json.dumps([EventSchema.from_orm(event).dict() for event in events])
+    response.set_cookie(key="events", value=events_for_response_cookie)
+
+    return events
+
+
+# @app.get("/tools", response_model=list[EventSchema])
+# def sort_events_by_date(
+#         direction: bool = True,
+#         session: AsyncSession = Depends(get_async_session),
+#         user: UserORM = Depends(fastapi_users.current_user(active=True, verified=True)),
+#         request: Request = None):
+#
+#     # by descending = True (по убыванию)
+#     # by ascending = False (по возрастанию)
+#
+#     events = request.cookies.get(__key="events")
+#
+#     return events
+
+
+@app.get("/auth-form")
+def return_auth_form(request: Request):
+    return templates.TemplateResponse("register.html", {"request": request})

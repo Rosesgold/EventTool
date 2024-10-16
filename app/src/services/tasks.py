@@ -41,7 +41,8 @@ celery_app.conf.update(
 celery_app.conf.beat_schedule = {
     'run-main-task-every-day-6am': {
         'task': 'app.src.services.tasks.main_task',
-        'schedule': crontab(hour='20', minute='55'),  # start at 23:55
+        # 'schedule': crontab(hour='20', minute='55'),  # start at 23:55
+        'schedule': crontab(hour='16', minute='48'),
         # 'schedule': crontab(minute='*/5'),
     },
 }
@@ -51,7 +52,6 @@ celery_app.conf.beat_schedule = {
 def parse_the_guardian_api_and_validate_data() -> list:
     """
         Function that parse The Guardian API
-
         :return: list of dict elements
     """
 
@@ -67,7 +67,7 @@ def parse_the_guardian_api_and_validate_data() -> list:
     while True:
         params = {
             'q': 'cryptocurrency',
-            'from-date': str_current_time,
+            'from-date': '2024-05-01',
             'to-date': str_current_time,
             'api-key': API_GUARDIAN_KEY,
             'page-size': page_size,
@@ -100,7 +100,6 @@ def parse_the_guardian_api_and_validate_data() -> list:
 def is_event_important(event: list) -> bool:
     """
         Function that checks is event important
-
     :param (list) event: result that returns from parse_the_guardian_api_and_validate_data
     :return (bool): answer is event important by some labels
     """
@@ -130,7 +129,6 @@ def is_event_important(event: list) -> bool:
 def divide_events_data_between_workers(events: list, count_workers: int = 6) -> list:
     """
         Function that divides data volume between workers to define is events important
-
     :param (list) events: result that returns from parse_the_guardian_api_and_validate_data
     :param (int) count_workers: count of workers to deal with a data volume (by default 6)
     :return (list): first param is a list of events, second param is a group task id
@@ -160,7 +158,6 @@ def divide_events_data_between_workers(events: list, count_workers: int = 6) -> 
 def add_to_db(divide_result: list) -> list:
     """
         Function that restores group result by id and adds data to the DB
-
     :param (list) divide_result: result of divide_events_data_between_workers
     :return (list): events with their bool answers on importance
     """
@@ -170,31 +167,39 @@ def add_to_db(divide_result: list) -> list:
     bool_results = []
     events_with_bool_important = []
 
-    # restoring group results by a group id
-    group_result = GroupResult.restore(result_id)
+    try:
 
-    for result in group_result.results:
-        if result.ready():
-            bool_results.append(result.result)
-        else:
-            bool_results.append(None)
+        # restoring group results by a group id
+        group_result = GroupResult.restore(result_id)
 
-    for bool_res_event, dict_event in zip(bool_results, events):
-        if bool_res_event is not None and bool_res_event is not False:
-            events_with_bool_important.append([bool_res_event, dict_event])
-        else:
-            events_with_bool_important.append([False, dict_event])
+        if group_result is None:
+            logging.error(f"No group result found for ID: {result_id}")
+
+        for result in group_result.results:
+            if result.ready():
+                bool_results.append(result.result)
+            else:
+                bool_results.append(None)
+
+        for bool_res_event, dict_event in zip(bool_results, events):
+            if bool_res_event is not None and bool_res_event is not False:
+                events_with_bool_important.append([bool_res_event, dict_event])
+            else:
+                events_with_bool_important.append([False, dict_event])
+
+    except Exception as ex:
+        logging.error(f"Something went wrong with restoring group: {ex}")
 
     with session_maker() as session:
         for event in events_with_bool_important:
             try:
-                date_obj = datetime.strptime(event[1]["webPublicationDate"], '%Y-%m-%dT%H:%M:%SZ')
+                # date_obj = datetime.strptime(event[1]["webPublicationDate"], '%Y-%m-%dT%H:%M:%SZ')
 
                 new_event = EventORM(
                     roe=event[1].get("roe"),
                     title=event[1]["webTitle"],
                     category=event[1]["sectionName"],
-                    date=date_obj,
+                    date=event[1]["webPublicationDate"],
                     url=event[1]["webUrl"]
                 )
 
@@ -218,7 +223,6 @@ def add_to_db(divide_result: list) -> list:
 def main_task():
     """
         Function that compile celery tasks in a chain link and starts it
-
     :return: chain result
     """
     result = chain(

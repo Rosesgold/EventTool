@@ -13,15 +13,6 @@ html, body {
     height: 100vh; /* Высота контейнера равна высоте окна */
 }
 
-#additional-info {
-    margin-top: 20px; /* Отступ сверху */
-    padding: 10px; /* Отступы внутри div */
-    background-color: #FFFFFF; /* Цвет фона */
-    border: 1px solid #dcdcdc; /* Граница */
-    border-radius: 5px; /* Закругленные углы */
-    text-align: center; /* Центрируем текст */
-}
-
 /* Стиль для header */
 header {
     background-color: #FFFFFF;
@@ -39,8 +30,9 @@ body.dark-mode #additional-info {
 }
 
 body.dark-mode header {
-    background-color: #282828; /* Цвет фона хедера в темном режиме */
+    background-color: #0d0b0e; /* Цвет фона хедера в темном режиме */
     color: #FFFFFF;
+    border-bottom: 1px solid grey;
 }
 
 body.dark-mode header nav a {
@@ -89,24 +81,28 @@ body.dark-mode .menu-item img {
 }
 
 body.dark-mode aside {
-    background-color: #282828; /* Цвет фона для темного режима */
+    background-color: #0d0b0e; /* Цвет фона для темного режима */
     color: #FFFFFF; /* Цвет текста для темного режима */
+    # border-right: 1px solid grey;
+    # border: 0px;
 }
 
 body.dark-mode section {
-    background-color: #545151; /* Цвет фона для темного режима */
+    # background-color: #545151; /* Цвет фона для темного режима */
+    background-color: #0d0b0e;
     color: #FFFFFF; /* Цвет текста для темного режима */
 }
 
 body.dark-mode footer {
-    background-color: #282828; /* Цвет фона для темного режима */
+    background-color: #0d0b0e; /* Цвет фона для темного режима */
     color: #FFFFFF; /* Цвет текста для темного режима */
+    border-top: 1px solid grey;
 }
 
 /* Стиль для графика в темном режиме */
 body.dark-mode #chart {
-    background-color: #282828; /* Темный фон */
-    border: 1ps solid #FFFFFF; /* Более темная граница */
+    background-color: #0d0b0e; /* Темный фон */
+    border: 1px solid #FFFFFF; /* Более темная граница */
     color: #FFFFFF; /* Белый текст */
 }
 
@@ -123,6 +119,18 @@ body.dark-mode .axis text {
 /* Линия графика */
 body.dark-mode .line {
     stroke: #00FF7F; /* Изменение цвета линии в темном режиме */
+}
+
+/* Стили для сетки графика в темном режиме */
+body.dark-mode .grid line {
+    stroke: #FFFFFF; /* Белый цвет линий сетки */
+    stroke-width: 1px; /* Толщина линий сетки */
+    shape-rendering: crispEdges; /* Четкие края для линий */
+}
+
+/* Настройка сетки для квадратов */
+.grid {
+    stroke-dasharray: none; /* Убираем пунктирные линии */
 }
 
 
@@ -201,10 +209,11 @@ body.dark-mode .line {
 /* Dropdown menu styles */
 .dropdown-menu {
     position: absolute;
-    margin-top: 15px;
+    margin-top: 1%;
+    margin-right: 0.5%;
     top: 45px;
     right: 10px;
-    width: 12%;
+    width: 10%;
     background-color: #fff;
     border-radius: 10px;
     border: 1px solid grey;
@@ -372,7 +381,7 @@ main {
 aside {
     width: 20%;
     background-color: #FFFFFF;
-    border-right: 0.1px solid #dcdcdc; /* Тонкая граница справа */
+    # border-right: 0.1px solid #dcdcdc; /* Тонкая граница справа */
     padding: 20px;
     display: flex;
     flex-direction: column; /* Вертикальное расположение */
@@ -381,9 +390,19 @@ aside {
 section {
     width: 80%;
     background-color: #FFFFFF;
-    padding: 20px; /* Отступы для содержимого */
+    padding: 5px; /* Отступы для содержимого */
     display: flex;
     flex-direction: column; /* Вертикальное расположение */
+}
+
+#additional-info {
+    margin-top: 5px; /* Отступ сверху */
+    padding: 10px; /* Отступы внутри div */
+    background-color: #FFFFFF; /* Цвет фона */
+    border: 1px solid #dcdcdc; /* Граница */
+    border-radius: 5px; /* Закругленные углы */
+    text-align: center; /* Центрируем текст */
+    #height: 40px;
 }
 
 /* Футер фиксированной высоты */
