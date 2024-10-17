@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;updated styles&quot;">
+    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;updated styles, added button and form to select currencies&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/css/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/script.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/register.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -281,7 +281,14 @@
       <option name="project" value="LOCAL" />
       <updated>1729063713861</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="&quot;updated styles, added button and form to select currencies&quot;">
+      <created>1729090251541</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1729090251541</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -322,6 +329,7 @@
     <MESSAGE value="&quot;updated html, added parsing by parts&quot;" />
     <MESSAGE value="&quot;updated html, added dark mode. added register page&quot;" />
     <MESSAGE value="&quot;updated styles&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;updated styles&quot;" />
+    <MESSAGE value="&quot;updated styles, added button and form to select currencies&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;updated styles, added button and form to select currencies&quot;" />
   </component>
 </project>

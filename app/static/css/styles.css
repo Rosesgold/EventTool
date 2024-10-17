@@ -479,7 +479,26 @@ footer {
     stroke-width: 2; /* Ширина линии */
 }
 
+#open-modal-btn {
+    display: flex; /* Flexbox для выравнивания содержимого */
+    align-items: center; /* Центрирование по вертикали */
+    justify-content: center; /* Центрирование по горизонтали */
+    padding: 10px 15px;
+    border: none;
+    background-color: #f0f0f0; /* Цвет кнопки */
+    cursor: pointer;
+    font-size: 16px;
+}
 
+#open-modal-btn img {
+    width: 24px; /* Размер иконки */
+    height: 24px;
+    margin-right: 10px; /* Отступ между иконкой и текстом */
+}
+
+#open-modal-btn span {
+    font-weight: bold;
+}
 
 
 
