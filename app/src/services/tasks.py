@@ -235,3 +235,4 @@ def main_task():
 
 # to start workers: celery -A app.src.services.tasks.celery_app worker --loglevel=info --pool=threads
 # to start beat:    celery -A app.src.services.tasks.celery_app beat --loglevel=info
+

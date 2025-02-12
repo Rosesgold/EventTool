@@ -212,10 +212,10 @@ body.dark-mode .grid line {
     margin-right: 0.5%;
     top: 45px;
     right: 10px;
-    width: 10%;
+    width: 12%;
     background-color: #fff;
     border-radius: 10px;
-    border: 1px solid grey;
+    border: 1px solid #dcdcdc;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 100;
     padding: 15px;
@@ -231,6 +231,7 @@ body.dark-mode .grid line {
 
 .menu-item-theme-mode {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     padding: 10px 0;
     cursor: pointer;
@@ -381,9 +382,10 @@ aside {
     width: 20%;
     background-color: #FFFFFF;
     # border-right: 0.1px solid #dcdcdc; /* Тонкая граница справа */
-    padding: 20px;
+    padding: 0.5%;
     display: flex;
     flex-direction: column; /* Вертикальное расположение */
+    align-items: center;
 }
 
 section {
@@ -459,7 +461,7 @@ footer {
 
 /* Додаємо стилі для canvas */
 #chart {
-    border: 2px solid #D0D0D0; /* Додаємо синій контур */
+    border: 1px solid #D0D0D0; /* Додаємо синій контур */
     border-radius: 15px; /* Заокруглення кутів */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Легке тінювання */
     padding: 10px; /* Відступ всередині */
@@ -479,46 +481,102 @@ footer {
     stroke-width: 2; /* Ширина линии */
 }
 
-#open-modal-btn {
-    display: flex; /* Flexbox для выравнивания содержимого */
-    align-items: center; /* Центрирование по вертикали */
-    justify-content: center; /* Центрирование по горизонтали */
-    padding: 10px 15px;
-    border: none;
-    background-color: #f0f0f0; /* Цвет кнопки */
+.open-modal-btn {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    width: 90%;
+    font-size: 100%;
     cursor: pointer;
-    font-size: 16px;
+    border: 0.1px solid #dcdcdc;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    padding: 6%;
 }
 
-#open-modal-btn img {
-    width: 24px; /* Размер иконки */
-    height: 24px;
-    margin-right: 10px; /* Отступ между иконкой и текстом */
+.open-modal-btn img {
+    height: 1.9em;
+    width: 1.9em;
+    margin-left: 1%;
 }
 
-#open-modal-btn span {
-    font-weight: bold;
+.open-modal-btn span {
+    margin-left: 3%;
 }
-
 
 
 /* Стиль для модального окна */
 #modal-form {
-    display: none; /* По умолчанию скрыто */
+    display: none;
+    flex-direction: column;
     position: fixed;
-    top: 50%;
+    top: 45%;
     left: 50%;
+    width: 20%;
+    height: 370px; /* Ограничиваем высоту окна */
     transform: translate(-50%, -50%);
     background-color: white;
-    padding: 20px;
-    border: 2px solid #ccc;
+    border: 1px solid #ccc;
+    border-radius: 7px;
     z-index: 1000;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Не позволяйте содержимому выходить за пределы формы */
+}
+
+.h2-modal-form-block {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5%;
+    background-color: #FFFFFF;
+    border-bottom: 0.1px solid #dcdcdc;
+}
+
+/* Контентная часть с прокруткой */
+.content-modal-form-block {
+    flex-grow: 1;
+    background-color: white;
+    overflow-y: auto; /* Включаем вертикальную прокрутку */
+    padding-top: 5%;
+    padding: 3%;
+    max-height: 100%; /* Устанавливаем максимальную высоту */
+    box-sizing: border-box; /* Включаем padding в расчёт высоты */
+}
+
+/* Стили для списка криптовалют */
+.crypto-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Стили для каждого элемента списка */
+.crypto-item {
+    padding: 10px;
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    text-align: left;
+}
+
+/* Стили для значков криптовалют */
+.crypto-icon {
+    width: 20px; /* Ширина значка */
+    height: 20px; /* Высота значка */
+    margin-right: 10px; /* Отступ справа от значка */
+    vertical-align: middle; /* Центрирование по вертикали */
+}
+
+
+.crypto-item:hover {
+    background-color: #f1f1f1;
+    border-radius: 5px;
 }
 
 /* Задний фон при открытом модальном окне */
 #modal-overlay {
-    display: none; /* По умолчанию скрыто */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -530,28 +588,121 @@ footer {
 
 /* Кнопка закрытия */
 .close-btn {
-    background-color: red;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-/* Стиль для кнопок криптовалют */
-.crypto-button {
-    display: block; /* Блоковое отображение, чтобы кнопки были в столбик */
-    width: 100%; /* Занимает всю ширину формы */
-    margin: 10px 0; /* Отступы между кнопками */
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
+    background-color: #FFFFFF;
+    color: dark;
     border: none;
     cursor: pointer;
 }
 
-.crypto-button:hover {
-    background-color: #0056b3;
+
+
+
+
+
+
+#table-wrapper {
+    padding: 0 5px;  /* Отступы справа и слева по 5 пикселей */
 }
+
+#table-container {
+    width: 100%;     /* Убедимся, что контейнер таблицы занимает всю ширину внутри обертки */
+}
+
+/* Загальний стиль для таблиці */
+.events-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 5px 0;
+    font-family: Arial, sans-serif;
+}
+
+.events-table th, .events-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.events-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.events-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.events-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.events-table td a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.events-table td a:hover {
+    text-decoration: underline;
+}
+
+/* Установка ширины колонок в процентах */
+.events-table th:nth-child(1), .events-table td:nth-child(1) {
+    width: 5%;  /* Ширина для колонки с ID */
+}
+
+.events-table th:nth-child(2), .events-table td:nth-child(2) {
+    width: 55%;  /* Ширина для колонки с названием события (title) */
+}
+
+.events-table th:nth-child(3), .events-table td:nth-child(3) {
+    width: 15%;  /* Ширина для колонки с категорией */
+}
+
+.events-table th:nth-child(4), .events-table td:nth-child(4) {
+    width: 15%;  /* Ширина для колонки с датой */
+    cursor: pointer;  /* Меняет курсор на "pointer" при наведении */
+}
+
+.events-table th:nth-child(5), .events-table td:nth-child(5) {
+    width: 10%;  /* Ширина для колонки с URL */
+}
+
+/* Додаткові стилі для адаптивності */
+@media screen and (max-width: 768px) {
+    .events-table th, .events-table td {
+        padding: 8px;
+    }
+}
+
+#load-more-button {
+    display: block;              /* Делаем кнопку блочным элементом, чтобы она занимала всю ширину */
+    width: 100%;                 /* Устанавливаем ширину на 100% от контейнера */
+    padding: 10px;               /* Отступы для кнопки */
+    margin: 0 0 20px 0;          /* Убираем лишние отступы сверху и слева/справа, добавляем отступ снизу */
+    background-color: #007bff;   /* Цвет фона кнопки */
+    color: white;                /* Цвет текста на кнопке */
+    font-size: 16px;             /* Размер шрифта */
+    border: none;                /* Убираем рамку */
+    cursor: pointer;            /* Курсор при наведении */
+    text-align: center;          /* Текст по центру */
+    border-radius: 5px;          /* Закругленные углы */
+    box-sizing: border-box;      /* Учитывать padding в расчете ширины */
+}
+
+#load-more-button:hover {
+    background-color: #0056b3;   /* Цвет фона при наведении */
+}
+
+#load-more-button:focus {
+    outline: none;               /* Убираем обводку при фокусе */
+}
+
+
+
+
+
+
+
+
+
 
 

@@ -71,10 +71,9 @@
         </header>
         <main>
             <aside>
-                <h3>Select currency</h3>
-                <button id="open-modal-btn">
+                <button class="open-modal-btn">
                     <img src="/static/images/bitcoin-btc-logo.png" alt="Bitcoin">
-                    <span>Bitcoin (BTC)</span>
+                    <span class="currency-name">Bitcoin (BTC)</span>
                 </button>
             </aside>
             <section>
@@ -91,22 +90,40 @@
                 </div> <!-- Новый div -->
             </section>
         </main>
+
+        <!-- Новый контейнер для таблицы -->
+        <div id="table-wrapper">
+            <div id="table-container"></div>
+        </div>
+
         <footer>
             <p>Footer</p>
         </footer>
     </div>
 
-    <!-- Модальное окно с кнопками криптовалют -->
     <div id="modal-overlay"></div>
     <div id="modal-form">
-        <h2>Выберите криптовалюту</h2>
-        <!-- Кнопки для выбора криптовалюты -->
-        <button class="crypto-button" onclick="selectCurrency('BTC')">Bitcoin (BTC)</button>
-        <button class="crypto-button" onclick="selectCurrency('ETH')">Ethereum (ETH)</button>
-        <button class="crypto-button" onclick="selectCurrency('LTC')">Litecoin (LTC)</button>
-
-        <!-- Закрыть модальное окно -->
-        <button type="button" class="close-btn">Закрыть</button>
+        <div class="h2-modal-form-block">
+            <span>Select asset</span>
+            <button type="button" class="close-btn">x</button>
+        </div>
+        <div class="content-modal-form-block">
+            <!-- Список для выбора криптовалюты -->
+            <ul class="crypto-list">
+                <li class="crypto-item" onclick="selectCurrency('BTC')">
+                    <img src="/static/images/bitcoin-btc-logo.png" alt="Bitcoin" class="crypto-icon"> Bitcoin (BTC)
+                </li>
+                <li class="crypto-item" onclick="selectCurrency('ETH')">
+                    <img src="/static/images/ethereum-eth-logo.png" alt="Ethereum" class="crypto-icon"> Ethereum (ETH)
+                </li>
+                <li class="crypto-item" onclick="selectCurrency('USDT')">
+                    <img src="/static/images/tether-usdt-logo.png" alt="Tether" class="crypto-icon"> Tether (USDT)
+                </li>
+                <!-- Добавьте больше пунктов по мере необходимости -->
+            </ul>
+        </div>
     </div>
+
+
 </body>
 </html>

@@ -181,7 +181,9 @@ function selectCurrency(currency) {
     modalOverlay.style.display = 'none';
 }
 
-const openModalBtn = document.getElementById('open-modal-btn');
+//const openModalBtn = document.getElementById('open-modal-btn');
+const openModalBtnSpan = document.querySelector('.currency-name')
+const openModalBtn = document.querySelector('.open-modal-btn');
 const modalForm = document.getElementById('modal-form');
 const modalOverlay = document.getElementById('modal-overlay');
 const closeBtn = document.querySelector('.close-btn');
@@ -255,26 +257,260 @@ function selectCurrency(currency) {
     loadChartData();
     modalForm.style.display = 'none';
     modalOverlay.style.display = 'none';
+
     // Обновляем текст кнопки с текущей выбранной валютой
     let currencyName;
+    let iconSrc;
+
     switch (selectedCurrency) {
         case 'BTC':
             currencyName = 'Bitcoin (BTC)';
+            iconSrc = '/static/images/bitcoin-btc-logo.png'; // Путь к иконке Биткойна
             break;
         case 'ETH':
             currencyName = 'Ethereum (ETH)';
+            iconSrc = '/static/images/ethereum-eth-logo.png'; // Путь к иконке Эфира
             break;
-        case 'LTC':
-            currencyName = 'Litecoin (LTC)';
+        case 'USDT':
+            currencyName = 'Tether (USDT)';
+            iconSrc = '/static/images/tether-usdt-logo.png'; // Путь к иконке Tether
             break;
         default:
             currencyName = selectedCurrency;
     }
-    openModalBtn.textContent = currencyName;
+
+    // Устанавливаем текст и иконку в кнопку
+    openModalBtn.querySelector('.currency-name').textContent = currencyName;
+    openModalBtn.querySelector('img').src = iconSrc; // Обновляем источник изображения
 }
+
 
 document.addEventListener("DOMContentLoaded", function() {
     loadChartData();
     // Изначально отображаем Bitcoin (BTC)
-    openModalBtn.textContent = 'Bitcoin (BTC)';
+    // openModalBtn.textContent = 'Bitcoin (BTC)';
+    openModalBtnSpan.textContent = 'Bitcoin (BTC)';
 });
+
+
+
+//// без подгрузки
+//document.getElementById('additional-info-button-apply').addEventListener('click', async function() {
+//    const calendarInput = document.getElementById('calendar').value;
+//
+//    if (!calendarInput) {
+//        alert("Please select a date.");
+//        return;
+//    }
+//
+//    // Разбиваем значение ввода на два диапазона: from_date и to_date
+//    const dates = calendarInput.split(' to ');
+//    const fromDate = dates[0];
+//    const toDate = dates[1];
+//
+//    try {
+//        // Отправляем запрос на сервер с правильным диапазоном дат
+//        const response = await fetch(`/tools?from_date=${fromDate}&to_date=${toDate}`);
+//        const events = await response.json();
+//
+//        console.log("Server response:", events);  // Логируем данные ответа для проверки
+//
+//        // Создаем таблицу с данными
+//        const tableContainer = document.getElementById('table-container');
+//        tableContainer.innerHTML = ''; // Очищаем предыдущую таблицу
+//
+//        if (events.length === 0) {
+//            tableContainer.innerHTML = '<p>No events found for the selected date.</p>';
+//            return;
+//        }
+//
+//        // Создаем таблицу
+//        const table = document.createElement('table');
+//        table.classList.add('events-table');
+//
+//        // Заголовок таблицы
+//        const tableHeader = document.createElement('thead');
+//        tableHeader.innerHTML = '<tr><th>#</th><th>Назва події</th><th>Категорія</th><th>Дата</th><th>Посилання</th></tr>';
+//        table.appendChild(tableHeader);
+//
+//        // Тело таблицы с данными из ответа
+//        const tableBody = document.createElement('tbody');
+//        events.forEach((event, index) => {
+//            const row = document.createElement('tr');
+//
+//            // Преобразуем дату из формата ISO в нужный формат (YYYY-MM-DD | HH:mm:ss)
+//            const date = new Date(event.date);
+//            const formattedDate = date.toISOString().split('T')[0];  // Получаем только дату (YYYY-MM-DD)
+//            const formattedTime = date.toISOString().split('T')[1].slice(0, 8);  // Получаем время (HH:mm:ss)
+//            const formattedDateTime = `${formattedDate} | ${formattedTime}`;
+//
+//            row.innerHTML = `
+//                <td>${index + 1}</td> <!-- Нумерация начинается с 1 -->
+//                <td>${event.title}</td>
+//                <td>${event.category}</td>
+//                <td>${formattedDateTime}</td> <!-- Отображаем отформатированную дату и время -->
+//                <td><a href="${event.url}" target="_blank">Перейти</a></td>
+//            `;
+//            tableBody.appendChild(row);
+//        });
+//
+//        table.appendChild(tableBody);
+//        tableContainer.appendChild(table);
+//
+//    } catch (error) {
+//        console.error("Error fetching events:", error);
+//        alert("Failed to fetch events.");
+//    }
+//});
+
+
+
+
+let eventsData = [];  // Массив для хранения всех данных
+let currentOffset = 10;  // Индекс для пагинации
+const limit = 10;  // Количество записей на страницу
+
+let isSortedAscending = true;  // Переменная для хранения направления сортировки
+
+document.getElementById('additional-info-button-apply').addEventListener('click', async function() {
+    const calendarInput = document.getElementById('calendar').value;
+
+    if (!calendarInput) {
+        alert("Please select a date.");
+        return;
+    }
+
+    const dates = calendarInput.split(' to ');
+    const fromDate = dates[0];
+    const toDate = dates[1];
+
+    try {
+        const response = await fetch(`/tools?from_date=${fromDate}&to_date=${toDate}`);
+        eventsData = await response.json();
+
+        console.log("Server response:", eventsData);
+
+        const tableContainer = document.getElementById('table-container');
+        tableContainer.innerHTML = '';
+
+        if (eventsData.length === 0) {
+            alert("No events found for the selected date.");
+            return;
+        }
+
+        const table = document.createElement('table');
+        table.classList.add('events-table');
+
+        const tableHeader = document.createElement('thead');
+        tableHeader.innerHTML = '<tr><th>#</th><th>Назва події</th><th>Категорія</th><th id="date-header">Дата</th><th>Посилання</th></tr>';
+        table.appendChild(tableHeader);
+
+        const tableBody = document.createElement('tbody');
+        eventsData.slice(0, limit).forEach((event, index) => {
+            const row = document.createElement('tr');
+
+            const date = new Date(event.date);
+            const formattedDate = date.toISOString().split('T')[0];
+            const formattedTime = date.toISOString().split('T')[1].slice(0, 8);
+            const formattedDateTime = `${formattedDate} | ${formattedTime}`;
+
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${event.title}</td>
+                <td>${event.category}</td>
+                <td>${formattedDateTime}</td>
+                <td><a href="${event.url}" target="_blank">Перейти</a></td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        table.appendChild(tableBody);
+        tableContainer.appendChild(table);
+
+        document.getElementById('date-header').addEventListener('click', function() {
+            sortByDate();
+        });
+
+        if (eventsData.length > limit) {
+            const loadMoreButton = document.createElement('button');
+            loadMoreButton.id = 'load-more-button';
+            loadMoreButton.textContent = '+ Показати більше';
+            loadMoreButton.addEventListener('click', loadMore);
+            tableContainer.appendChild(loadMoreButton);
+        }
+
+    } catch (error) {
+        console.error("Error fetching events:", error);
+        alert("Failed to fetch events.");
+    }
+});
+
+// Функция для подгрузки следующей порции данных
+function loadMore() {
+    const tableContainer = document.getElementById('table-container');
+    const table = document.querySelector('.events-table');
+    const tableBody = table.querySelector('tbody');
+
+    // Показываем следующие 10 записей
+    const startIndex = currentOffset;
+    const endIndex = currentOffset + limit;
+
+    eventsData.slice(startIndex, endIndex).forEach((event, index) => {
+        const row = document.createElement('tr');
+        const date = new Date(event.date);
+        const formattedDate = date.toISOString().split('T')[0];
+        const formattedTime = date.toISOString().split('T')[1].slice(0, 8);
+        const formattedDateTime = `${formattedDate} | ${formattedTime}`;
+
+        // Нумерация теперь будет корректной, начиная с текущего offset + индекс
+        row.innerHTML = `
+            <td>${startIndex + index + 1}</td>  <!-- Продолжаем нумерацию -->
+            <td>${event.title}</td>
+            <td>${event.category}</td>
+            <td>${formattedDateTime}</td>
+            <td><a href="${event.url}" target="_blank">Перейти</a></td>
+        `;
+        tableBody.appendChild(row);
+    });
+
+    currentOffset += limit;  // Увеличиваем offset
+
+    // Если больше нет записей, скрываем кнопку
+    if (currentOffset >= eventsData.length) {
+        const loadMoreButton = document.getElementById('load-more-button');
+        if (loadMoreButton) {
+            loadMoreButton.style.display = 'none';
+        }
+    }
+}
+
+// Функция для сортировки по дате
+function sortByDate() {
+    // Переводим даты в формат, который можно сравнивать
+    const rows = Array.from(document.querySelector('.events-table tbody').rows);
+    rows.sort((rowA, rowB) => {
+        const dateA = new Date(rowA.cells[3].textContent.split(' | ')[0]);
+        const dateB = new Date(rowB.cells[3].textContent.split(' | ')[0]);
+
+        return isSortedAscending ? dateA - dateB : dateB - dateA;
+    });
+
+    // Перезаписываем строки в таблицу
+    const tableBody = document.querySelector('.events-table tbody');
+    rows.forEach(row => tableBody.appendChild(row));
+
+    // Меняем направление сортировки
+    isSortedAscending = !isSortedAscending;
+}
+
+
+
+
+
+
+
+
+
+
+
+
