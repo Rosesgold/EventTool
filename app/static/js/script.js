@@ -7,7 +7,7 @@ let currentPrice = 0;
 
 const startDate = new Date("2010-01-01");
 const endDate = new Date();
-let selectedCurrency = 'BTC'; // Изначально отображается Bitcoin
+let selectedCurrency = 'BTC';
 
 async function loadChartData() {
     const ohlcData = { labels: [], data: [] };
@@ -41,6 +41,19 @@ async function loadChartData() {
         }
 
         allData.sort((a, b) => a.time - b.time);
+
+        // Фільтрація: знаходимо перший момент зміни ціни
+        let firstChangeIndex = 0;
+        for (let i = 1; i < allData.length; i++) {
+            if (allData[i].close !== allData[i - 1].close) {
+                firstChangeIndex = i;
+                break;
+            }
+        }
+
+        // Обрізаємо дані до першої зміни ціни
+        allData = allData.slice(firstChangeIndex);
+
         allData.forEach(entry => {
             ohlcData.labels.push(new Date(entry.time));
             ohlcData.data.push(entry.close);
@@ -132,6 +145,7 @@ async function loadChartData() {
         document.getElementById('loading').textContent = "Ошибка загрузки данных. Попробуйте еще раз.";
     }
 }
+
 
 function setupDragging() {
     const chartContainer = document.getElementById('chart');
@@ -236,20 +250,41 @@ document.addEventListener('click', function(event) {
     }
 });
 
-
 const modeToggle = document.getElementById('mode-toggle');
+
+// При загрузке страницы проверяем сохранённую тему
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        document.body.classList.remove('light-mode');
+        modeToggle.checked = true;
+    } else {
+        document.body.classList.add('light-mode');
+        document.body.classList.remove('dark-mode');
+        modeToggle.checked = false;
+    }
+} else {
+    // Если темы нет, устанавливаем по умолчанию светлый режим
+    document.body.classList.add('light-mode');
+    document.body.classList.remove('dark-mode');
+    modeToggle.checked = false;
+}
 
 modeToggle.addEventListener('change', function() {
     if (this.checked) {
         // Включить темный режим
         document.body.classList.add('dark-mode');
         document.body.classList.remove('light-mode');
+        localStorage.setItem('theme', 'dark');
     } else {
         // Включить светлый режим
         document.body.classList.add('light-mode');
         document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
     }
 });
+
 
 
 function selectCurrency(currency) {

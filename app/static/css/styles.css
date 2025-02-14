@@ -20,19 +20,34 @@ header {
     display: flex;
     align-items: center;
     padding: 1%;
-    border-bottom: 1px solid #dcdcdc; /* Граница снизу */
+    #border-bottom: 1px solid #dcdcdc; /* Граница снизу */
+}
+
+/* Футер фиксированной высоты */
+footer {
+    background-color: #FFFFFF;
+    height: 20%; /* Футер занимает 20% высоты контейнера */
+    text-align: center; /* Центрируем текст футера */
+    padding: 10px; /* Отступы для футера */
+    #border-top: 1px solid #dcdcdc;
 }
 
 body.dark-mode #additional-info {
-    border: 1px solid grey; /* Цвет границы для дополнительной информации в темном режиме */
+    border: 1px solid #444; /* Цвет границы для дополнительной информации в темном режиме */
     # color: #000000; /* Цвет текста черный при переходе на темный режим */
-    background-color: #282828;
+    background-color: #1e1f35;
 }
 
 body.dark-mode header {
-    background-color: #0d0b0e; /* Цвет фона хедера в темном режиме */
+    background-color: #0f1021; /* Цвет фона хедера в темном режиме #0d0b0e */
     color: #FFFFFF;
-    border-bottom: 1px solid grey;
+    #border-bottom: 1px solid #444;
+}
+
+body.dark-mode footer {
+    background-color: #0f1021; /* Цвет фона для темного режима */
+    color: #FFFFFF; /* Цвет текста для темного режима */
+    #border-top: 1px solid #444;
 }
 
 body.dark-mode header nav a {
@@ -47,6 +62,10 @@ body.dark-mode header nav a {
 /* Стили для темного режима */
 body.dark-mode .menu-icon {
     filter: brightness(0) invert(1); /* Изменяет цвет изображения на белый */
+}
+
+body.dark-mode .dropdown-menu {
+    border: 1px solid #444;
 }
 
 body.dark-mode header .dropdown-menu a {
@@ -81,7 +100,7 @@ body.dark-mode .menu-item img {
 }
 
 body.dark-mode aside {
-    background-color: #0d0b0e; /* Цвет фона для темного режима */
+    background-color: #0f1021; /* Цвет фона для темного режима */
     color: #FFFFFF; /* Цвет текста для темного режима */
     # border-right: 1px solid grey;
     # border: 0px;
@@ -89,20 +108,14 @@ body.dark-mode aside {
 
 body.dark-mode section {
     # background-color: #545151; /* Цвет фона для темного режима */
-    background-color: #0d0b0e;
+    background-color: #0f1021;
     color: #FFFFFF; /* Цвет текста для темного режима */
-}
-
-body.dark-mode footer {
-    background-color: #0d0b0e; /* Цвет фона для темного режима */
-    color: #FFFFFF; /* Цвет текста для темного режима */
-    border-top: 1px solid grey;
 }
 
 /* Стиль для графика в темном режиме */
 body.dark-mode #chart {
-    background-color: #0d0b0e; /* Темный фон */
-    border: 1px solid grey; /* Более темная граница */
+    background-color: #1e1f35; /* Темный фон */
+    border: 1px solid #444; /* Более темная граница */
     color: #FFFFFF; /* Белый текст */
 }
 
@@ -127,6 +140,206 @@ body.dark-mode .grid line {
     stroke-width: 1px; /* Толщина линий сетки */
     shape-rendering: crispEdges; /* Четкие края для линий */
 }
+
+
+
+
+
+
+
+
+body.dark-mode .open-modal-btn {
+    background-color: #1e1f35; /* Темный фон кнопки */
+    color: #FFFFFF; /* Белый текст */
+    border: 1px solid #444; /* Граница кнопки */
+}
+
+body.dark-mode .open-modal-btn:hover {
+    background-color: #3B4252; /* Чуть светлее при наведении */
+}
+
+body.dark-mode #modal-form {
+    background-color: #2E3440; /* Тёмный фон */
+    border: 1px solid #4C566A;
+    color: #ECEFF4; /* Светлый текст */
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .h2-modal-form-block {
+    background-color: #2E3440;
+    border-bottom: 0.1px solid #4C566A;
+}
+
+body.dark-mode .content-modal-form-block {
+    background-color: #2E3440;
+    color: #ECEFF4;
+}
+
+body.dark-mode .crypto-item {
+    background-color: #2E3440;
+    color: #ECEFF4;
+}
+
+body.dark-mode .crypto-item:hover {
+    background-color: #3B4252;
+}
+
+body.dark-mode .close-btn {
+    background-color: #2E3440;
+    color: #ECEFF4;
+}
+
+body.dark-mode #modal-overlay {
+    background-color: rgba(0, 0, 0, 0.7); /* Затемнённый фон */
+}
+
+body.dark-mode #calendar {
+    background-color: #2E3440; /* Тёмный фон */
+    color: #ECEFF4; /* Светлый текст */
+    border: 1px solid #4C566A; /* Тёмная рамка */
+    border-radius: 5px;
+}
+
+body.dark-mode #calendar::placeholder {
+    color: #D8DEE9; /* Светлый цвет для placeholder */
+}
+
+body.dark-mode #calendar:focus {
+    outline: none;
+    border-color: #81A1C1; /* Цвет рамки при фокусе */
+    box-shadow: 0 0 5px rgba(129, 161, 193, 0.5);
+}
+
+/* Тёмный режим для индикатора загрузки */
+body.dark-mode #loading {
+    color: #ECEFF4; /* Светлый текст */
+}
+
+/* Стили для изображения (если нужно изменить цвет через фильтр) */
+body.dark-mode #loading img {
+    filter: invert(1); /* Инвертируем цвета для светлого изображения */
+}
+
+
+
+/* Dark Mode для таблицы и сопутствующих элементов */
+.dark-mode #table-wrapper {
+    padding: 0 5px;
+    background-color: #0f1021;
+}
+
+.dark-mode #table-container {
+    width: 100%;
+}
+
+/* Основной стиль для таблицы в тёмном режиме */
+.dark-mode .events-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 5px 0;
+    font-family: Arial, sans-serif;
+    background-color: #18192c;  /* Тёмный фон таблицы */
+    color: #ddd;                /* Светлый текст */
+}
+
+.dark-mode .events-table th,
+.dark-mode .events-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #444;     /* Тёмные границы */
+}
+
+.dark-mode .events-table th {
+    background-color: #1e1f35;     /* Темный фон заголовков */
+    color: #fff;                /* Белый текст в заголовках */
+    font-weight: bold;
+}
+
+.dark-mode .events-table tr:nth-child(even) {
+    background-color: #1e1f35;  /* Чередование строк */
+}
+
+.dark-mode .events-table tr:hover {
+    background-color: #3B4252;  /* При наведении */
+}
+
+.dark-mode .events-table td a {
+    color: #66bfff;             /* Светло-синий цвет ссылок */
+    text-decoration: none;
+}
+
+.dark-mode .events-table td a:hover {
+    text-decoration: underline;
+}
+
+/* Ширина колонок остаётся такой же, как в базовом стиле */
+.dark-mode .events-table th:nth-child(1),
+.dark-mode .events-table td:nth-child(1) {
+    width: 5%;
+}
+
+.dark-mode .events-table th:nth-child(2),
+.dark-mode .events-table td:nth-child(2) {
+    width: 55%;
+}
+
+.dark-mode .events-table th:nth-child(3),
+.dark-mode .events-table td:nth-child(3) {
+    width: 15%;
+}
+
+.dark-mode .events-table th:nth-child(4),
+.dark-mode .events-table td:nth-child(4) {
+    width: 15%;
+    cursor: pointer;
+}
+
+.dark-mode .events-table th:nth-child(5),
+.dark-mode .events-table td:nth-child(5) {
+    width: 10%;
+}
+
+/* Адаптивные стили остаются без изменений */
+@media screen and (max-width: 768px) {
+    .dark-mode .events-table th,
+    .dark-mode .events-table td {
+        padding: 8px;
+    }
+}
+
+/* Стили для кнопки "Load More" в тёмном режиме */
+.dark-mode #load-more-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 0 0 20px 0;
+    background-color: #0056b3;
+    color: white;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.dark-mode #load-more-button:hover {
+    background-color: #004080;
+}
+
+.dark-mode #load-more-button:focus {
+    outline: none;
+}
+
+
+
+
+
+
+
+
+
+
 
 /* Настройка сетки для квадратов */
 .grid {
@@ -213,6 +426,7 @@ body.dark-mode .grid line {
     top: 45px;
     right: 10px;
     width: 12%;
+    min-width: 200px;
     background-color: #fff;
     border-radius: 10px;
     border: 1px solid #dcdcdc;
@@ -435,16 +649,7 @@ section {
     cursor: pointer; /* Указатель курсора при наведении */
     height: 85%;
     width: 7%;
-}
-
-
-/* Футер фиксированной высоты */
-footer {
-    background-color: #FFFFFF;
-    height: 20%; /* Футер занимает 20% высоты контейнера */
-    text-align: center; /* Центрируем текст футера */
-    padding: 10px; /* Отступы для футера */
-    border-top: 1px solid #dcdcdc;
+    min-width: 90px; /* Минимальная ширина кнопки */
 }
 
 /* Индикатор загрузки */
@@ -513,6 +718,7 @@ footer {
     top: 45%;
     left: 50%;
     width: 20%;
+    min-width: 300px;
     height: 370px; /* Ограничиваем высоту окна */
     transform: translate(-50%, -50%);
     background-color: white;
