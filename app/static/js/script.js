@@ -540,6 +540,29 @@ function sortByDate() {
 
 
 
+document.addEventListener("DOMContentLoaded", function() {
+    const svgObject = document.getElementById('loading-svg');
+
+    svgObject.addEventListener('load', function() {
+        const svgDoc = svgObject.contentDocument; // Получаем доступ к содержимому SVG
+
+        const text = svgDoc.querySelector('text');
+        const rect = svgDoc.querySelector('rect'); // Если у вас есть элемент <rect> для фона, например
+
+        // Получаем текущую тему
+        const isDarkMode = document.body.classList.contains('dark-mode');
+
+        // Если есть элемент <rect> для фона, меняем его цвет
+        if (rect) {
+            rect.setAttribute('fill', isDarkMode ? '#0f1021' : '#ffffff'); // Темный фон для темной темы, белый для светлой
+        }
+
+        // Меняем цвет текста в SVG в зависимости от темы
+        if (text) {
+            text.setAttribute('fill', isDarkMode ? '#ECEFF4' : '#000000'); // Светлый текст для темной темы, черный для светлой
+        }
+    });
+});
 
 
 

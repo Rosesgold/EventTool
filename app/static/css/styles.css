@@ -210,15 +210,48 @@ body.dark-mode #calendar:focus {
     box-shadow: 0 0 5px rgba(129, 161, 193, 0.5);
 }
 
-/* Тёмный режим для индикатора загрузки */
-body.dark-mode #loading {
-    color: #ECEFF4; /* Светлый текст */
+/* Индикатор загрузки */
+#loading {
+    display: none; /* Скрываем индикатор по умолчанию */
+    font-size: 24px;
+    text-align: center;
+    margin-top: 20px;
+    position: absolute; /* Позиционирование относительно ближайшего родителя */
+    top: 40%; /* Расположение по вертикали (по центру) */
+    left: 60%; /* Расположение по горизонтали (по центру) */
+    transform: translate(-50%, -50%); /* Сдвигаем элемент на 50% от своей ширины и высоты */
+    width: 100px; /* Задаем ширину контейнера, чтобы корректно центрировать изображение */
+    height: 100px; /* Задаем высоту контейнера */
 }
 
-/* Стили для изображения (если нужно изменить цвет через фильтр) */
-body.dark-mode #loading img {
-    filter: invert(1); /* Инвертируем цвета для светлого изображения */
+/* Позиционирование для изображения */
+#loading img {
+    width: 100px;  /* Ширина изображения */
+    height: 100px; /* Высота изображения */
 }
+
+
+/* Стили для светлой темы */
+body.light-mode #loading-svg {
+    background: rgb(255, 255, 255); /* Белый фон */
+}
+
+body.light-mode #loading-svg circle {
+    stroke: #ede7e8; /* Светлый цвет обводки */
+}
+
+/* Стили для темной темы */
+body.dark-mode #loading-svg {
+    background: transparent; /* Прозрачный фон для темной темы */
+}
+
+body.dark-mode #loading-svg circle {
+    stroke: #ECEFF4; /* Светлая обводка для темной темы */
+}
+
+
+
+
 
 
 
@@ -662,6 +695,8 @@ section {
 
 #loading img {
     margin-top: 15%;
+    width: 100px;             /* Ширина SVG */
+    height: 100px;            /* Высота SVG */
 }
 
 /* Додаємо стилі для canvas */
