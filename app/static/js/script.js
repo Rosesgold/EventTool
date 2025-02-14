@@ -200,7 +200,7 @@ const openModalBtnSpan = document.querySelector('.currency-name')
 const openModalBtn = document.querySelector('.open-modal-btn');
 const modalForm = document.getElementById('modal-form');
 const modalOverlay = document.getElementById('modal-overlay');
-const closeBtn = document.querySelector('.close-btn');
+const closeBtn = document.querySelector('.close-btn-modal-form');
 
 openModalBtn.addEventListener('click', function() {
     modalForm.style.display = 'block';
@@ -407,12 +407,12 @@ const limit = 10;  // Количество записей на страницу
 
 let isSortedAscending = true;  // Переменная для хранения направления сортировки
 
-document.getElementById('additional-info-button-apply').addEventListener('click', async function() {
+document.getElementById("additional-info-button-apply").addEventListener("click", async function() {
     const calendarInput = document.getElementById('calendar').value;
 
     if (!calendarInput) {
         alert("Please select a date.");
-        return;
+        return; // Важно завершить выполнение функции, чтобы не происходило дальнейших действий
     }
 
     const dates = calendarInput.split(' to ');
@@ -429,8 +429,9 @@ document.getElementById('additional-info-button-apply').addEventListener('click'
         tableContainer.innerHTML = '';
 
         if (eventsData.length === 0) {
+            // Здесь мы вызываем alert только один раз, если данных нет
             alert("No events found for the selected date.");
-            return;
+            return; // Прерываем выполнение функции, если нет данных
         }
 
         const table = document.createElement('table');
@@ -474,10 +475,41 @@ document.getElementById('additional-info-button-apply').addEventListener('click'
             tableContainer.appendChild(loadMoreButton);
         }
 
+        // Если данные есть, показываем панель
+        const tableWrapper = document.getElementById("table-wrapper");
+        if (!document.getElementById("event-table-panel")) {
+            tableWrapper.style.display = "block";
+
+            let newPanel = document.createElement("div");
+            newPanel.className = "additional-info-item";
+            newPanel.id = "event-table-panel";
+
+            let containerWidth = document.getElementById("additional-info-data-container").clientWidth;
+            newPanel.style.width = `${containerWidth * 0.1}px`;
+
+            let text = document.createElement("span");
+            text.innerText = "Event Table (0)";
+            text.id = "event-table-counter";
+
+            let closeButton = document.createElement("button");
+            closeButton.className = "close-btn";
+            closeButton.innerText = "×";
+            closeButton.onclick = function() {
+                newPanel.remove();
+                tableWrapper.style.display = "none";
+            };
+
+            newPanel.appendChild(text);
+            newPanel.appendChild(closeButton);
+            document.getElementById("additional-info-data-container").appendChild(newPanel);
+        }
+
     } catch (error) {
         console.error("Error fetching events:", error);
         alert("Failed to fetch events.");
     }
+
+    addRowSelectionHandlers(); // Добавляем обработчики выбора строк
 });
 
 // Функция для подгрузки следующей порции данных
@@ -564,7 +596,33 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+// Функция для выбора строк
+function toggleRowSelection(row) {
+    row.classList.toggle("selected");
+    updateSelectionCounter();
+}
 
+// Функция для обновления счетчика
+function updateSelectionCounter() {
+    let selectedRows = document.querySelectorAll(".events-table tbody tr.selected").length;
+    let counterElement = document.getElementById("event-table-counter");
+    if (counterElement) {
+        counterElement.innerText = `Event Table (${selectedRows})`;
+    }
+}
+
+// Используем делегирование событий для выбора строк
+function addRowSelectionHandlers() {
+    let tableBody = document.querySelector(".events-table tbody");
+
+    // Обработчик клика на tbody
+    tableBody.addEventListener("click", function (event) {
+        let row = event.target.closest("tr"); // Ищем родительский tr, если клик был на элементе внутри строки
+        if (row) {
+            toggleRowSelection(row);
+        }
+    });
+}
 
 
 

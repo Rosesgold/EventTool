@@ -423,6 +423,14 @@ body.dark-mode #loading-svg circle {
     border-radius: 7px;
 }
 
+.login-btn:hover {
+    background-color: #139c57;
+}
+
+.signup-btn:hover {
+    background-color: #139c57;
+}
+
 .menu-icon {
     width: 30px; /* Ширина изображения */
     height: auto; /* Автоматическая высота */
@@ -618,6 +626,32 @@ aside {
     align-items: center;
 }
 
+.close-btn-modal-form {
+    background-color: #FFFFFF;
+    border: none;
+    color: dark;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.close-btn-modal-form:hover {
+    color: #88c0d0;  /* Светло-голубой цвет текста при наведении */
+}
+
+.dark-mode .close-btn-modal-form {
+    background-color: #2e3440;  /* Темный фон для кнопки в темной теме */
+    border: none;
+    color: #FFFFFF;  /* Светлый цвет текста для темной темы */
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.dark-mode .close-btn-modal-form:hover {
+    color: #88c0d0;  /* Светло-голубой цвет текста при наведении */
+}
+
 section {
     width: 80%;
     background-color: #FFFFFF;
@@ -651,6 +685,7 @@ section {
 #additional-info-data-container input {
     border: 1px solid #444;
     border-radius: 5px; /* Скругленные углы */
+    font-size: 15px;
     text-align: center; /* Центрирование текста */
     height: 70%; /* Высота на 100% */
     min-width: 150px; /* Минимальная ширина для поля ввода */
@@ -658,21 +693,84 @@ section {
     color: #FFFFFF;
 }
 
+#additional-info-data-container input:hover {
+    background-color: #7c3aed;
+}
+
 #additional-info-data-container input::placeholder {
     color: #FFFFFF; /* Цвет текста плейсхолдера (текста подсказки) */
 }
 
 #additional-info-button-apply {
+    align-items: center;
     margin-left: 10px; /* Отступ слева от кнопки */
-    padding: 10px 15px; /* Внутренние отступы для кнопки */
     background-color: #007BFF; /* Цвет фона кнопки */
     color: white; /* Цвет текста */
+    font-size: 15px;
     border: none; /* Убираем рамку */
     border-radius: 5px; /* Скругляем углы кнопки */
     cursor: pointer; /* Указатель курсора при наведении */
     height: 85%;
     width: 7%;
     min-width: 90px; /* Минимальная ширина кнопки */
+}
+
+#additional-info-button-apply:hover {
+    background-color: #0066FF; /* Темный оттенок для фона при наведении */
+}
+
+.additional-info-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background-color: #C0C0C0;
+    color: #FFFFFF;
+    border-radius: 5px;
+    height: 30%;
+    margin-left: 10px;
+    min-width: 90px; /* Минимальная ширина */
+}
+
+.close-btn {
+    background-color: #C0C0C0 !important;  /* Встановіть колір фону */
+    color: #FFFFFF;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.close-btn:hover {
+    color: #88c0d0 /* Колір для ефекту при наведенні */
+}
+
+/* Стили для .additional-info-item в темном режиме */
+body.dark-mode .additional-info-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background-color: #30314f; /* Темно-сірий фон */
+    color: #FFFFFF; /* Білий текст */
+    border-radius: 5px;
+    height: 30%;
+    margin-left: 10px;
+    min-width: 90px; /* Мінімальна ширина */
+}
+
+/* Стили для кнопки закриття в темному режимі */
+body.dark-mode .close-btn {
+    background-color: #30314f !important;  /* Встановіть колір фону */
+    border: none;
+    color: #FFFFFF; /* Білий текст */
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+/* Зміна кольору для кнопки закриття при ховері в темному режимі */
+body.dark-mode .close-btn:hover {
+    color: #88c0d0 /* Колір для ефекту при наведенні */
 }
 
 /* Додаємо стилі для canvas */
@@ -720,6 +818,9 @@ section {
     margin-left: 3%;
 }
 
+.open-modal-btn:hover {
+    background-color: #f1f1f1;
+}
 
 /* Стиль для модального окна */
 #modal-form {
@@ -855,6 +956,15 @@ section {
     text-decoration: underline;
 }
 
+.events-table tbody tr.selected {
+    background-color: #d3d3d3; /* Светло-серый цвет */
+}
+
+.dark-mode .events-table tbody tr.selected {
+    background-color: #3B4252; /* Темно-серый цвет для темной темы */
+    color: #fff; /* Белый текст */
+}
+
 /* Установка ширины колонок в процентах */
 .events-table th:nth-child(1), .events-table td:nth-child(1) {
     width: 5%;  /* Ширина для колонки с ID */
@@ -900,7 +1010,7 @@ section {
 }
 
 #load-more-button:hover {
-    background-color: #0056b3;   /* Цвет фона при наведении */
+    background-color: #0066FF;   /* Цвет фона при наведении */
 }
 
 #load-more-button:focus {
