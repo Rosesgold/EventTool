@@ -188,19 +188,25 @@ body.dark-mode #modal-overlay {
 
 body.dark-mode #calendar {
     background-color: #8b5cf6; /* Тёмный фон */
-    color: #FFFFFF; /* Светлый текст */
+    color: #1e1f35; /* Светлый текст */
     border: 1px solid #4C566A; /* Тёмная рамка */
     border-radius: 5px;
 }
 
 body.dark-mode #calendar::placeholder {
-    color: #FFFFFF; /* Светлый цвет для placeholder */
+    color: #1e1f35; /* Светлый цвет для placeholder */
 }
 
 body.dark-mode #calendar:focus {
     outline: none;
     border-color: #81A1C1; /* Цвет рамки при фокусе */
     box-shadow: 0 0 5px rgba(129, 161, 193, 0.5);
+}
+
+/* Стили для кнопки в темной теме */
+body.dark-mode #additional-info-button-apply {
+    color: #1e1f35; /* Светлый текст для кнопки */
+    border: 1px solid #444; /* Тонкая рамка для кнопки */
 }
 
 /* Индикатор загрузки */
@@ -884,7 +890,7 @@ section {
     padding: 10px;               /* Отступы для кнопки */
     margin: 0 0 20px 0;          /* Убираем лишние отступы сверху и слева/справа, добавляем отступ снизу */
     background-color: #007bff;   /* Цвет фона кнопки */
-    color: white;                /* Цвет текста на кнопке */
+    color: #FFFFFF;                /* Цвет текста на кнопке */
     font-size: 16px;             /* Размер шрифта */
     border: none;                /* Убираем рамку */
     cursor: pointer;            /* Курсор при наведении */
