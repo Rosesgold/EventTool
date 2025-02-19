@@ -814,6 +814,54 @@ body.dark-mode #clear-selection-panel:hover {
     background-color: #3B4252; /* Чуть светлее при наведении */
 }
 
+
+
+
+
+
+/* Стили для #download-selection-panel */
+#download-selection-panel {
+    margin-left: 5px; /* Отступ слева */
+}
+
+/* Стили для кнопки загрузки */
+.download-btn {
+    background-color: transparent; /* Прозрачный фон */
+    border: none; /* Без границ */
+    cursor: pointer; /* Курсор при наведении */
+    color: #FFFFFF; /* Цвет текста */
+}
+
+.download-btn img {
+    height: 20px; /* Высота иконки */
+    width: 20px; /* Ширина иконки */
+    filter: brightness(0) invert(1); /* Применяем фильтр, чтобы иконка стала белой */
+}
+
+/* Стили для #download-selection-panel в темном режиме */
+body.dark-mode #download-selection-panel {
+    color: #FFFFFF; /* Белый текст */
+}
+
+#download-selection-panel:hover {
+    background-color: #a0a0a0; /* Цвет фона при наведении */
+}
+
+/* Изменение цвета иконки для кнопки загрузки в темном режиме */
+body.dark-mode .download-btn img {
+    filter: brightness(0) invert(1); /* Применяем фильтр, чтобы иконка стала белой */
+}
+
+body.dark-mode #download-selection-panel:hover {
+    background-color: #3B4252; /* Чуть светлее при наведении */
+}
+
+
+
+
+
+
+
 /* Додаємо стилі для canvas */
 #chart {
     border: 1px solid #dcdcdc; /* Додаємо синій контур */

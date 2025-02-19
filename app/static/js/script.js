@@ -731,10 +731,100 @@ function updateEventCounter(count) {
     }
 }
 
-// Обработчик события для кнопки "Apply"
+
+
+function addDownloadButton() {
+    let downloadPanel = document.getElementById("download-selection-panel");
+
+    if (downloadPanel) return; // Если кнопка уже есть, выходим
+
+    let eventTablePanel = document.getElementById("event-table-panel");
+
+    if (eventTablePanel) {
+        insertDownloadButton(eventTablePanel);
+    } else {
+        let observer = new MutationObserver(function (mutations, obs) {
+            let eventTablePanel = document.getElementById("event-table-panel");
+            if (eventTablePanel) {
+                insertDownloadButton(eventTablePanel);
+                obs.disconnect(); // Останавливаем отслеживание
+            }
+        });
+
+        observer.observe(document.getElementById("additional-info-data-container"), {
+            childList: true,
+            subtree: false
+        });
+    }
+}
+
+function insertDownloadButton(eventTablePanel) {
+    let downloadPanel = document.createElement("div");
+    downloadPanel.className = "additional-info-item";
+    downloadPanel.id = "download-selection-panel";
+
+    let downloadButton = document.createElement("button");
+    downloadButton.className = "download-btn";
+
+    let downloadIcon = document.createElement("img");
+    downloadIcon.src = "/static/images/download-icon.svg"; // Проверь путь к иконке
+    downloadIcon.alt = "Завантажити";
+
+    downloadButton.appendChild(downloadIcon);
+    downloadPanel.appendChild(downloadButton);
+
+    // Добавляем кнопку после eventTablePanel
+    eventTablePanel.insertAdjacentElement("afterend", downloadPanel);
+
+    // Добавляем обработчик на клик
+    downloadButton.addEventListener("click", downloadTableAsJson);
+}
+
+// Функция для скачивания таблицы в JSON
+function downloadTableAsJson() {
+    if (eventsData.length === 0) {
+        alert("Таблиця порожня. Немає даних для завантаження.");
+        return;
+    }
+
+    const jsonData = JSON.stringify(eventsData, null, 2);
+    const blob = new Blob([jsonData], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "events_data.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    URL.revokeObjectURL(url);
+}
+
+// Удаление кнопки скачивания при закрытии таблицы
+function removeDownloadButton() {
+    let downloadPanel = document.getElementById("download-selection-panel");
+    if (downloadPanel) {
+        downloadPanel.remove();
+    }
+}
+
+// Вызываем при клике "Apply"
 document.getElementById("additional-info-button-apply").addEventListener("click", function () {
     checkAndToggleClearButton();
+    addDownloadButton();
 });
+
+// Добавляем удаление кнопки при закрытии таблицы
+document.addEventListener("click", function (event) {
+    if (event.target.classList.contains("close-btn")) {
+        removeDownloadButton();
+    }
+});
+
+
+
+
 
 
 
