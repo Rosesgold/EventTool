@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;added clear table button&quot;">
+    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;added download table button in json&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/css/styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/static/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/script.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -346,7 +345,21 @@
       <option name="project" value="LOCAL" />
       <updated>1739973402535</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="&quot;added download table button in json&quot;">
+      <created>1739979970499</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1739979970499</updated>
+    </task>
+    <task id="LOCAL-00026" summary="&quot;added download table button in json&quot;">
+      <created>1739979985535</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1739979985535</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -395,6 +408,7 @@
     <MESSAGE value="&quot;changed style of calendar and apply button&quot;" />
     <MESSAGE value="&quot;added table item on a panel, changed some button style, changed table style&quot;" />
     <MESSAGE value="&quot;added clear table button&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;added clear table button&quot;" />
+    <MESSAGE value="&quot;added download table button in json&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;added download table button in json&quot;" />
   </component>
 </project>

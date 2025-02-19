@@ -407,11 +407,24 @@ const limit = 10;  // Количество записей на страницу
 
 let isSortedAscending = true;  // Переменная для хранения направления сортировки
 
+// Функция для удаления панели "Event Table"
+function removeEventTable() {
+    let eventTablePanel = document.getElementById("event-table-panel");
+
+    // Если панель существует, удаляем ее
+    if (eventTablePanel) {
+        eventTablePanel.remove();
+    }
+}
+
 document.getElementById("additional-info-button-apply").addEventListener("click", async function() {
     const calendarInput = document.getElementById('calendar').value;
 
     if (!calendarInput) {
+        removeEventTable();
+        removeDownloadButton();
         alert("Please select a date.");
+
         return; // Важно завершить выполнение функции, чтобы не происходило дальнейших действий
     }
 
@@ -430,6 +443,8 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
 
         if (eventsData.length === 0) {
             // Здесь мы вызываем alert только один раз, если данных нет
+            removeEventTable();
+            removeDownloadButton();
             alert("No events found for the selected date.");
             return; // Прерываем выполнение функции, если нет данных
         }
@@ -501,6 +516,8 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
                 tableWrapper.style.display = "none";
             };
 
+            addDownloadButton();
+
             newPanel.appendChild(text);
             newPanel.appendChild(closeButton);
             document.getElementById("additional-info-data-container").appendChild(newPanel);
@@ -510,7 +527,7 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
         console.error("Error fetching events:", error);
         alert("Failed to fetch events.");
     }
-
+    currentOffset = 10;
     addRowSelectionHandlers(); // Добавляем обработчики выбора строк
 });
 
@@ -571,8 +588,6 @@ function sortByDate() {
     // Меняем направление сортировки
     isSortedAscending = !isSortedAscending;
 }
-
-
 
 document.addEventListener("DOMContentLoaded", function() {
     const svgObject = document.getElementById('loading-svg');
@@ -811,9 +826,22 @@ function removeDownloadButton() {
 
 // Вызываем при клике "Apply"
 document.getElementById("additional-info-button-apply").addEventListener("click", function () {
+    updateEventCounter(0);
+
+    // Проверяем и переключаем кнопку очистки
     checkAndToggleClearButton();
-    addDownloadButton();
+
+    const calendarInput = document.getElementById('calendar').value;
+    if (!calendarInput) {
+        return; // Выход из функции, если дата не выбрана
+    } else if (eventsData.length === 0) {
+        return; // Выход из функции, если нет событий
+    }
+
+    // Дополнительная логика для загрузки событий
+    addDownloadButton(); // Добавляем кнопку только после успешной загрузки
 });
+
 
 // Добавляем удаление кнопки при закрытии таблицы
 document.addEventListener("click", function (event) {
