@@ -422,6 +422,7 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
 
     if (!calendarInput) {
         removeEventTable();
+        removeClearSelectionButton();
         removeDownloadButton();
         alert("Please select a date.");
 
@@ -444,6 +445,7 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
         if (eventsData.length === 0) {
             // Здесь мы вызываем alert только один раз, если данных нет
             removeEventTable();
+            removeClearSelectionButton();
             removeDownloadButton();
             alert("No events found for the selected date.");
             return; // Прерываем выполнение функции, если нет данных
@@ -662,14 +664,6 @@ function addRowSelectionHandlers() {
     });
 }
 
-
-
-
-
-
-
-
-
 // Функция для проверки наличия таблицы и управления кнопкой очистки
 function checkAndToggleClearButton() {
     let eventTablePanel = document.getElementById("event-table-panel");
@@ -717,6 +711,14 @@ function addClearSelectionButton() {
     }
 }
 
+// Функция для удаления кнопки очистки
+function removeClearSelectionButton() {
+    let clearPanel = document.getElementById("clear-selection-panel");
+    if (clearPanel) {
+        clearPanel.remove(); // Удаляем элемент из DOM
+    }
+}
+
 // Функция для очистки выбранных строк
 function clearSelectedRows() {
     document.querySelectorAll(".selected").forEach(row => row.classList.remove("selected"));
@@ -745,8 +747,6 @@ function updateEventCounter(count) {
         textElement.innerText = `Event Table (${count})`;
     }
 }
-
-
 
 function addDownloadButton() {
     let downloadPanel = document.getElementById("download-selection-panel");
@@ -827,6 +827,7 @@ function removeDownloadButton() {
 // Вызываем при клике "Apply"
 document.getElementById("additional-info-button-apply").addEventListener("click", function () {
     updateEventCounter(0);
+    removeDownloadButton();
 
     // Проверяем и переключаем кнопку очистки
     checkAndToggleClearButton();
@@ -839,7 +840,7 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
     }
 
     // Дополнительная логика для загрузки событий
-    addDownloadButton(); // Добавляем кнопку только после успешной загрузки
+    // addDownloadButton(); // Добавляем кнопку только после успешной загрузки
 });
 
 

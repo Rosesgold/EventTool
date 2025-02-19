@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;added download table button in json&quot;">
+    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;updated logic of apply button and conditions of selected calendar data&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/static/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/script.js" afterDir="false" />
     </list>
@@ -359,7 +359,14 @@
       <option name="project" value="LOCAL" />
       <updated>1739979985535</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="&quot;updated logic of apply button and conditions of selected calendar data&quot;">
+      <created>1739995477635</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1739995477635</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -409,6 +416,7 @@
     <MESSAGE value="&quot;added table item on a panel, changed some button style, changed table style&quot;" />
     <MESSAGE value="&quot;added clear table button&quot;" />
     <MESSAGE value="&quot;added download table button in json&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;added download table button in json&quot;" />
+    <MESSAGE value="&quot;updated logic of apply button and conditions of selected calendar data&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;updated logic of apply button and conditions of selected calendar data&quot;" />
   </component>
 </project>
