@@ -485,7 +485,8 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
             newPanel.id = "event-table-panel";
 
             let containerWidth = document.getElementById("additional-info-data-container").clientWidth;
-            newPanel.style.width = `${containerWidth * 0.1}px`;
+            let minWidth = 130; // Минимальная ширина в пикселях
+            newPanel.style.width = `${Math.max(containerWidth * 0.1, minWidth)}px`;
 
             let text = document.createElement("span");
             text.innerText = "Event Table (0)";
@@ -495,6 +496,7 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
             closeButton.className = "close-btn";
             closeButton.innerText = "×";
             closeButton.onclick = function() {
+                clearSelectedRows();
                 newPanel.remove();
                 tableWrapper.style.display = "none";
             };
@@ -600,16 +602,37 @@ document.addEventListener("DOMContentLoaded", function() {
 function toggleRowSelection(row) {
     row.classList.toggle("selected");
     updateSelectionCounter();
+
+    checkAndToggleClearButton(); // Додаємо перевірку кнопки очищення
 }
 
 // Функция для обновления счетчика
+//function updateSelectionCounter() {
+//    let selectedRows = document.querySelectorAll(".events-table tbody tr.selected").length;
+//    let counterElement = document.getElementById("event-table-counter");
+//    if (counterElement) {
+//        counterElement.innerText = `Event Table (${selectedRows})`;
+//    }
+//}
+
 function updateSelectionCounter() {
     let selectedRows = document.querySelectorAll(".events-table tbody tr.selected").length;
     let counterElement = document.getElementById("event-table-counter");
     if (counterElement) {
         counterElement.innerText = `Event Table (${selectedRows})`;
     }
+
+    // Если нет выбранных строк, скрываем кнопку очистки
+    if (selectedRows === 0) {
+        let clearPanel = document.getElementById("clear-selection-panel");
+        if (clearPanel) {
+            clearPanel.style.display = "none"; // Скрываем кнопку
+        }
+    } else {
+        addClearSelectionButton(); // Добавляем кнопку, если есть выбранные строки
+    }
 }
+
 
 // Используем делегирование событий для выбора строк
 function addRowSelectionHandlers() {
@@ -624,6 +647,94 @@ function addRowSelectionHandlers() {
     });
 }
 
+
+
+
+
+
+
+
+
+// Функция для проверки наличия таблицы и управления кнопкой очистки
+function checkAndToggleClearButton() {
+    let eventTablePanel = document.getElementById("event-table-panel");
+    let clearPanel = document.getElementById("clear-selection-panel");
+
+    if (eventTablePanel) {
+        if (!clearPanel) {
+            addClearSelectionButton();
+        }
+    } else if (clearPanel) {
+        clearPanel.remove();
+    }
+}
+
+// Функция для добавления кнопки очистки
+function addClearSelectionButton() {
+    let clearPanel = document.getElementById("clear-selection-panel");
+
+    // Если кнопка очистки уже существует, просто возвращаемся
+    if (clearPanel) {
+        clearPanel.style.display = "flex"; // Показываем кнопку, если она скрыта
+        return;
+    }
+
+    // Если кнопки очистки нет, создаем новую
+    clearPanel = document.createElement("div");
+    clearPanel.className = "additional-info-item";
+    clearPanel.id = "clear-selection-panel";
+
+    let clearButton = document.createElement("button");
+    clearButton.className = "clear-btn"; // Измените класс для стилей
+    clearButton.onclick = clearSelectedRows;
+
+    // Создаем элемент изображения
+    let clearIcon = document.createElement("img");
+    clearIcon.src = "/static/images/clear-button-1.svg"; // Укажите путь к иконке
+    clearIcon.alt = "Очистити вибір"; // Альтернативный текст для изображения
+
+    clearButton.appendChild(clearIcon); // Добавляем иконку в кнопку
+    clearPanel.appendChild(clearButton);
+
+    let eventTablePanel = document.getElementById("event-table-panel");
+    if (eventTablePanel) {
+        eventTablePanel.parentNode.insertBefore(clearPanel, eventTablePanel.nextSibling);
+    }
+}
+
+// Функция для очистки выбранных строк
+function clearSelectedRows() {
+    document.querySelectorAll(".selected").forEach(row => row.classList.remove("selected"));
+    updateEventCounter(0); // Обновляем счетчик событий
+    checkAndToggleClearButton(); // Проверяем и скрываем кнопку очистки, если она пустая
+}
+
+// Функция для проверки наличия таблицы и управления кнопкой очистки
+function checkAndToggleClearButton() {
+    let clearPanel = document.getElementById("clear-selection-panel");
+
+    // Если нет выбранных строк, скрываем кнопку
+    if (document.querySelectorAll(".events-table tbody tr.selected").length === 0) {
+        if (clearPanel) {
+            clearPanel.remove(); // Удаляем кнопку очистки, если нет выбранных строк
+        }
+    } else if (!clearPanel) {
+        addClearSelectionButton(); // Добавляем кнопку, если есть выбранные строки
+    }
+}
+
+// Функция для обновления счетчика
+function updateEventCounter(count) {
+    const textElement = document.getElementById("event-table-counter");
+    if (textElement) {
+        textElement.innerText = `Event Table (${count})`;
+    }
+}
+
+// Обработчик события для кнопки "Apply"
+document.getElementById("additional-info-button-apply").addEventListener("click", function () {
+    checkAndToggleClearButton();
+});
 
 
 
