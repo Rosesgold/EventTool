@@ -827,7 +827,7 @@ function removeDownloadButton() {
 // Вызываем при клике "Apply"
 document.getElementById("additional-info-button-apply").addEventListener("click", function () {
     updateEventCounter(0);
-    removeDownloadButton();
+//    removeDownloadButton();
 
     // Проверяем и переключаем кнопку очистки
     checkAndToggleClearButton();
@@ -840,7 +840,7 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
     }
 
     // Дополнительная логика для загрузки событий
-    // addDownloadButton(); // Добавляем кнопку только после успешной загрузки
+    //addDownloadButton(); // Добавляем кнопку только после успешной загрузки
 });
 
 

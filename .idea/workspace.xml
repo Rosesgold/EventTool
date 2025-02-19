@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;updated logic of apply button and conditions of selected calendar data&quot;">
+    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;[2.0] updated logic of apply button and conditions of selected calendar data&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/script.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -366,7 +365,14 @@
       <option name="project" value="LOCAL" />
       <updated>1739995477635</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="&quot;[2.0] updated logic of apply button and conditions of selected calendar data&quot;">
+      <created>1739996646097</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1739996646097</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -417,6 +423,7 @@
     <MESSAGE value="&quot;added clear table button&quot;" />
     <MESSAGE value="&quot;added download table button in json&quot;" />
     <MESSAGE value="&quot;updated logic of apply button and conditions of selected calendar data&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;updated logic of apply button and conditions of selected calendar data&quot;" />
+    <MESSAGE value="&quot;[2.0] updated logic of apply button and conditions of selected calendar data&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;[2.0] updated logic of apply button and conditions of selected calendar data&quot;" />
   </component>
 </project>
