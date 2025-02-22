@@ -216,7 +216,6 @@ async function loadChartData() {
         }
 
         currentPrice = ohlcData.data[ohlcData.data.length - 1];
-//        scatterData.push({ x: ohlcData.labels[0], y: ohlcData.data[0] });
 
         chart = new Chart(ctx, {
             type: 'line',
@@ -230,39 +229,17 @@ async function loadChartData() {
                         borderWidth: 2,
                         fill: false,
                         pointRadius: 0,
-                        // Налаштування тултипів для цін
-                        tooltip: {
-                            callbacks: {
-                                label: function(tooltipItem) {
-                                    return `${selectedCurrency.toUpperCase()} Price: $${tooltipItem.raw.toFixed(2)}`;
-                                },
-                                title: function(tooltipItems) {
-                                    return `Date: ${tooltipItems[0].label}`;
-                                }
-                            }
-                        }
+                        order: 1
                     },
                     {
                         label: 'Marked Points',
                         data: scatterData,
-                        backgroundColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 1)',    // rgba(139, 92, 246, 1)
                         borderColor: 'rgba(255, 99, 132, 1)',
                         borderWidth: 1,
-                        pointRadius: 5,
+                        pointRadius: 4,
                         pointStyle: 'circle',
-                        type: 'scatter',
-                        // Налаштування тултипів для позначок
-                        tooltip: {
-                            callbacks: {
-                                label: function(tooltipItem) {
-                                    const eventIndex = tooltipItem.raw.event; // Отримуємо номер рядка
-                                    return `Event: ${eventIndex.title} (Row: ${eventIndex.row})`;
-                                },
-                                title: function(tooltipItems) {
-                                    return `Date: ${tooltipItems.label}`;
-                                }
-                            }
-                        }
+                        type: 'scatter'
                     }
                 ]
             },
@@ -283,7 +260,27 @@ async function loadChartData() {
                 responsive: true,
                 plugins: {
                     tooltip: {
-                        enabled: true // Загальне включення тултипів
+                        enabled: true,
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                if (tooltipItem.dataset.type === 'scatter') {
+                                    const eventIndex = tooltipItem.raw.event; // Получаем номер строки
+                                    return `Event: ${eventIndex.title}`;
+                                } else {
+                                    return `${selectedCurrency.toUpperCase()} Price: $${tooltipItem.raw.toFixed(2)}`;
+                                }
+                            },
+                            title: function(tooltipItems) {
+                                if (tooltipItems[0].dataset.type === 'scatter') {
+                                    const eventIndex = tooltipItems[0].raw.event; // Получаем информацию о событии
+                                    const dateText = new Date(tooltipItems[0].raw.x).toLocaleString(); // Получаем дату из x
+                                    return `${dateText}  |  Table row: ${eventIndex.row}`;
+                                } else {
+                                    return `${tooltipItems[0].label}`;
+                                }
+                            }
+
+                        }
                     },
                     zoom: {
                         pan: {
@@ -322,27 +319,18 @@ async function loadChartData() {
             }
         });
 
-
         document.getElementById('loading').style.display = 'none';
         document.getElementById('chart').style.display = 'block';
         document.getElementById('additional-info').style.display = 'block';
 
+        recalculateAndDisplayMarks();
         setupDragging();
+
     } catch (error) {
         console.error("Ошибка загрузки данных:", error);
         document.getElementById('loading').textContent = "Ошибка загрузки данных. Попробуйте еще раз.";
     }
 }
-
-
-
-
-
-
-
-
-
-
 
 function setupDragging() {
     const chartContainer = document.getElementById('chart');
@@ -384,7 +372,6 @@ function setupDragging() {
         }
     });
 }
-
 
 function selectCurrency(currency) {
     selectedCurrency = currency;
@@ -522,6 +509,11 @@ document.addEventListener("DOMContentLoaded", function() {
     openModalBtnSpan.textContent = 'Bitcoin (BTC)';
 });
 
+function recalculateAndDisplayMarks() {
+    clearMarkedPoints();
+    markSelectedRows();
+}
+
 
 
 //// без подгрузки
@@ -620,6 +612,7 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
         removeClearSelectionButton();
         removeDownloadButton();
         removeMarkButton();
+        clearMarkedPoints();
         alert("Please select a date.");
 
         return; // Важно завершить выполнение функции, чтобы не происходило дальнейших действий
@@ -644,6 +637,7 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
             removeClearSelectionButton();
             removeDownloadButton();
             removeMarkButton();
+            clearMarkedPoints();
             alert("No events found for the selected date.");
             return; // Прерываем выполнение функции, если нет данных
         }
@@ -819,7 +813,6 @@ function toggleRowSelection(row) {
 
     checkAndToggleClearButton(); // Додаємо перевірку кнопки очищення
     checkAndToggleMarkButton();  // Додаємо перевірку кнопки mark
-
 }
 
 // Функция для обновления счетчика
@@ -945,6 +938,7 @@ function removeClearSelectionButton() {
 // Функция для очистки выбранных строк
 function clearSelectedRows() {
     document.querySelectorAll(".selected").forEach(row => row.classList.remove("selected"));
+    clearMarkedPoints();
     updateEventCounter(0); // Обновляем счетчик событий
     checkAndToggleClearButton(); // Проверяем и скрываем кнопку очистки, если она пустая
 }
@@ -1164,7 +1158,8 @@ function markSelectedRows() {
             event: {
                 title: cells[1].textContent.trim(),
                 row: rowNumber // Використовуємо номер рядка з таблиці
-            }
+            },
+            order: 2
         });
     });
 
@@ -1175,8 +1170,14 @@ function markSelectedRows() {
     chart.update();
 }
 
-
-
+function clearMarkedPoints() {
+    // Очищаємо масив з мітками
+    scatterData = [];
+    // Оновлюємо дані на графіку
+    chart.data.datasets[1].data = scatterData;
+    // Оновлюємо графік, щоб відобразити зміни
+    chart.update();
+}
 
 // **Функция поиска цены по времени**
 function findPriceAtTime(timestamp) {
@@ -1216,7 +1217,7 @@ function addMarkButton() {
     markButton.className = "mark-btn";
 
     markButton.onclick = function() {
-        markSelectedRows(); // Добавить метки
+        recalculateAndDisplayMarks();
     };
 
     markButton.textContent = "Mark Graphic";
@@ -1230,17 +1231,6 @@ function addMarkButton() {
         eventTablePanel.parentNode.insertBefore(markPanel, eventTablePanel.nextSibling);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 function removeMarkButton() {
     let markPanel = document.getElementById("mark-selection-panel");

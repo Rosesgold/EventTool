@@ -914,8 +914,6 @@ body.dark-mode #mark-selection-panel:hover {
     stroke-width: 2; /* Ширина линии */
 }
 
-
-
 .open-modal-btn {
     display: flex;
     align-items: center;
