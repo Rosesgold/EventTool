@@ -1,3 +1,155 @@
+//const ctx = document.getElementById('chart').getContext('2d');
+//let chart;
+//let isDragging = false;
+//let startX, startY;
+//let minTime, maxTime;
+//let currentPrice = 0;
+//
+//const startDate = new Date("2010-01-01");
+//const endDate = new Date();
+//let selectedCurrency = 'BTC';
+//
+//async function loadChartData() {
+//    const ohlcData = { labels: [], data: [] };
+//
+//    try {
+//        document.getElementById('loading').style.display = 'block';
+//        document.getElementById('chart').style.display = 'none';
+//        document.getElementById('additional-info').style.display = 'none';
+//
+//        let currentStartDate = Math.floor(startDate.getTime() / 1000);
+//        let currentEndDate = Math.floor(endDate.getTime() / 1000);
+//        let allData = [];
+//        const fetchSize = 2000;
+//
+//        while (currentStartDate < currentEndDate) {
+//            const response = await fetch(`https://min-api.cryptocompare.com/data/v2/histoday?fsym=${selectedCurrency}&tsym=USD&limit=${fetchSize}&toTs=${currentEndDate}&api_key=YOUR_API_KEY`);
+//            const data = await response.json();
+//
+//            if (data.Response !== "Success") {
+//                throw new Error(data.Message);
+//            }
+//
+//            const fetchedData = data.Data.Data;
+//            if (fetchedData.length === 0) break;
+//
+//            fetchedData.forEach(price => {
+//                allData.push({ time: price.time * 1000, close: price.close });
+//            });
+//
+//            currentEndDate = fetchedData[0].time;
+//        }
+//
+//        allData.sort((a, b) => a.time - b.time);
+//
+//        // Фільтрація: знаходимо перший момент зміни ціни
+//        let firstChangeIndex = 0;
+//        for (let i = 1; i < allData.length; i++) {
+//            if (allData[i].close !== allData[i - 1].close) {
+//                firstChangeIndex = i;
+//                break;
+//            }
+//        }
+//
+//        // Обрізаємо дані до першої зміни ціни
+//        allData = allData.slice(firstChangeIndex);
+//
+//        allData.forEach(entry => {
+//            ohlcData.labels.push(new Date(entry.time));
+//            ohlcData.data.push(entry.close);
+//        });
+//
+//        minTime = ohlcData.labels[0].getTime();
+//        maxTime = ohlcData.labels[ohlcData.labels.length - 1].getTime();
+//
+//        if (chart) {
+//            chart.destroy();
+//        }
+//
+//        currentPrice = ohlcData.data[ohlcData.data.length - 1];
+//
+//        chart = new Chart(ctx, {
+//            type: 'line',
+//            data: {
+//                labels: ohlcData.labels,
+//                datasets: [{
+//                    label: selectedCurrency.toUpperCase() + ' Price',
+//                    data: ohlcData.data,
+//                    borderColor: 'rgba(75, 192, 192, 1)',
+//                    borderWidth: 2,
+//                    fill: false,
+//                    pointRadius: 0
+//                }]
+//            },
+//            options: {
+//                scales: {
+//                    x: {
+//                        type: 'time',
+//                        min: minTime,
+//                        max: maxTime,
+//                        time: { unit: 'day' },
+//                        ticks: { autoSkip: true, maxTicksLimit: 20 }
+//                    },
+//                    y: {
+//                        position: 'right',
+//                        ticks: { callback: value => value.toFixed(2) }
+//                    }
+//                },
+//                responsive: true,
+//                plugins: {
+//                    tooltip: {
+//                        callbacks: {
+//                            title: function(tooltipItems) {
+//                                return tooltipItems[0].label;
+//                            }
+//                        }
+//                    },
+//                    zoom: {
+//                        zoom: {
+//                            wheel: { enabled: true },
+//                            mode: 'x',
+//                            onZoomComplete: () => {
+//                                minTime = chart.options.scales.x.min;
+//                                maxTime = chart.options.scales.x.max;
+//                            }
+//                        }
+//                    },
+//                    annotation: {
+//                        annotations: {
+//                            currentPriceLine: {
+//                                type: 'line',
+//                                yMin: currentPrice,
+//                                yMax: currentPrice,
+//                                borderColor: 'green',
+//                                borderWidth: 0.5,
+//                                borderDash: [5, 5],
+//                                label: {
+//                                    content: `Current Price: $${currentPrice.toFixed(2)}`,
+//                                    enabled: true,
+//                                    position: 'end'
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        });
+//
+//        document.getElementById('loading').style.display = 'none';
+//        document.getElementById('chart').style.display = 'block';
+//        document.getElementById('additional-info').style.display = 'block';
+//
+//        setupDragging();
+//    } catch (error) {
+//        console.error("Ошибка загрузки данных:", error);
+//        document.getElementById('loading').textContent = "Ошибка загрузки данных. Попробуйте еще раз.";
+//    }
+//}
+
+
+
+
+
 const ctx = document.getElementById('chart').getContext('2d');
 let chart;
 let isDragging = false;
@@ -9,9 +161,10 @@ const startDate = new Date("2010-01-01");
 const endDate = new Date();
 let selectedCurrency = 'BTC';
 
-async function loadChartData() {
-    const ohlcData = { labels: [], data: [] };
+let scatterData = []; // Масив для даних Scatter
+const ohlcData = { labels: [], data: [] };
 
+async function loadChartData() {
     try {
         document.getElementById('loading').style.display = 'block';
         document.getElementById('chart').style.display = 'none';
@@ -42,7 +195,6 @@ async function loadChartData() {
 
         allData.sort((a, b) => a.time - b.time);
 
-        // Фільтрація: знаходимо перший момент зміни ціни
         let firstChangeIndex = 0;
         for (let i = 1; i < allData.length; i++) {
             if (allData[i].close !== allData[i - 1].close) {
@@ -51,13 +203,10 @@ async function loadChartData() {
             }
         }
 
-        // Обрізаємо дані до першої зміни ціни
         allData = allData.slice(firstChangeIndex);
 
-        allData.forEach(entry => {
-            ohlcData.labels.push(new Date(entry.time));
-            ohlcData.data.push(entry.close);
-        });
+        ohlcData.labels = allData.map(entry => new Date(entry.time));
+        ohlcData.data = allData.map(entry => entry.close);
 
         minTime = ohlcData.labels[0].getTime();
         maxTime = ohlcData.labels[ohlcData.labels.length - 1].getTime();
@@ -67,19 +216,55 @@ async function loadChartData() {
         }
 
         currentPrice = ohlcData.data[ohlcData.data.length - 1];
+//        scatterData.push({ x: ohlcData.labels[0], y: ohlcData.data[0] });
 
         chart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: ohlcData.labels,
-                datasets: [{
-                    label: selectedCurrency.toUpperCase() + ' Price',
-                    data: ohlcData.data,
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 2,
-                    fill: false,
-                    pointRadius: 0
-                }]
+                datasets: [
+                    {
+                        label: selectedCurrency.toUpperCase() + ' Price',
+                        data: ohlcData.data,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 2,
+                        fill: false,
+                        pointRadius: 0,
+                        // Налаштування тултипів для цін
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return `${selectedCurrency.toUpperCase()} Price: $${tooltipItem.raw.toFixed(2)}`;
+                                },
+                                title: function(tooltipItems) {
+                                    return `Date: ${tooltipItems[0].label}`;
+                                }
+                            }
+                        }
+                    },
+                    {
+                        label: 'Marked Points',
+                        data: scatterData,
+                        backgroundColor: 'rgba(255, 99, 132, 1)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1,
+                        pointRadius: 5,
+                        pointStyle: 'circle',
+                        type: 'scatter',
+                        // Налаштування тултипів для позначок
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    const eventIndex = tooltipItem.raw.event; // Отримуємо номер рядка
+                                    return `Event: ${eventIndex.title} (Row: ${eventIndex.row})`;
+                                },
+                                title: function(tooltipItems) {
+                                    return `Date: ${tooltipItems.label}`;
+                                }
+                            }
+                        }
+                    }
+                ]
             },
             options: {
                 scales: {
@@ -98,15 +283,17 @@ async function loadChartData() {
                 responsive: true,
                 plugins: {
                     tooltip: {
-                        callbacks: {
-                            title: function(tooltipItems) {
-                                return tooltipItems[0].label;
-                            }
-                        }
+                        enabled: true // Загальне включення тултипів
                     },
                     zoom: {
+                        pan: {
+                            enabled: true,
+                            mode: 'x'
+                        },
                         zoom: {
-                            wheel: { enabled: true },
+                            wheel: {
+                                enabled: true
+                            },
                             mode: 'x',
                             onZoomComplete: () => {
                                 minTime = chart.options.scales.x.min;
@@ -135,6 +322,7 @@ async function loadChartData() {
             }
         });
 
+
         document.getElementById('loading').style.display = 'none';
         document.getElementById('chart').style.display = 'block';
         document.getElementById('additional-info').style.display = 'block';
@@ -145,6 +333,15 @@ async function loadChartData() {
         document.getElementById('loading').textContent = "Ошибка загрузки данных. Попробуйте еще раз.";
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 function setupDragging() {
@@ -187,6 +384,7 @@ function setupDragging() {
         }
     });
 }
+
 
 function selectCurrency(currency) {
     selectedCurrency = currency;
@@ -285,8 +483,6 @@ modeToggle.addEventListener('change', function() {
     }
 });
 
-
-
 function selectCurrency(currency) {
     selectedCurrency = currency;
     loadChartData();
@@ -318,7 +514,6 @@ function selectCurrency(currency) {
     openModalBtn.querySelector('.currency-name').textContent = currencyName;
     openModalBtn.querySelector('img').src = iconSrc; // Обновляем источник изображения
 }
-
 
 document.addEventListener("DOMContentLoaded", function() {
     loadChartData();
@@ -424,6 +619,7 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
         removeEventTable();
         removeClearSelectionButton();
         removeDownloadButton();
+        removeMarkButton();
         alert("Please select a date.");
 
         return; // Важно завершить выполнение функции, чтобы не происходило дальнейших действий
@@ -447,6 +643,7 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
             removeEventTable();
             removeClearSelectionButton();
             removeDownloadButton();
+            removeMarkButton();
             alert("No events found for the selected date.");
             return; // Прерываем выполнение функции, если нет данных
         }
@@ -621,6 +818,8 @@ function toggleRowSelection(row) {
     updateSelectionCounter();
 
     checkAndToggleClearButton(); // Додаємо перевірку кнопки очищення
+    checkAndToggleMarkButton();  // Додаємо перевірку кнопки mark
+
 }
 
 // Функция для обновления счетчика
@@ -629,6 +828,16 @@ function toggleRowSelection(row) {
 //    let counterElement = document.getElementById("event-table-counter");
 //    if (counterElement) {
 //        counterElement.innerText = `Event Table (${selectedRows})`;
+//    }
+//
+//    // Если нет выбранных строк, скрываем кнопку очистки
+//    if (selectedRows === 0) {
+//        let clearPanel = document.getElementById("clear-selection-panel");
+//        if (clearPanel) {
+//            clearPanel.style.display = "none"; // Скрываем кнопку
+//        }
+//    } else {
+//        addClearSelectionButton(); // Добавляем кнопку, если есть выбранные строки
 //    }
 //}
 
@@ -639,14 +848,13 @@ function updateSelectionCounter() {
         counterElement.innerText = `Event Table (${selectedRows})`;
     }
 
-    // Если нет выбранных строк, скрываем кнопку очистки
+    // Если нет выбранных строк, скрываем кнопки
     if (selectedRows === 0) {
-        let clearPanel = document.getElementById("clear-selection-panel");
-        if (clearPanel) {
-            clearPanel.style.display = "none"; // Скрываем кнопку
-        }
+        removeClearSelectionButton(); // Удаляем кнопку очистки
+        removeMarkButton(); // Удаляем кнопку "Mark"
     } else {
-        addClearSelectionButton(); // Добавляем кнопку, если есть выбранные строки
+        addClearSelectionButton(); // Добавляем кнопку очистки, если есть выбранные строки
+        checkAndToggleMarkButton(); // Проверяем и добавляем кнопку "Mark"
     }
 }
 
@@ -664,17 +872,32 @@ function addRowSelectionHandlers() {
     });
 }
 
+//// Функция для проверки наличия таблицы и управления кнопкой очистки
+//function checkAndToggleClearButton() {
+//    let eventTablePanel = document.getElementById("event-table-panel");
+//    let clearPanel = document.getElementById("clear-selection-panel");
+//
+//    if (eventTablePanel) {
+//        if (!clearPanel) {
+//            addClearSelectionButton();
+//        }
+//    } else if (clearPanel) {
+//        clearPanel.remove();
+//    }
+//}
+
 // Функция для проверки наличия таблицы и управления кнопкой очистки
 function checkAndToggleClearButton() {
-    let eventTablePanel = document.getElementById("event-table-panel");
     let clearPanel = document.getElementById("clear-selection-panel");
 
-    if (eventTablePanel) {
-        if (!clearPanel) {
-            addClearSelectionButton();
+    // Если нет выбранных строк, скрываем кнопку
+    if (document.querySelectorAll(".events-table tbody tr.selected").length === 0) {
+        if (clearPanel) {
+            clearPanel.remove(); // Удаляем кнопку очистки, если нет выбранных строк
+            removeMarkButton();
         }
-    } else if (clearPanel) {
-        clearPanel.remove();
+    } else if (!clearPanel) {
+        addClearSelectionButton(); // Добавляем кнопку, если есть выбранные строки
     }
 }
 
@@ -724,20 +947,6 @@ function clearSelectedRows() {
     document.querySelectorAll(".selected").forEach(row => row.classList.remove("selected"));
     updateEventCounter(0); // Обновляем счетчик событий
     checkAndToggleClearButton(); // Проверяем и скрываем кнопку очистки, если она пустая
-}
-
-// Функция для проверки наличия таблицы и управления кнопкой очистки
-function checkAndToggleClearButton() {
-    let clearPanel = document.getElementById("clear-selection-panel");
-
-    // Если нет выбранных строк, скрываем кнопку
-    if (document.querySelectorAll(".events-table tbody tr.selected").length === 0) {
-        if (clearPanel) {
-            clearPanel.remove(); // Удаляем кнопку очистки, если нет выбранных строк
-        }
-    } else if (!clearPanel) {
-        addClearSelectionButton(); // Добавляем кнопку, если есть выбранные строки
-    }
 }
 
 // Функция для обновления счетчика
@@ -827,7 +1036,7 @@ function removeDownloadButton() {
 // Вызываем при клике "Apply"
 document.getElementById("additional-info-button-apply").addEventListener("click", function () {
     updateEventCounter(0);
-//    removeDownloadButton();
+    // removeDownloadButton();
 
     // Проверяем и переключаем кнопку очистки
     checkAndToggleClearButton();
@@ -843,7 +1052,6 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
     //addDownloadButton(); // Добавляем кнопку только после успешной загрузки
 });
 
-
 // Добавляем удаление кнопки при закрытии таблицы
 document.addEventListener("click", function (event) {
     if (event.target.classList.contains("close-btn")) {
@@ -851,6 +1059,210 @@ document.addEventListener("click", function (event) {
     }
 });
 
+//function addMarkButton() {
+//    let markPanel = document.getElementById("mark-selection-panel");
+//
+//    // Якщо кнопка "Mark" уже існує, просто повертаємося
+//    if (markPanel) {
+//        markPanel.style.display = "flex"; // Покажемо кнопку, якщо вона прихована
+//        return;
+//    }
+//
+//    // Якщо кнопки "Mark" немає, створюємо нову
+//    markPanel = document.createElement("div");
+//    markPanel.className = "additional-info-item";
+//    markPanel.id = "mark-selection-panel";
+//
+//    let markButton = document.createElement("button");
+//    markButton.className = "mark-btn"; // Змініть клас для стилів
+//
+//    // Прив'язуємо функцію для відмітки, яка викликає markSelectedRows та addAnnotationToChart
+//    markButton.onclick = function() {
+//        markSelectedRows(); // Ваше существующее действие
+//    };
+//
+//    markButton.textContent = "Mark Graphic"; // Додаємо текст на кнопку
+//
+//    markPanel.appendChild(markButton);
+//
+//    // Находим панель с кнопкой скачивания
+//    let downloadPanel = document.getElementById("download-selection-panel");
+//    if (downloadPanel) {
+//        downloadPanel.parentNode.insertBefore(markPanel, downloadPanel.nextSibling); // Додаємо кнопку "Mark" справа від кнопки скачування
+//    } else {
+//        // Якщо кнопки скачування немає, додаємо кнопку "Mark" після таблиці
+//        eventTablePanel.parentNode.insertBefore(markPanel, eventTablePanel.nextSibling);
+//    }
+//}
+//
+//function markSelectedRows() {
+//    // Отримуємо всі вибрані рядки
+//    let selectedRows = document.querySelectorAll(".events-table tbody tr.selected");
+//    selectedRows.forEach(row => {
+//        // Додаємо клас або інше позначення для відмітки
+//        row.classList.add("marked"); // Змініть на ваше бажане дію
+//    });
+//}
+
+
+
+
+
+
+
+
+
+function markSelectedRows() {
+    let selectedRows = document.querySelectorAll(".events-table tbody tr.selected");
+
+    if (selectedRows.length === 0) {
+        console.warn("Нет выделенных строк для отображения меток.");
+        return;
+    }
+
+    selectedRows.forEach((row) => {
+        let cells = row.getElementsByTagName("td");
+
+        if (cells.length < 4) {
+            console.error("Ошибка: Недостаточно данных в выбранной строке.");
+            return;
+        }
+
+        let dateText = cells[3].textContent.trim();
+        let dateParts = dateText.split(" | ");
+        let markX = dateParts.length > 1
+            ? new Date(dateParts[0] + " " + dateParts[1]).getTime()
+            : new Date(dateText).getTime();
+
+        if (isNaN(markX)) {
+            console.error("Ошибка: Неверные данные в строке.", { dateText, markX });
+            return;
+        }
+
+        // Находим соответствующее значение Y на графике
+        let markY = findPriceAtTime(markX);
+
+        if (markY === null) {
+            console.error("Ошибка: Не удалось определить цену для времени", markX);
+            return;
+        }
+
+        // Проверяем, существует ли уже точка с такими координатами
+        const exists = scatterData.some(point => point.x === markX && point.y === markY);
+        if (exists) {
+            console.warn("Точка с такими координатами уже существует на графике.");
+            return; // Если точка существует, не добавляем её
+        }
+
+        // Отримуємо номер рядка з першої комірки (index 0)
+        let rowNumber = cells[0].textContent.trim(); // Номер рядка з таблиці
+
+        // Додаємо метку з інформацією про подію
+        scatterData.push({
+            x: markX,
+            y: markY,
+            event: {
+                title: cells[1].textContent.trim(),
+                row: rowNumber // Використовуємо номер рядка з таблиці
+            }
+        });
+    });
+
+    // Обновляем график
+    chart.data.datasets[1].data = scatterData;
+
+    // Обновляем график, не меняя настройки тултипов
+    chart.update();
+}
+
+
+
+
+// **Функция поиска цены по времени**
+function findPriceAtTime(timestamp) {
+    for (let i = 0; i < ohlcData.labels.length; i++) {
+        let time = ohlcData.labels[i].getTime();
+        let price = ohlcData.data[i];
+
+        if (time === timestamp) {
+            return price; // Точное совпадение
+        } else if (time > timestamp && i > 0) {
+            // Линейная интерполяция между ближайшими значениями
+            let prevTime = ohlcData.labels[i - 1].getTime();
+            let prevPrice = ohlcData.data[i - 1];
+
+            let ratio = (timestamp - prevTime) / (time - prevTime);
+            return prevPrice + ratio * (price - prevPrice);
+        }
+    }
+
+    return null; // Если не нашли подходящее значение
+}
+
+// Обновленная функция addMarkButton
+function addMarkButton() {
+    let markPanel = document.getElementById("mark-selection-panel");
+
+    if (markPanel) {
+        markPanel.style.display = "flex";
+        return;
+    }
+
+    markPanel = document.createElement("div");
+    markPanel.className = "additional-info-item";
+    markPanel.id = "mark-selection-panel";
+
+    let markButton = document.createElement("button");
+    markButton.className = "mark-btn";
+
+    markButton.onclick = function() {
+        markSelectedRows(); // Добавить метки
+    };
+
+    markButton.textContent = "Mark Graphic";
+    markPanel.appendChild(markButton);
+
+    let downloadPanel = document.getElementById("download-selection-panel");
+    if (downloadPanel) {
+        downloadPanel.parentNode.insertBefore(markPanel, downloadPanel.nextSibling);
+    } else {
+        let eventTablePanel = document.getElementById("event-table-panel");
+        eventTablePanel.parentNode.insertBefore(markPanel, eventTablePanel.nextSibling);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+function removeMarkButton() {
+    let markPanel = document.getElementById("mark-selection-panel");
+    if (markPanel) {
+        markPanel.parentNode.removeChild(markPanel); // Видаляємо панель кнопки "Mark"
+    }
+}
+
+function checkAndToggleMarkButton() {
+    let markPanel = document.getElementById("mark-selection-panel");
+
+    // Перевіряємо, чи є вибрані рядки
+    let selectedRowsCount = document.querySelectorAll(".events-table tbody tr.selected").length;
+
+    if (selectedRowsCount > 0) {
+        if (!markPanel) {
+            addMarkButton(); // Додаємо кнопку "Mark", якщо вона відсутня
+        }
+    } else if (markPanel) {
+        markPanel.remove(); // Видаляємо кнопку "Mark", якщо немає вибраних рядків
+    }
+}
 
 
 

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;[2.0] updated logic of apply button and conditions of selected calendar data&quot;">
+    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;[3.0] updated logic of apply button and conditions of selected calendar data&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/css/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,6 +16,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -35,6 +39,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "last_opened_file_path": "C:/Users/1/PycharmProjects/EventTool/app/static/images",
@@ -372,7 +377,14 @@
       <option name="project" value="LOCAL" />
       <updated>1739996646097</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="&quot;[3.0] updated logic of apply button and conditions of selected calendar data&quot;">
+      <created>1739997337651</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1739997337651</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -399,7 +411,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="&quot;first commit&quot;" />
     <MESSAGE value="&quot;created a main structure of app&quot;" />
     <MESSAGE value="&quot;created class DBManager (with part of methods); created some objs in config.py; created models [Users, Events]; created class in userstatus&quot;" />
     <MESSAGE value="&quot;added new fields into base model; added usermanager (fastapi_users) to register-verify-login-logout a user; added a verification of identity by an email&quot;" />
@@ -424,6 +435,7 @@
     <MESSAGE value="&quot;added download table button in json&quot;" />
     <MESSAGE value="&quot;updated logic of apply button and conditions of selected calendar data&quot;" />
     <MESSAGE value="&quot;[2.0] updated logic of apply button and conditions of selected calendar data&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;[2.0] updated logic of apply button and conditions of selected calendar data&quot;" />
+    <MESSAGE value="&quot;[3.0] updated logic of apply button and conditions of selected calendar data&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;[3.0] updated logic of apply button and conditions of selected calendar data&quot;" />
   </component>
 </project>

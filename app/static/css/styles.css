@@ -814,11 +814,6 @@ body.dark-mode #clear-selection-panel:hover {
     background-color: #3B4252; /* Чуть светлее при наведении */
 }
 
-
-
-
-
-
 /* Стили для #download-selection-panel */
 #download-selection-panel {
     margin-left: 5px; /* Отступ слева */
@@ -856,11 +851,46 @@ body.dark-mode #download-selection-panel:hover {
     background-color: #3B4252; /* Чуть светлее при наведении */
 }
 
+#mark-selection-panel {
+    margin-left: 5px; /* Отступ слева */
+    background-color: #007BFF;
+}
 
+/* Стили для #mark-selection-panel в темном режиме */
+body.dark-mode #mark-selection-panel {
+    //background-color: #30314f; /* Темный фон в режиме темной темы */
+    background-color: #007BFF;
+    color: #FFFFFF; /* Белый текст */
+}
 
+/* Стили для кнопки "Mark" */
+.mark-btn {
+    background-color: transparent; /* Прозрачный фон */
+    border: none; /* Без границ */
+    cursor: pointer; /* Курсор при наведении */
+    color: #FFFFFF;
+}
 
+.mark-btn img {
+    height: 20px;
+    width: 20px;
+    filter: brightness(0) invert(1); /* Применяем фильтр, чтобы иконка стала белой */
+}
 
+#mark-selection-panel:hover {
+    //background-color: #a0a0a0;
+    background-color: #0066FF;
+}
 
+/* Изменение цвета иконки для кнопки "Mark" в темном режиме */
+body.dark-mode .mark-btn img {
+    filter: brightness(0) invert(1); /* Применяем фильтр, чтобы иконка стала белой */
+}
+
+body.dark-mode #mark-selection-panel:hover {
+    //background-color: #3B4252; /* Чуть светлее при наведении */
+    background-color: #0066FF;
+}
 
 /* Додаємо стилі для canvas */
 #chart {
@@ -883,6 +913,8 @@ body.dark-mode #download-selection-panel:hover {
     stroke: steelblue; /* Цвет линии */
     stroke-width: 2; /* Ширина линии */
 }
+
+
 
 .open-modal-btn {
     display: flex;
