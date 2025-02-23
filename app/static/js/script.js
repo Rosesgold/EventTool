@@ -461,11 +461,12 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
         });
 
         if (eventsData.length > limit) {
-            const loadMoreButton = document.createElement('button');
-            loadMoreButton.id = 'load-more-button';
-            loadMoreButton.textContent = '+ Показати більше';
-            loadMoreButton.addEventListener('click', loadMore);
-            tableContainer.appendChild(loadMoreButton);
+//            const loadMoreButton = document.createElement('button');
+//            loadMoreButton.id = 'load-more-button';
+//            loadMoreButton.textContent = '+ Показати більше';
+//            loadMoreButton.addEventListener('click', loadMore);
+//            tableContainer.appendChild(loadMoreButton);
+            addLoadButtons();
         }
 
         // Показуємо панель, якщо дані є
@@ -576,6 +577,88 @@ function loadMore() {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+// Функция для добавления кнопок в контейнер
+function addLoadButtons() {
+    let container = document.getElementById("load-buttons-container");
+
+    // Если контейнер уже есть, не создаем новый
+    if (container) return;
+
+    // Создаем контейнер
+    container = document.createElement("div");
+    container.id = "load-buttons-container";
+    container.style.display = "flex";
+    container.style.justifyContent = "space-between";
+
+    // Создаем кнопку Load More
+    const loadMoreButton = document.createElement("button");
+    loadMoreButton.id = "load-more-button";
+    loadMoreButton.textContent = "Load +10";
+
+    // Создаем кнопку Load All с динамическим значением
+    const loadAllButton = document.createElement("button");
+    loadAllButton.id = "load-all-button";
+    loadAllButton.textContent = `Load +${eventsData.length}`; // Подставляем общее количество строк
+
+    // Добавляем кнопки в контейнер
+    container.appendChild(loadMoreButton);
+    container.appendChild(loadAllButton);
+
+    // Вставляем контейнер кнопок после таблицы
+    const tableContainer = document.getElementById("table-container");
+    tableContainer.appendChild(container);
+
+    // Назначаем обработчики событий
+    loadMoreButton.addEventListener("click", loadMore);
+    loadAllButton.addEventListener("click", loadAll);
+}
+
+
+// Функция для загрузки всех строк сразу
+function loadAll() {
+    const tableBody = document.querySelector(".events-table tbody");
+    tableBody.innerHTML = ""; // Очищаем перед вставкой всех данных
+
+    eventsData.forEach((event, index) => {
+        const row = document.createElement("tr");
+        const date = new Date(event.date);
+        const formattedDate = date.toISOString().split("T")[0];
+        const formattedTime = date.toISOString().split("T")[1].slice(0, 8);
+        const formattedDateTime = `${formattedDate} | ${formattedTime}`;
+
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${event.title}</td>
+            <td>${event.category}</td>
+            <td>${formattedDateTime}</td>
+            <td><a href="${event.url}" target="_blank">Перейти</a></td>
+        `;
+        tableBody.appendChild(row);
+    });
+
+    // После полной загрузки скрываем обе кнопки
+    document.getElementById("load-more-button").style.display = "none";
+    document.getElementById("load-all-button").style.display = "none";
+}
+
+
+
+
+
+
+
+
+
+
 
 // Функция для сортировки по дате
 function sortByDate() {
@@ -975,14 +1058,6 @@ function checkAndToggleMarkButton() {
         markPanel.remove(); // Видаляємо кнопку "Mark", якщо немає вибраних рядків
     }
 }
-
-
-
-
-
-
-
-
 
 let observer; // Объявляем переменную для MutationObserver
 let selectingAll = false; // Флаг для отслеживания выделения всех строк

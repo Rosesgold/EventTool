@@ -16,7 +16,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="/static/js/script.js" defer></script>
 </head>
@@ -92,24 +91,20 @@
                 <canvas id="chart"></canvas>
                 <div id="additional-info">
                     <div id="additional-info-data-container">
-                        <i class="fas fa-calendar-alt"></i> <!-- Иконка календаря -->
+                        <i class="fas fa-calendar-alt"></i>
                         <input type="text" id="calendar" placeholder="select date">
                         <button id="additional-info-button-apply">apply</button>
                     </div>
-                </div> <!-- Новый div -->
+                </div>
             </section>
         </main>
-
-        <!-- Новый контейнер для таблицы -->
         <div id="table-wrapper">
             <div id="table-container"></div>
         </div>
-
         <footer>
             <p>Footer</p>
         </footer>
     </div>
-
     <div id="modal-overlay"></div>
     <div id="modal-form">
         <div class="h2-modal-form-block">
@@ -117,7 +112,6 @@
             <button type="button" class="close-btn-modal-form">x</button>
         </div>
         <div class="content-modal-form-block">
-            <!-- Список для выбора криптовалюты -->
             <ul class="crypto-list">
                 <li class="crypto-item" onclick="selectCurrency('BTC')">
                     <img src="/static/images/bitcoin-btc-logo.png" alt="Bitcoin" class="crypto-icon"> Bitcoin (BTC)
@@ -128,11 +122,8 @@
                 <li class="crypto-item" onclick="selectCurrency('USDT')">
                     <img src="/static/images/tether-usdt-logo.png" alt="Tether" class="crypto-icon"> Tether (USDT)
                 </li>
-                <!-- Добавьте больше пунктов по мере необходимости -->
             </ul>
         </div>
     </div>
-
-
 </body>
 </html>

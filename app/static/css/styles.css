@@ -232,7 +232,6 @@ body.dark-mode #additional-info-button-apply {
     height: 100px; /* Высота изображения */
 }
 
-
 /* Стили для светлой темы */
 body.light-mode #loading-svg {
     background: rgb(255, 255, 255); /* Белый фон */
@@ -334,30 +333,6 @@ body.dark-mode #loading-svg circle {
     .dark-mode .events-table td {
         padding: 8px;
     }
-}
-
-/* Стили для кнопки "Load More" в тёмном режиме */
-.dark-mode #load-more-button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin: 0 0 20px 0;
-    background-color: #0056b3;
-    color: white;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    text-align: center;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-
-.dark-mode #load-more-button:hover {
-    background-color: #004080;
-}
-
-.dark-mode #load-more-button:focus {
-    outline: none;
 }
 
 /* Настройка сетки для квадратов */
@@ -610,7 +585,6 @@ input:not(:checked) + .slider .icon.sun {
 input:not(:checked) + .slider .icon.moon {
     display: none; /* Скрыть луну при выключенном режиме */
 }
-
 
 /* Main динамически занимает оставшееся пространство */
 main {
@@ -1070,7 +1044,6 @@ body.dark-mode #mark-selection-panel:hover {
     vertical-align: middle; /* Центрирование по вертикали */
 }
 
-
 .crypto-item:hover {
     background-color: #f1f1f1;
     border-radius: 5px;
@@ -1178,36 +1151,39 @@ body.dark-mode #mark-selection-panel:hover {
     }
 }
 
-#load-more-button {
-    display: block;              /* Делаем кнопку блочным элементом, чтобы она занимала всю ширину */
-    width: 100%;                 /* Устанавливаем ширину на 100% от контейнера */
-    padding: 10px;               /* Отступы для кнопки */
-    margin: 0 0 20px 0;          /* Убираем лишние отступы сверху и слева/справа, добавляем отступ снизу */
-    background-color: #007BFF;   /* Цвет фона кнопки */
-    color: #FFFFFF;                /* Цвет текста на кнопке */
-    font-size: 16px;             /* Размер шрифта */
-    border: none;                /* Убираем рамку */
-    cursor: pointer;            /* Курсор при наведении */
-    text-align: center;          /* Текст по центру */
-    border-radius: 5px;          /* Закругленные углы */
-    box-sizing: border-box;      /* Учитывать padding в расчете ширины */
+#load-buttons-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
 }
 
-#load-more-button:hover {
-    background-color: #0066FF;   /* Цвет фона при наведении */
+#load-more-button, #load-all-button {
+    width: 50%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 5px;
+    box-sizing: border-box;
 }
 
-#load-more-button:focus {
-    outline: none;               /* Убираем обводку при фокусе */
+#load-more-button:hover, #load-all-button:hover {
+    background-color: #0066FF;
 }
 
+#load-more-button:focus, #load-all-button:focus {
+    outline: none;
+}
 
+.dark-mode #load-more-button, .dark-mode #load-all-button {
+    background-color: #0056b3;
+}
 
-
-
-
-
-
-
+.dark-mode #load-more-button:hover, .dark-mode #load-all-button:hover {
+    background-color: #004080;
+}
 
 
