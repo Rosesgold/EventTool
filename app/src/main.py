@@ -237,10 +237,6 @@ async def get_events_by_date(
             )
             events = result.scalars().all()
 
-    # setting cookies that will be restored for some different func like (sorting...)
-    events_for_response_cookie = json.dumps([EventSchema.from_orm(event).dict() for event in events])
-    response.set_cookie(key="events", value=events_for_response_cookie)
-
     return events
 
 

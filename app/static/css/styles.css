@@ -869,6 +869,8 @@ body.dark-mode #mark-selection-panel {
     border: none; /* Без границ */
     cursor: pointer; /* Курсор при наведении */
     color: #FFFFFF;
+    white-space: nowrap; /* Не переносить текст */
+    overflow: hidden; /* Скрыть переполнение */
 }
 
 .mark-btn img {

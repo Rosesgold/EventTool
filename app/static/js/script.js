@@ -1,155 +1,3 @@
-//const ctx = document.getElementById('chart').getContext('2d');
-//let chart;
-//let isDragging = false;
-//let startX, startY;
-//let minTime, maxTime;
-//let currentPrice = 0;
-//
-//const startDate = new Date("2010-01-01");
-//const endDate = new Date();
-//let selectedCurrency = 'BTC';
-//
-//async function loadChartData() {
-//    const ohlcData = { labels: [], data: [] };
-//
-//    try {
-//        document.getElementById('loading').style.display = 'block';
-//        document.getElementById('chart').style.display = 'none';
-//        document.getElementById('additional-info').style.display = 'none';
-//
-//        let currentStartDate = Math.floor(startDate.getTime() / 1000);
-//        let currentEndDate = Math.floor(endDate.getTime() / 1000);
-//        let allData = [];
-//        const fetchSize = 2000;
-//
-//        while (currentStartDate < currentEndDate) {
-//            const response = await fetch(`https://min-api.cryptocompare.com/data/v2/histoday?fsym=${selectedCurrency}&tsym=USD&limit=${fetchSize}&toTs=${currentEndDate}&api_key=YOUR_API_KEY`);
-//            const data = await response.json();
-//
-//            if (data.Response !== "Success") {
-//                throw new Error(data.Message);
-//            }
-//
-//            const fetchedData = data.Data.Data;
-//            if (fetchedData.length === 0) break;
-//
-//            fetchedData.forEach(price => {
-//                allData.push({ time: price.time * 1000, close: price.close });
-//            });
-//
-//            currentEndDate = fetchedData[0].time;
-//        }
-//
-//        allData.sort((a, b) => a.time - b.time);
-//
-//        // Фільтрація: знаходимо перший момент зміни ціни
-//        let firstChangeIndex = 0;
-//        for (let i = 1; i < allData.length; i++) {
-//            if (allData[i].close !== allData[i - 1].close) {
-//                firstChangeIndex = i;
-//                break;
-//            }
-//        }
-//
-//        // Обрізаємо дані до першої зміни ціни
-//        allData = allData.slice(firstChangeIndex);
-//
-//        allData.forEach(entry => {
-//            ohlcData.labels.push(new Date(entry.time));
-//            ohlcData.data.push(entry.close);
-//        });
-//
-//        minTime = ohlcData.labels[0].getTime();
-//        maxTime = ohlcData.labels[ohlcData.labels.length - 1].getTime();
-//
-//        if (chart) {
-//            chart.destroy();
-//        }
-//
-//        currentPrice = ohlcData.data[ohlcData.data.length - 1];
-//
-//        chart = new Chart(ctx, {
-//            type: 'line',
-//            data: {
-//                labels: ohlcData.labels,
-//                datasets: [{
-//                    label: selectedCurrency.toUpperCase() + ' Price',
-//                    data: ohlcData.data,
-//                    borderColor: 'rgba(75, 192, 192, 1)',
-//                    borderWidth: 2,
-//                    fill: false,
-//                    pointRadius: 0
-//                }]
-//            },
-//            options: {
-//                scales: {
-//                    x: {
-//                        type: 'time',
-//                        min: minTime,
-//                        max: maxTime,
-//                        time: { unit: 'day' },
-//                        ticks: { autoSkip: true, maxTicksLimit: 20 }
-//                    },
-//                    y: {
-//                        position: 'right',
-//                        ticks: { callback: value => value.toFixed(2) }
-//                    }
-//                },
-//                responsive: true,
-//                plugins: {
-//                    tooltip: {
-//                        callbacks: {
-//                            title: function(tooltipItems) {
-//                                return tooltipItems[0].label;
-//                            }
-//                        }
-//                    },
-//                    zoom: {
-//                        zoom: {
-//                            wheel: { enabled: true },
-//                            mode: 'x',
-//                            onZoomComplete: () => {
-//                                minTime = chart.options.scales.x.min;
-//                                maxTime = chart.options.scales.x.max;
-//                            }
-//                        }
-//                    },
-//                    annotation: {
-//                        annotations: {
-//                            currentPriceLine: {
-//                                type: 'line',
-//                                yMin: currentPrice,
-//                                yMax: currentPrice,
-//                                borderColor: 'green',
-//                                borderWidth: 0.5,
-//                                borderDash: [5, 5],
-//                                label: {
-//                                    content: `Current Price: $${currentPrice.toFixed(2)}`,
-//                                    enabled: true,
-//                                    position: 'end'
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        });
-//
-//        document.getElementById('loading').style.display = 'none';
-//        document.getElementById('chart').style.display = 'block';
-//        document.getElementById('additional-info').style.display = 'block';
-//
-//        setupDragging();
-//    } catch (error) {
-//        console.error("Ошибка загрузки данных:", error);
-//        document.getElementById('loading').textContent = "Ошибка загрузки данных. Попробуйте еще раз.";
-//    }
-//}
-
-
-
-
-
 const ctx = document.getElementById('chart').getContext('2d');
 let chart;
 let isDragging = false;
@@ -237,7 +85,7 @@ async function loadChartData() {
                         backgroundColor: 'rgba(255, 99, 132, 1)',    // rgba(139, 92, 246, 1)
                         borderColor: 'rgba(255, 99, 132, 1)',
                         borderWidth: 1,
-                        pointRadius: 4,
+                        pointRadius: 4.3,
                         pointStyle: 'circle',
                         type: 'scatter'
                     }
@@ -415,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 instance.clear();
                 alert("Вы можете выбрать не более двух дат.");
             } else {
-                console.log("Выбранные даты:", selectedDates);
+//                console.log("Выбранные даты:", selectedDates);
             }
         }
     });
@@ -514,80 +362,6 @@ function recalculateAndDisplayMarks() {
     markSelectedRows();
 }
 
-
-
-//// без подгрузки
-//document.getElementById('additional-info-button-apply').addEventListener('click', async function() {
-//    const calendarInput = document.getElementById('calendar').value;
-//
-//    if (!calendarInput) {
-//        alert("Please select a date.");
-//        return;
-//    }
-//
-//    // Разбиваем значение ввода на два диапазона: from_date и to_date
-//    const dates = calendarInput.split(' to ');
-//    const fromDate = dates[0];
-//    const toDate = dates[1];
-//
-//    try {
-//        // Отправляем запрос на сервер с правильным диапазоном дат
-//        const response = await fetch(`/tools?from_date=${fromDate}&to_date=${toDate}`);
-//        const events = await response.json();
-//
-//        console.log("Server response:", events);  // Логируем данные ответа для проверки
-//
-//        // Создаем таблицу с данными
-//        const tableContainer = document.getElementById('table-container');
-//        tableContainer.innerHTML = ''; // Очищаем предыдущую таблицу
-//
-//        if (events.length === 0) {
-//            tableContainer.innerHTML = '<p>No events found for the selected date.</p>';
-//            return;
-//        }
-//
-//        // Создаем таблицу
-//        const table = document.createElement('table');
-//        table.classList.add('events-table');
-//
-//        // Заголовок таблицы
-//        const tableHeader = document.createElement('thead');
-//        tableHeader.innerHTML = '<tr><th>#</th><th>Назва події</th><th>Категорія</th><th>Дата</th><th>Посилання</th></tr>';
-//        table.appendChild(tableHeader);
-//
-//        // Тело таблицы с данными из ответа
-//        const tableBody = document.createElement('tbody');
-//        events.forEach((event, index) => {
-//            const row = document.createElement('tr');
-//
-//            // Преобразуем дату из формата ISO в нужный формат (YYYY-MM-DD | HH:mm:ss)
-//            const date = new Date(event.date);
-//            const formattedDate = date.toISOString().split('T')[0];  // Получаем только дату (YYYY-MM-DD)
-//            const formattedTime = date.toISOString().split('T')[1].slice(0, 8);  // Получаем время (HH:mm:ss)
-//            const formattedDateTime = `${formattedDate} | ${formattedTime}`;
-//
-//            row.innerHTML = `
-//                <td>${index + 1}</td> <!-- Нумерация начинается с 1 -->
-//                <td>${event.title}</td>
-//                <td>${event.category}</td>
-//                <td>${formattedDateTime}</td> <!-- Отображаем отформатированную дату и время -->
-//                <td><a href="${event.url}" target="_blank">Перейти</a></td>
-//            `;
-//            tableBody.appendChild(row);
-//        });
-//
-//        table.appendChild(tableBody);
-//        tableContainer.appendChild(table);
-//
-//    } catch (error) {
-//        console.error("Error fetching events:", error);
-//        alert("Failed to fetch events.");
-//    }
-//});
-
-
-
-
 let eventsData = [];  // Массив для хранения всех данных
 let currentOffset = 10;  // Индекс для пагинации
 const limit = 10;  // Количество записей на страницу
@@ -623,7 +397,10 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
     const toDate = dates[1];
 
     try {
-        const response = await fetch(`/tools?from_date=${fromDate}&to_date=${toDate}`);
+        const response = await fetch(`/tools?from_date=${fromDate}&to_date=${toDate}`, {
+            credentials: "include"
+        });
+
         eventsData = await response.json();
 
         console.log("Server response:", eventsData);
@@ -783,28 +560,26 @@ function sortByDate() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    const svgObject = document.getElementById('loading-svg');
+    const svgElement = document.getElementById('loading-svg');
 
-    svgObject.addEventListener('load', function() {
-        const svgDoc = svgObject.contentDocument; // Получаем доступ к содержимому SVG
+    if (!svgElement) {
+        console.error("SVG элемент не найден!");
+        return;
+    }
 
-        const text = svgDoc.querySelector('text');
-        const rect = svgDoc.querySelector('rect'); // Если у вас есть элемент <rect> для фона, например
+    const circle = svgElement.querySelector('circle');
 
-        // Получаем текущую тему
-        const isDarkMode = document.body.classList.contains('dark-mode');
+    // Получаем текущую тему
+    const isDarkMode = document.body.classList.contains('dark-mode');
 
-        // Если есть элемент <rect> для фона, меняем его цвет
-        if (rect) {
-            rect.setAttribute('fill', isDarkMode ? '#0f1021' : '#ffffff'); // Темный фон для темной темы, белый для светлой
-        }
-
-        // Меняем цвет текста в SVG в зависимости от темы
-        if (text) {
-            text.setAttribute('fill', isDarkMode ? '#ECEFF4' : '#000000'); // Светлый текст для темной темы, черный для светлой
-        }
-    });
+    // Меняем цвет обводки круга в зависимости от темы
+    if (circle) {
+        circle.setAttribute('stroke', isDarkMode ? '#ECEFF4' : '#000000'); // Светлая обводка для темной темы, черная для светлой
+    } else {
+        console.warn("Элемент <circle> не найден в SVG.");
+    }
 });
+
 
 // Функция для выбора строк
 function toggleRowSelection(row) {
@@ -814,25 +589,6 @@ function toggleRowSelection(row) {
     checkAndToggleClearButton(); // Додаємо перевірку кнопки очищення
     checkAndToggleMarkButton();  // Додаємо перевірку кнопки mark
 }
-
-// Функция для обновления счетчика
-//function updateSelectionCounter() {
-//    let selectedRows = document.querySelectorAll(".events-table tbody tr.selected").length;
-//    let counterElement = document.getElementById("event-table-counter");
-//    if (counterElement) {
-//        counterElement.innerText = `Event Table (${selectedRows})`;
-//    }
-//
-//    // Если нет выбранных строк, скрываем кнопку очистки
-//    if (selectedRows === 0) {
-//        let clearPanel = document.getElementById("clear-selection-panel");
-//        if (clearPanel) {
-//            clearPanel.style.display = "none"; // Скрываем кнопку
-//        }
-//    } else {
-//        addClearSelectionButton(); // Добавляем кнопку, если есть выбранные строки
-//    }
-//}
 
 function updateSelectionCounter() {
     let selectedRows = document.querySelectorAll(".events-table tbody tr.selected").length;
@@ -864,20 +620,6 @@ function addRowSelectionHandlers() {
         }
     });
 }
-
-//// Функция для проверки наличия таблицы и управления кнопкой очистки
-//function checkAndToggleClearButton() {
-//    let eventTablePanel = document.getElementById("event-table-panel");
-//    let clearPanel = document.getElementById("clear-selection-panel");
-//
-//    if (eventTablePanel) {
-//        if (!clearPanel) {
-//            addClearSelectionButton();
-//        }
-//    } else if (clearPanel) {
-//        clearPanel.remove();
-//    }
-//}
 
 // Функция для проверки наличия таблицы и управления кнопкой очистки
 function checkAndToggleClearButton() {
@@ -1053,64 +795,10 @@ document.addEventListener("click", function (event) {
     }
 });
 
-//function addMarkButton() {
-//    let markPanel = document.getElementById("mark-selection-panel");
-//
-//    // Якщо кнопка "Mark" уже існує, просто повертаємося
-//    if (markPanel) {
-//        markPanel.style.display = "flex"; // Покажемо кнопку, якщо вона прихована
-//        return;
-//    }
-//
-//    // Якщо кнопки "Mark" немає, створюємо нову
-//    markPanel = document.createElement("div");
-//    markPanel.className = "additional-info-item";
-//    markPanel.id = "mark-selection-panel";
-//
-//    let markButton = document.createElement("button");
-//    markButton.className = "mark-btn"; // Змініть клас для стилів
-//
-//    // Прив'язуємо функцію для відмітки, яка викликає markSelectedRows та addAnnotationToChart
-//    markButton.onclick = function() {
-//        markSelectedRows(); // Ваше существующее действие
-//    };
-//
-//    markButton.textContent = "Mark Graphic"; // Додаємо текст на кнопку
-//
-//    markPanel.appendChild(markButton);
-//
-//    // Находим панель с кнопкой скачивания
-//    let downloadPanel = document.getElementById("download-selection-panel");
-//    if (downloadPanel) {
-//        downloadPanel.parentNode.insertBefore(markPanel, downloadPanel.nextSibling); // Додаємо кнопку "Mark" справа від кнопки скачування
-//    } else {
-//        // Якщо кнопки скачування немає, додаємо кнопку "Mark" після таблиці
-//        eventTablePanel.parentNode.insertBefore(markPanel, eventTablePanel.nextSibling);
-//    }
-//}
-//
-//function markSelectedRows() {
-//    // Отримуємо всі вибрані рядки
-//    let selectedRows = document.querySelectorAll(".events-table tbody tr.selected");
-//    selectedRows.forEach(row => {
-//        // Додаємо клас або інше позначення для відмітки
-//        row.classList.add("marked"); // Змініть на ваше бажане дію
-//    });
-//}
-
-
-
-
-
-
-
-
-
 function markSelectedRows() {
     let selectedRows = document.querySelectorAll(".events-table tbody tr.selected");
 
     if (selectedRows.length === 0) {
-        console.warn("Нет выделенных строк для отображения меток.");
         return;
     }
 
@@ -1118,7 +806,6 @@ function markSelectedRows() {
         let cells = row.getElementsByTagName("td");
 
         if (cells.length < 4) {
-            console.error("Ошибка: Недостаточно данных в выбранной строке.");
             return;
         }
 
@@ -1144,7 +831,6 @@ function markSelectedRows() {
         // Проверяем, существует ли уже точка с такими координатами
         const exists = scatterData.some(point => point.x === markX && point.y === markY);
         if (exists) {
-            console.warn("Точка с такими координатами уже существует на графике.");
             return; // Если точка существует, не добавляем её
         }
 
