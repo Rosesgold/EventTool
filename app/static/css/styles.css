@@ -1157,7 +1157,7 @@ body.dark-mode #mark-selection-panel:hover {
     gap: 5px;
 }
 
-#load-more-button, #load-all-button {
+#load-more-button, #load-all-button, #scroll-to-top-button {
     width: 50%;
     padding: 10px;
     background-color: #007BFF;
@@ -1170,20 +1170,21 @@ body.dark-mode #mark-selection-panel:hover {
     box-sizing: border-box;
 }
 
-#load-more-button:hover, #load-all-button:hover {
+#load-more-button:hover, #load-all-button:hover, #scroll-to-top-button:hover {
     background-color: #0066FF;
 }
 
-#load-more-button:focus, #load-all-button:focus {
+#load-more-button:focus, #load-all-button:focus, #scroll-to-top-button:focus {
     outline: none;
 }
 
-.dark-mode #load-more-button, .dark-mode #load-all-button {
+.dark-mode #load-more-button, .dark-mode #load-all-button, .dark-mode #scroll-to-top-button {
     background-color: #0056b3;
 }
 
-.dark-mode #load-more-button:hover, .dark-mode #load-all-button:hover {
+.dark-mode #load-more-button:hover, .dark-mode #load-all-button:hover, .dark-mode #scroll-to-top-button:hover {
     background-color: #004080;
 }
+
 
 

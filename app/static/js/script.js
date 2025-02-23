@@ -586,6 +586,42 @@ function loadMore() {
 
 
 
+// Функция для подгрузки следующей порции данных
+function loadMore() {
+    const table = document.querySelector('.events-table');
+    const tableBody = table.querySelector('tbody');
+
+    // Показываем следующие 10 записей
+    const startIndex = currentOffset;
+    const endIndex = currentOffset + limit;
+
+    eventsData.slice(startIndex, endIndex).forEach((event, index) => {
+        const row = document.createElement('tr');
+        const date = new Date(event.date);
+        const formattedDate = date.toISOString().split('T')[0];
+        const formattedTime = date.toISOString().split('T')[1].slice(0, 8);
+        const formattedDateTime = `${formattedDate} | ${formattedTime}`;
+
+        row.innerHTML = `
+            <td>${startIndex + index + 1}</td>
+            <td>${event.title}</td>
+            <td>${event.category}</td>
+            <td>${formattedDateTime}</td>
+            <td><a href="${event.url}" target="_blank">Перейти</a></td>
+        `;
+        tableBody.appendChild(row);
+    });
+
+    currentOffset += limit; // Увеличиваем offset
+
+    // Если больше нет записей, скрываем кнопки и показываем "Наверх"
+    if (currentOffset >= eventsData.length) {
+        document.getElementById('load-more-button').style.display = 'none';
+        document.getElementById('load-all-button').style.display = 'none';
+        showScrollToTopButton(); // Показываем кнопку "Наверх"
+    }
+}
+
 // Функция для добавления кнопок в контейнер
 function addLoadButtons() {
     let container = document.getElementById("load-buttons-container");
@@ -597,7 +633,9 @@ function addLoadButtons() {
     container = document.createElement("div");
     container.id = "load-buttons-container";
     container.style.display = "flex";
-    container.style.justifyContent = "space-between";
+    container.style.flexDirection = "space-between"; // Выстраиваем кнопки в колонку
+    container.style.alignItems = "center";
+    container.style.gap = "10px";
 
     // Создаем кнопку Load More
     const loadMoreButton = document.createElement("button");
@@ -607,21 +645,28 @@ function addLoadButtons() {
     // Создаем кнопку Load All с динамическим значением
     const loadAllButton = document.createElement("button");
     loadAllButton.id = "load-all-button";
-    loadAllButton.textContent = `Load +${eventsData.length}`; // Подставляем общее количество строк
+    loadAllButton.textContent = `Load +${eventsData.length}`;
+
+    // Создаем кнопку "Наверх"
+    const scrollToTopButton = document.createElement("button");
+    scrollToTopButton.id = "scroll-to-top-button";
+    scrollToTopButton.textContent = "Up";
+    scrollToTopButton.style.display = "none"; // Скрыта по умолчанию
+    scrollToTopButton.style.width = "100%"; // Растягиваем на всю ширину
+    scrollToTopButton.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
     // Добавляем кнопки в контейнер
     container.appendChild(loadMoreButton);
     container.appendChild(loadAllButton);
+    container.appendChild(scrollToTopButton);
 
     // Вставляем контейнер кнопок после таблицы
-    const tableContainer = document.getElementById("table-container");
-    tableContainer.appendChild(container);
+    document.getElementById("table-container").appendChild(container);
 
     // Назначаем обработчики событий
     loadMoreButton.addEventListener("click", loadMore);
     loadAllButton.addEventListener("click", loadAll);
 }
-
 
 // Функция для загрузки всех строк сразу
 function loadAll() {
@@ -645,10 +690,17 @@ function loadAll() {
         tableBody.appendChild(row);
     });
 
-    // После полной загрузки скрываем обе кнопки
+    // Скрываем кнопки Load More и Load All, показываем "Наверх"
     document.getElementById("load-more-button").style.display = "none";
     document.getElementById("load-all-button").style.display = "none";
+    showScrollToTopButton();
 }
+
+// Функция для показа кнопки "Наверх"
+function showScrollToTopButton() {
+    document.getElementById("scroll-to-top-button").style.display = "block";
+}
+
 
 
 
