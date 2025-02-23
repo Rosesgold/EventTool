@@ -663,13 +663,13 @@ section {
     flex-direction: column; /* Вертикальное расположение */
 }
 
-
 #additional-info {
     display: flex; /* Используем flexbox для выравнивания */
     justify-content: space-between; /* Распределение пространства между элементами */
     align-items: center; /* Вертикальное выравнивание */
     margin-top: 10px; /* Отступ сверху для визуального разделения */
     border: 1px solid #dcdcdc; /* Граница */
+    font-size: 16px;
     height: 40px;
     border-radius: 10px;
 }
@@ -688,12 +688,12 @@ section {
 #additional-info-data-container input {
     border: 1px solid #444;
     border-radius: 5px; /* Скругленные углы */
-    font-size: 15px;
     text-align: center; /* Центрирование текста */
     height: 70%; /* Высота на 100% */
     min-width: 150px; /* Минимальная ширина для поля ввода */
     background-color: #8b5cf6;
     color: #FFFFFF;
+    font-size: 16px;
 }
 
 #additional-info-data-container input:hover {
@@ -709,13 +709,13 @@ section {
     margin-left: 10px; /* Отступ слева от кнопки */
     background-color: #007BFF; /* Цвет фона кнопки */
     color: white; /* Цвет текста */
-    font-size: 15px;
     border: none; /* Убираем рамку */
     border-radius: 5px; /* Скругляем углы кнопки */
     cursor: pointer; /* Указатель курсора при наведении */
     height: 85%;
     width: 7%;
     min-width: 90px; /* Минимальная ширина кнопки */
+    font-size: 16px;
 }
 
 #additional-info-button-apply:hover {
@@ -734,7 +734,33 @@ section {
     max-width: 100%; /* Запрещаем выход за границы родителя */
     white-space: nowrap; /* Предотвращает перенос текста */
     overflow: hidden; /* Обрезает лишний текст */
+    margin-left: 5px;
+}
+
+#event-search {
+    width: 10%; /* Занимает всю ширину контейнера */
     margin-left: 20px;
+    border: 1px solid #C0C0C0 !important; /* Закругленные углы */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень для эффекта глубины */
+    background-color: #C0C0C0 !important; /* Уникальный цвет фона для event-search */
+    font-size: 16px;
+}
+
+#event-search:focus {
+    outline: none; /* Убираем стандартное обрамление браузера */
+}
+
+#event-search::placeholder {
+    color: #aaa; /* Цвет текста плейсхолдера */
+}
+
+#event-search:focus::placeholder {
+    color: transparent;
+}
+
+body.dark-mode #event-search{
+    background-color: #30314f !important; /* Темно-сірий фон */
+    border: 1px solid #30314f !important; /* Закругленные углы */
 }
 
 .close-btn {
@@ -759,7 +785,7 @@ body.dark-mode .additional-info-item {
     color: #FFFFFF; /* Білий текст */
     border-radius: 5px;
     height: 30%;
-    margin-left: 20px;
+    margin-left: 5px;
 }
 
 /* Стили для кнопки закриття в темному режимі */
@@ -871,6 +897,7 @@ body.dark-mode #mark-selection-panel {
     color: #FFFFFF;
     white-space: nowrap; /* Не переносить текст */
     overflow: hidden; /* Скрыть переполнение */
+    font-size: 16px;
 }
 
 .mark-btn img {

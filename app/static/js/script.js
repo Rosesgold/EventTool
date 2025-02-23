@@ -378,6 +378,13 @@ function removeEventTable() {
     }
 }
 
+function removeSearchField() {
+    const searchInput = document.getElementById("event-search");
+    if (searchInput) {
+        searchInput.remove();
+    }
+}
+
 document.getElementById("additional-info-button-apply").addEventListener("click", async function() {
     const calendarInput = document.getElementById('calendar').value;
 
@@ -387,9 +394,9 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
         removeDownloadButton();
         removeMarkButton();
         clearMarkedPoints();
+        removeSearchField();
         alert("Please select a date.");
-
-        return; // Важно завершить выполнение функции, чтобы не происходило дальнейших действий
+        return;
     }
 
     const dates = calendarInput.split(' to ');
@@ -402,21 +409,20 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
         });
 
         eventsData = await response.json();
-
         console.log("Server response:", eventsData);
 
         const tableContainer = document.getElementById('table-container');
         tableContainer.innerHTML = '';
 
         if (eventsData.length === 0) {
-            // Здесь мы вызываем alert только один раз, если данных нет
             removeEventTable();
             removeClearSelectionButton();
             removeDownloadButton();
             removeMarkButton();
             clearMarkedPoints();
+            removeSearchField()
             alert("No events found for the selected date.");
-            return; // Прерываем выполнение функции, если нет данных
+            return;
         }
 
         const table = document.createElement('table');
@@ -460,17 +466,30 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
             tableContainer.appendChild(loadMoreButton);
         }
 
-        // Если данные есть, показываем панель
+        // Показуємо панель, якщо дані є
         const tableWrapper = document.getElementById("table-wrapper");
         if (!document.getElementById("event-table-panel")) {
             tableWrapper.style.display = "block";
+
+            // Додавання поля для пошуку
+            if (!document.getElementById("event-search")) {
+                const searchInput = document.createElement("input");
+                searchInput.type = "text";
+                searchInput.id = "event-search";
+                searchInput.placeholder = "search event";
+                searchInput.oninput = function() {
+                    filterEvents(searchInput.value);
+                };
+
+                document.getElementById("additional-info-data-container").appendChild(searchInput);
+            }
 
             let newPanel = document.createElement("div");
             newPanel.className = "additional-info-item";
             newPanel.id = "event-table-panel";
 
             let containerWidth = document.getElementById("additional-info-data-container").clientWidth;
-            let minWidth = 130; // Минимальная ширина в пикселях
+            let minWidth = 130; // Мінімальна ширина в пікселях
             newPanel.style.width = `${Math.max(containerWidth * 0.1, minWidth)}px`;
 
             let text = document.createElement("span");
@@ -484,6 +503,7 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
                 clearSelectedRows();
                 newPanel.remove();
                 tableWrapper.style.display = "none";
+                removeSearchField();
             };
 
             addDownloadButton();
@@ -498,8 +518,21 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
         alert("Failed to fetch events.");
     }
     currentOffset = 10;
-    addRowSelectionHandlers(); // Добавляем обработчики выбора строк
+    addRowSelectionHandlers(); // Додаємо обробники вибору рядків
 });
+
+// Функція для фільтрації подій
+function filterEvents(query) {
+    const rows = document.querySelectorAll('.events-table tbody tr');
+    rows.forEach(row => {
+        const title = row.cells[1].innerText.toLowerCase();
+        if (title.includes(query.toLowerCase())) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
 
 // Функция для подгрузки следующей порции данных
 function loadMore() {
@@ -606,7 +639,6 @@ function updateSelectionCounter() {
         checkAndToggleMarkButton(); // Проверяем и добавляем кнопку "Mark"
     }
 }
-
 
 // Используем делегирование событий для выбора строк
 function addRowSelectionHandlers() {
@@ -906,7 +938,7 @@ function addMarkButton() {
         recalculateAndDisplayMarks();
     };
 
-    markButton.textContent = "Mark Graphic";
+    markButton.textContent = "mark graphic";
     markPanel.appendChild(markButton);
 
     let downloadPanel = document.getElementById("download-selection-panel");
