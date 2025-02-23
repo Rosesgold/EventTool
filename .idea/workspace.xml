@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;added middleware&quot;">
+    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;added search event element, updated styles of panel buttons&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/css/styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/static/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/script.js" afterDir="false" />
@@ -411,7 +411,14 @@
       <option name="project" value="LOCAL" />
       <updated>1740299465811</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="&quot;added search event element, updated styles of panel buttons&quot;">
+      <created>1740315317185</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1740315317185</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -438,7 +445,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="&quot;added update, delete and routes im main.py&quot;" />
     <MESSAGE value="&quot;added an update of update function, updated usermanager; updated auth schemas; added send email possibility&quot;" />
     <MESSAGE value="&quot;updated send email logic&quot;" />
     <MESSAGE value="&quot;added celery tasks, todo txt; updated config.py, usermanager.py, req..&quot;" />
@@ -463,6 +469,7 @@
     <MESSAGE value="&quot;[2.0] added mark button with marked points&quot;" />
     <MESSAGE value="&quot;fixed styles and added middleware&quot;" />
     <MESSAGE value="&quot;added middleware&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;added middleware&quot;" />
+    <MESSAGE value="&quot;added search event element, updated styles of panel buttons&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;added search event element, updated styles of panel buttons&quot;" />
   </component>
 </project>

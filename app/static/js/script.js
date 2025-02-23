@@ -391,6 +391,7 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
     if (!calendarInput) {
         removeEventTable();
         removeClearSelectionButton();
+        removeSelectAllButton();
         removeDownloadButton();
         removeMarkButton();
         clearMarkedPoints();
@@ -417,6 +418,7 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
         if (eventsData.length === 0) {
             removeEventTable();
             removeClearSelectionButton();
+            removeSelectAllButton();
             removeDownloadButton();
             removeMarkButton();
             clearMarkedPoints();
@@ -502,11 +504,13 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
             closeButton.onclick = function() {
                 clearSelectedRows();
                 newPanel.remove();
+                removeSelectAllButton();
                 tableWrapper.style.display = "none";
                 removeSearchField();
             };
 
             addDownloadButton();
+            addSelectAllButton();
 
             newPanel.appendChild(text);
             newPanel.appendChild(closeButton);
@@ -980,3 +984,95 @@ function checkAndToggleMarkButton() {
 
 
 
+let observer; // Объявляем переменную для MutationObserver
+let selectingAll = false; // Флаг для отслеживания выделения всех строк
+
+function addSelectAllButton() {
+    let selectAllPanel = document.getElementById("select-all-panel");
+
+    if (selectAllPanel) return; // Если кнопка уже есть, выходим
+
+    let eventTablePanel = document.getElementById("event-table-panel");
+
+    if (eventTablePanel) {
+        insertSelectAllButton(eventTablePanel);
+        startObservingTable(); // Начинаем наблюдение за таблицей
+    } else {
+        observer = new MutationObserver(function (mutations, obs) {
+            let eventTablePanel = document.getElementById("event-table-panel");
+            if (eventTablePanel) {
+                insertSelectAllButton(eventTablePanel);
+                startObservingTable(); // Начинаем наблюдение за таблицей
+                obs.disconnect(); // Останавливаем отслеживание
+            }
+        });
+
+        observer.observe(document.getElementById("additional-info-data-container"), {
+            childList: true,
+            subtree: false
+        });
+    }
+}
+
+function insertSelectAllButton(eventTablePanel) {
+    let selectAllPanel = document.createElement("div");
+    selectAllPanel.className = "additional-info-item";
+    selectAllPanel.id = "select-all-panel";
+
+    let selectAllButton = document.createElement("button");
+    selectAllButton.className = "select-all-btn"; // Можно добавить класс для стилей
+
+    let selectAllIcon = document.createElement("img");
+    selectAllIcon.src = "/static/images/select-all-svgrepo-com.svg"; // Проверь путь к иконке
+    selectAllIcon.alt = "Виділити все";
+
+    selectAllButton.appendChild(selectAllIcon);
+    selectAllPanel.appendChild(selectAllButton);
+
+    // Добавляем кнопку после eventTablePanel
+    eventTablePanel.insertAdjacentElement("afterend", selectAllPanel);
+
+    // Добавляем обработчик на клик
+    selectAllButton.addEventListener("click", () => {
+        selectingAll = !selectingAll; // Переключаем состояние выделения
+        if (selectingAll) {
+            selectAllRows(); // Выделяем все строки
+        }
+    });
+}
+
+function startObservingTable() {
+    let tableBody = document.querySelector(".events-table tbody");
+
+    observer = new MutationObserver(function (mutations) {
+        // Здесь не выделяем строки, только наблюдаем за изменениями
+    });
+
+    observer.observe(tableBody, {
+        childList: true, // Отслеживаем добавление/удаление дочерних элементов
+        subtree: true // Также отслеживаем вложенные элементы
+    });
+}
+
+function selectAllRows() {
+    // Создаем массив для хранения всех строк
+    let allRows = Array.from(document.querySelectorAll(".events-table tbody tr")); // Выбираем все строки в таблице
+    allRows.forEach(row => {
+        row.classList.add("selected"); // Выделяем строку, добавляя класс
+    });
+
+    updateSelectionCounter(); // Обновляем счетчик выделенных строк
+}
+
+function removeSelectAllButton() {
+    let selectAllPanel = document.getElementById("select-all-panel");
+
+    if (selectAllPanel) {
+        selectAllPanel.remove(); // Удаляем панель с кнопкой
+    }
+
+    if (observer) {
+        observer.disconnect(); // Останавливаем наблюдение за изменениями в таблице
+        observer = null;
+    }
+}
