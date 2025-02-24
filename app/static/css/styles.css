@@ -887,6 +887,57 @@ body.dark-mode #download-selection-panel:hover {
     background-color: #3B4252; /* Чуть светлее при наведении */
 }
 
+
+
+
+
+
+
+/* Стили для #charts-and-diagrams */
+#charts-and-diagrams {
+    margin-left: 5px; /* Отступ слева */
+}
+
+/* Стили для кнопки диаграмм */
+.charts-btn {
+    background-color: transparent; /* Прозрачный фон */
+    border: none; /* Без границ */
+    cursor: pointer; /* Курсор при наведении */
+    color: #FFFFFF; /* Цвет текста */
+}
+
+.charts-btn img {
+    height: 20px; /* Высота иконки */
+    width: 20px; /* Ширина иконки */
+    filter: brightness(0) invert(1); /* Применяем фильтр, чтобы иконка стала белой */
+}
+
+/* Стили для #charts-and-diagrams в темном режиме */
+body.dark-mode #charts-and-diagrams {
+    color: #FFFFFF; /* Белый текст */
+}
+
+#charts-and-diagrams:hover {
+    background-color: #a0a0a0; /* Цвет фона при наведении */
+}
+
+/* Изменение цвета иконки для кнопки в темном режиме */
+body.dark-mode .charts-btn img {
+    filter: brightness(0) invert(1);
+}
+
+body.dark-mode #charts-and-diagrams:hover {
+    background-color: #3B4252;
+}
+
+
+
+
+
+
+
+
+
 #mark-selection-panel {
     margin-left: 5px; /* Отступ слева */
     background-color: #007BFF;
@@ -1069,6 +1120,225 @@ body.dark-mode #mark-selection-panel:hover {
     cursor: pointer;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+#charts-modal-form {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    width: 20%;
+    min-width: 300px;
+    height: 370px;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.close-btn-modal-form {
+    background-color: #FFFFFF;
+    color: dark;
+    border: none;
+    cursor: pointer;
+}
+
+/* Общий контейнер с прокруткой */
+.content-modal-form-block {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 3%;
+    max-height: 100%;
+    box-sizing: border-box;
+}
+
+/* Общий стиль контейнера с кнопками */
+.charts-buttons {
+    display: flex;
+    justify-content: center; /* Выравнивание по центру */
+    gap: 20px; /* Расстояние между кнопками */
+    padding: 5px;
+}
+
+/* Стили для кнопок */
+.charts-buttons button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border: none;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease, border 0.2s ease;
+}
+
+/* Эффект при наведении */
+.charts-buttons button:hover {
+    background-color: #e0e0e0;
+}
+
+/* Эффект при нажатии */
+.charts-buttons button:active {
+    transform: scale(0.95);
+}
+
+/* Стиль для активной кнопки */
+.charts-buttons button.active {
+    background-color: #d6d6d6; /* Колір фону для активної кнопки */
+    color: white; /* Колір тексту для активної кнопки */
+    border: 1px solid none; /* Рамка для активної кнопки */
+}
+
+/* Стили для иконок в кнопках */
+.chart-diagram-btn-icon {
+    width: 30px;  /* Размер иконки */
+    height: 30px;
+}
+
+/* Стили для списка диаграмм */
+.charts-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Стили для каждого элемента списка */
+.chart-item {
+    padding: 10px;
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    text-align: left;
+}
+
+/* Эффект при наведении */
+.chart-item:hover {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+}
+
+body.dark-mode #charts-modal-form {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    width: 20%;
+    min-width: 300px;
+    height: 370px;
+    transform: translate(-50%, -50%);
+    background-color: #2E3440; /* Тёмный фон */
+    border: 1px solid #4C566A; /* Тёмная рамка */
+    border-radius: 7px;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    color: #FFFFFF;
+}
+
+body.dark-mode .close-btn-modal-form {
+    background-color: #2E3440; /* Тёмный фон для кнопки */
+    color: #ECEFF4; /* Светлый текст */
+    border: none;
+    cursor: pointer;
+}
+
+/* Общий контейнер с прокруткой */
+body.dark-mode .content-modal-form-block {
+    display: flex;
+    flex-direction: column;
+    background-color: #2E3440; /* Тёмный фон */
+    overflow-y: auto;
+    padding: 3%;
+    max-height: 100%;
+    box-sizing: border-box;
+    color: #ECEFF4; /* Светлый текст */
+}
+
+/* Общий стиль контейнера с кнопками */
+body.dark-mode .charts-buttons {
+    display: flex;
+    justify-content: center; /* Выравнивание по центру */
+    gap: 20px; /* Расстояние между кнопками */
+    padding: 5px;
+}
+
+/* Стили для кнопок */
+body.dark-mode .charts-buttons button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border: none;
+    background-color: #2E3440;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+    color: #ECEFF4; /* Светлый текст */
+}
+
+/* Эффект при наведении */
+body.dark-mode .charts-buttons button:hover {
+    background-color: #3B4252; /* Более тёмный фон при наведении */
+}
+
+/* Эффект при нажатии */
+body.dark-mode .charts-buttons button:active {
+    transform: scale(0.95);
+}
+
+body.dark-mode .charts-buttons button.active {
+    background-color: #4C566A; /* Темно-сірий фон */
+    color: #FFFFFF; /* Білий текст */
+    border: 1px solid none; /* Світла рамка */
+}
+
+body.dark-mode .charts-buttons button .chart-diagram-btn-icon {
+    filter: brightness(0) invert(1); /* Применяем фильтр, чтобы иконка стала белой */
+}
+
+/* Стили для списка диаграмм */
+body.dark-mode .charts-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Стили для каждого элемента списка */
+body.dark-mode .chart-item {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #2E3440; /* Тёмный фон для элементов списка */
+    color: #ECEFF4; /* Светлый текст */
+    text-align: left;
+}
+
+/* Эффект при наведении */
+body.dark-mode .chart-item:hover {
+    background-color: #3B4252; /* Более тёмный фон при наведении */
+    border-radius: 5px;
+}
+
+
 #table-wrapper {
     padding: 0 5px;  /* Отступы справа и слева по 5 пикселей */
 }
@@ -1118,7 +1388,8 @@ body.dark-mode #mark-selection-panel:hover {
 }
 
 .dark-mode .events-table tbody tr.selected {
-    background-color: #3B4252; /* Темно-серый цвет для темной темы */
+    #background-color: #3B4252; /* Темно-серый цвет для темной темы */
+    background-color: #4C566A;
     color: #fff; /* Белый текст */
 }
 

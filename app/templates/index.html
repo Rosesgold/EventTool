@@ -125,5 +125,29 @@
             </ul>
         </div>
     </div>
+    <div id="charts-modal-form">
+        <div class="h2-modal-form-block">
+            <span>Select chart and diagram</span>
+            <button type="button" class="close-btn-modal-form" onclick="closeChartsModal()">x</button>
+        </div>
+        <div class="content-modal-form-block">
+            <!-- Верхняя часть с кнопками -->
+            <div class="charts-buttons">
+                <button data-chart-type="bar" onclick="selectBarChart()">
+                    <img src="/static/images/diagram-bar.svg" alt="Diagram-bar-btn" class="chart-diagram-btn-icon">
+                </button>
+                <button data-chart-type="pie" onclick="selectPieChart()">
+                    <img src="/static/images/diagram-pie.svg" alt="Diagram-pie-btn" class="chart-diagram-btn-icon">
+                </button>
+            </div>
+            <!-- Нижняя часть для списка -->
+            <div class="content-modal-form-block">
+                <ul class="charts-list">
+                    <li class="chart-item" onclick="eventCategoryAndCount()">Кількість подій за категоріями</li>
+<!--                    <li class="chart-item" onclick="addPieChart()">Добавить круговую диаграмму</li>-->
+                </ul>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;added load all rows button [load button and load all in container]&quot;">
+    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;added Up button with styles&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/css/styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/static/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,8 +15,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -439,7 +440,14 @@
       <option name="project" value="LOCAL" />
       <updated>1740336516299</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="&quot;added Up button with styles&quot;">
+      <created>1740338033991</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1740338033991</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -466,7 +474,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="&quot;added celery tasks, todo txt; updated config.py, usermanager.py, req..&quot;" />
     <MESSAGE value="&quot;added html + css + js&quot;" />
     <MESSAGE value="&quot;updated html&quot;" />
     <MESSAGE value="&quot;updated html, added parsing by parts&quot;" />
@@ -491,6 +498,7 @@
     <MESSAGE value="&quot;added search event element, updated styles of panel buttons&quot;" />
     <MESSAGE value="&quot;added select all rows button with styles&quot;" />
     <MESSAGE value="&quot;added load all rows button [load button and load all in container]&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;added load all rows button [load button and load all in container]&quot;" />
+    <MESSAGE value="&quot;added Up button with styles&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;added Up button with styles&quot;" />
   </component>
 </project>

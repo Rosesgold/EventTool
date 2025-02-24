@@ -357,11 +357,6 @@ document.addEventListener("DOMContentLoaded", function() {
     openModalBtnSpan.textContent = 'Bitcoin (BTC)';
 });
 
-function recalculateAndDisplayMarks() {
-    clearMarkedPoints();
-    markSelectedRows();
-}
-
 let eventsData = [];  // Массив для хранения всех данных
 let currentOffset = 10;  // Индекс для пагинации
 const limit = 10;  // Количество записей на страницу
@@ -385,6 +380,8 @@ function removeSearchField() {
     }
 }
 
+let response;
+
 document.getElementById("additional-info-button-apply").addEventListener("click", async function() {
     const calendarInput = document.getElementById('calendar').value;
 
@@ -393,6 +390,7 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
         removeClearSelectionButton();
         removeSelectAllButton();
         removeDownloadButton();
+        removeChartsAndDiagramsButton();
         removeMarkButton();
         clearMarkedPoints();
         removeSearchField();
@@ -405,7 +403,7 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
     const toDate = dates[1];
 
     try {
-        const response = await fetch(`/tools?from_date=${fromDate}&to_date=${toDate}`, {
+        response = await fetch(`/tools?from_date=${fromDate}&to_date=${toDate}`, {
             credentials: "include"
         });
 
@@ -420,6 +418,7 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
             removeClearSelectionButton();
             removeSelectAllButton();
             removeDownloadButton();
+            removeChartsAndDiagramsButton();
             removeMarkButton();
             clearMarkedPoints();
             removeSearchField()
@@ -506,12 +505,15 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
                 clearSelectedRows();
                 newPanel.remove();
                 removeSelectAllButton();
+                removeChartsAndDiagramsButton();
                 tableWrapper.style.display = "none";
                 removeSearchField();
             };
 
             addDownloadButton();
+            addChartsAndDiagramsButton();
             addSelectAllButton();
+
 
             newPanel.appendChild(text);
             newPanel.appendChild(closeButton);
@@ -538,53 +540,6 @@ function filterEvents(query) {
         }
     });
 }
-
-// Функция для подгрузки следующей порции данных
-function loadMore() {
-    const tableContainer = document.getElementById('table-container');
-    const table = document.querySelector('.events-table');
-    const tableBody = table.querySelector('tbody');
-
-    // Показываем следующие 10 записей
-    const startIndex = currentOffset;
-    const endIndex = currentOffset + limit;
-
-    eventsData.slice(startIndex, endIndex).forEach((event, index) => {
-        const row = document.createElement('tr');
-        const date = new Date(event.date);
-        const formattedDate = date.toISOString().split('T')[0];
-        const formattedTime = date.toISOString().split('T')[1].slice(0, 8);
-        const formattedDateTime = `${formattedDate} | ${formattedTime}`;
-
-        // Нумерация теперь будет корректной, начиная с текущего offset + индекс
-        row.innerHTML = `
-            <td>${startIndex + index + 1}</td>  <!-- Продолжаем нумерацию -->
-            <td>${event.title}</td>
-            <td>${event.category}</td>
-            <td>${formattedDateTime}</td>
-            <td><a href="${event.url}" target="_blank">Перейти</a></td>
-        `;
-        tableBody.appendChild(row);
-    });
-
-    currentOffset += limit;  // Увеличиваем offset
-
-    // Если больше нет записей, скрываем кнопку
-    if (currentOffset >= eventsData.length) {
-        const loadMoreButton = document.getElementById('load-more-button');
-        if (loadMoreButton) {
-            loadMoreButton.style.display = 'none';
-        }
-    }
-}
-
-
-
-
-
-
-
-
 
 // Функция для подгрузки следующей порции данных
 function loadMore() {
@@ -620,6 +575,48 @@ function loadMore() {
         document.getElementById('load-all-button').style.display = 'none';
         showScrollToTopButton(); // Показываем кнопку "Наверх"
     }
+}
+
+function loadAll() {
+    const tableBody = document.querySelector(".events-table tbody");
+
+    // Проверяем, добавлены ли все строки
+    if (tableBody.children.length >= eventsData.length) {
+        return; // Если все строки уже загружены, ничего не делаем
+    }
+
+    eventsData.forEach((event, index) => {
+        // Проверяем, существует ли уже строка
+        if (tableBody.children[index]) {
+            return; // Если строка уже существует, пропускаем её
+        }
+
+        const row = document.createElement("tr");
+        const date = new Date(event.date);
+        const formattedDate = date.toISOString().split("T")[0];
+        const formattedTime = date.toISOString().split("T")[1].slice(0, 8);
+        const formattedDateTime = `${formattedDate} | ${formattedTime}`;
+
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${event.title}</td>
+            <td>${event.category}</td>
+            <td>${formattedDateTime}</td>
+            <td><a href="${event.url}" target="_blank">Перейти</a></td>
+        `;
+
+        // Добавляем обработчик для выделения строки
+        row.addEventListener("click", () => toggleRowSelection(row));
+
+        tableBody.appendChild(row);
+    });
+
+    updateSelectionCounter(); // Обновляем счетчик выделенных строк
+
+    // Скрываем кнопки Load More и Load All, показываем "Наверх"
+    document.getElementById("load-more-button").style.display = "none";
+    document.getElementById("load-all-button").style.display = "none";
+    showScrollToTopButton();
 }
 
 // Функция для добавления кнопок в контейнер
@@ -668,49 +665,49 @@ function addLoadButtons() {
     loadAllButton.addEventListener("click", loadAll);
 }
 
-// Функция для загрузки всех строк сразу
-function loadAll() {
-    const tableBody = document.querySelector(".events-table tbody");
-    tableBody.innerHTML = ""; // Очищаем перед вставкой всех данных
-
-    eventsData.forEach((event, index) => {
-        const row = document.createElement("tr");
-        const date = new Date(event.date);
-        const formattedDate = date.toISOString().split("T")[0];
-        const formattedTime = date.toISOString().split("T")[1].slice(0, 8);
-        const formattedDateTime = `${formattedDate} | ${formattedTime}`;
-
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${event.title}</td>
-            <td>${event.category}</td>
-            <td>${formattedDateTime}</td>
-            <td><a href="${event.url}" target="_blank">Перейти</a></td>
-        `;
-        tableBody.appendChild(row);
-    });
-
-    // Скрываем кнопки Load More и Load All, показываем "Наверх"
-    document.getElementById("load-more-button").style.display = "none";
-    document.getElementById("load-all-button").style.display = "none";
-    showScrollToTopButton();
-}
-
 // Функция для показа кнопки "Наверх"
 function showScrollToTopButton() {
     document.getElementById("scroll-to-top-button").style.display = "block";
 }
 
+// Функция для выбора строк
+function toggleRowSelection(row) {
+    row.classList.toggle("selected");
+    updateSelectionCounter();
 
+    checkAndToggleClearButton(); // Додаємо перевірку кнопки очищення
+    checkAndToggleMarkButton();  // Додаємо перевірку кнопки mark
+}
 
+function updateSelectionCounter() {
+    let selectedRows = document.querySelectorAll(".events-table tbody tr.selected").length;
+    let counterElement = document.getElementById("event-table-counter");
+    if (counterElement) {
+        counterElement.innerText = `Event Table (${selectedRows})`;
+    }
 
+    // Если нет выбранных строк, скрываем кнопки
+    if (selectedRows === 0) {
+        removeClearSelectionButton(); // Удаляем кнопку очистки
+        removeMarkButton(); // Удаляем кнопку "Mark"
+    } else {
+        addClearSelectionButton(); // Добавляем кнопку очистки, если есть выбранные строки
+        checkAndToggleMarkButton(); // Проверяем и добавляем кнопку "Mark"
+    }
+}
 
+// Используем делегирование событий для выбора строк
+function addRowSelectionHandlers() {
+    let tableBody = document.querySelector(".events-table tbody");
 
-
-
-
-
-
+    // Обработчик клика на tbody
+    tableBody.addEventListener("click", function (event) {
+        let row = event.target.closest("tr"); // Ищем родительский tr, если клик был на элементе внутри строки
+        if (row) {
+            toggleRowSelection(row);
+        }
+    });
+}
 
 // Функция для сортировки по дате
 function sortByDate() {
@@ -751,46 +748,6 @@ document.addEventListener("DOMContentLoaded", function() {
         console.warn("Элемент <circle> не найден в SVG.");
     }
 });
-
-
-// Функция для выбора строк
-function toggleRowSelection(row) {
-    row.classList.toggle("selected");
-    updateSelectionCounter();
-
-    checkAndToggleClearButton(); // Додаємо перевірку кнопки очищення
-    checkAndToggleMarkButton();  // Додаємо перевірку кнопки mark
-}
-
-function updateSelectionCounter() {
-    let selectedRows = document.querySelectorAll(".events-table tbody tr.selected").length;
-    let counterElement = document.getElementById("event-table-counter");
-    if (counterElement) {
-        counterElement.innerText = `Event Table (${selectedRows})`;
-    }
-
-    // Если нет выбранных строк, скрываем кнопки
-    if (selectedRows === 0) {
-        removeClearSelectionButton(); // Удаляем кнопку очистки
-        removeMarkButton(); // Удаляем кнопку "Mark"
-    } else {
-        addClearSelectionButton(); // Добавляем кнопку очистки, если есть выбранные строки
-        checkAndToggleMarkButton(); // Проверяем и добавляем кнопку "Mark"
-    }
-}
-
-// Используем делегирование событий для выбора строк
-function addRowSelectionHandlers() {
-    let tableBody = document.querySelector(".events-table tbody");
-
-    // Обработчик клика на tbody
-    tableBody.addEventListener("click", function (event) {
-        let row = event.target.closest("tr"); // Ищем родительский tr, если клик был на элементе внутри строки
-        if (row) {
-            toggleRowSelection(row);
-        }
-    });
-}
 
 // Функция для проверки наличия таблицы и управления кнопкой очистки
 function checkAndToggleClearButton() {
@@ -909,6 +866,9 @@ function insertDownloadButton(eventTablePanel) {
 
     // Добавляем обработчик на клик
     downloadButton.addEventListener("click", downloadTableAsJson);
+
+    // После успешного добавления downloadPanel вызываем addChartsAndDiagramsButton
+    addChartsAndDiagramsButton(downloadPanel);
 }
 
 // Функция для скачивания таблицы в JSON
@@ -954,9 +914,6 @@ document.getElementById("additional-info-button-apply").addEventListener("click"
     } else if (eventsData.length === 0) {
         return; // Выход из функции, если нет событий
     }
-
-    // Дополнительная логика для загрузки событий
-    //addDownloadButton(); // Добавляем кнопку только после успешной загрузки
 });
 
 // Добавляем удаление кнопки при закрытии таблицы
@@ -1028,12 +985,15 @@ function markSelectedRows() {
 }
 
 function clearMarkedPoints() {
-    // Очищаємо масив з мітками
-    scatterData = [];
-    // Оновлюємо дані на графіку
-    chart.data.datasets[1].data = scatterData;
-    // Оновлюємо графік, щоб відобразити зміни
-    chart.update();
+    // Перевіряємо, чи зараз активний лінійний графік
+    if (chart.config.type === 'line') {
+        // Очищаємо масив з мітками
+        scatterData = [];
+        // Оновлюємо дані на графіку
+        chart.data.datasets[1].data = scatterData;
+        // Оновлюємо графік, щоб відобразити зміни
+        chart.update();
+    }
 }
 
 // **Функция поиска цены по времени**
@@ -1057,7 +1017,11 @@ function findPriceAtTime(timestamp) {
     return null; // Если не нашли подходящее значение
 }
 
-// Обновленная функция addMarkButton
+function recalculateAndDisplayMarks() {
+    clearMarkedPoints();
+    markSelectedRows();
+
+}
 function addMarkButton() {
     let markPanel = document.getElementById("mark-selection-panel");
 
@@ -1074,18 +1038,37 @@ function addMarkButton() {
     markButton.className = "mark-btn";
 
     markButton.onclick = function() {
-        recalculateAndDisplayMarks();
+        if (chart.config.type === 'line') {
+            recalculateAndDisplayMarks();
+        } else {
+            alert('Будь ласка, обери лінійний графік активу!'); // Повідомлення, якщо графік не вибрано
+            return;
+        }
     };
 
     markButton.textContent = "mark graphic";
     markPanel.appendChild(markButton);
 
-    let downloadPanel = document.getElementById("download-selection-panel");
-    if (downloadPanel) {
-        downloadPanel.parentNode.insertBefore(markPanel, downloadPanel.nextSibling);
+    // Находим панель с кнопкой "выделить все"
+    let selectAllPanel = document.getElementById("select-all-panel");
+    if (selectAllPanel) {
+        // Вставляем markPanel после selectAllPanel
+        selectAllPanel.insertAdjacentElement("afterend", markPanel);
     } else {
-        let eventTablePanel = document.getElementById("event-table-panel");
-        eventTablePanel.parentNode.insertBefore(markPanel, eventTablePanel.nextSibling);
+        // Если selectAllPanel не существует, вставляем markPanel после chartsPanel
+        let chartsPanel = document.getElementById("charts-and-diagrams");
+        if (chartsPanel) {
+            chartsPanel.insertAdjacentElement("afterend", markPanel);
+        } else {
+            // Если chartsPanel тоже отсутствует, вставляем markPanel после downloadPanel
+            let downloadPanel = document.getElementById("download-selection-panel");
+            if (downloadPanel) {
+                downloadPanel.insertAdjacentElement("afterend", markPanel);
+            } else {
+                let eventTablePanel = document.getElementById("event-table-panel");
+                eventTablePanel.parentNode.insertBefore(markPanel, eventTablePanel.nextSibling);
+            }
+        }
     }
 }
 
@@ -1110,6 +1093,214 @@ function checkAndToggleMarkButton() {
         markPanel.remove(); // Видаляємо кнопку "Mark", якщо немає вибраних рядків
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+function addChartsAndDiagramsButton(downloadPanel) {
+    let chartsPanel = document.getElementById("charts-and-diagrams");
+
+    // Проверяем, существует ли панель
+    if (chartsPanel) {
+        chartsPanel.style.display = "flex";
+        return;
+    }
+
+    chartsPanel = document.createElement("div");
+    chartsPanel.className = "additional-info-item";
+    chartsPanel.id = "charts-and-diagrams";
+
+    let chartsButton = document.createElement("button");
+    chartsButton.className = "charts-btn";
+    chartsButton.onclick = function() {
+        chartsModalForm.style.display = 'flex'; // Открываем модальное окно
+        modalOverlay.style.display = 'block'; // Показываем задний фон
+    };
+
+    let chartsIcon = document.createElement("img");
+    chartsIcon.src = "/static/images/diagram-module-new-svgrepo-com.svg"; // Проверь путь к иконке
+    chartsIcon.alt = "Діаграми";
+
+    chartsButton.appendChild(chartsIcon);
+    chartsPanel.appendChild(chartsButton);
+
+    // Вставляем после downloadPanel, проверяем существование
+    if (downloadPanel) {
+        downloadPanel.insertAdjacentElement("afterend", chartsPanel);
+    }
+}
+
+function removeChartsAndDiagramsButton() {
+    let chartsPanel = document.getElementById("charts-and-diagrams");
+
+    if (chartsPanel) {
+        chartsPanel.remove(); // Удаляем элемент из DOM
+        console.log("Панель графиков и диаграмм удалена.");
+    } else {
+        console.warn("Панель графиков и диаграмм не найдена.");
+    }
+}
+
+
+
+
+
+
+
+
+
+
+const chartsModalForm = document.getElementById('charts-modal-form');
+
+// Функція для закриття модального вікна
+function closeChartsModal() {
+    chartsModalForm.style.display = 'none'; // Закриваємо модальне вікно
+    modalOverlay.style.display = 'none'; // Сховуємо фон
+}
+
+// Функція для вибору стовпчастого графіка
+function selectBarChart() {
+    updateActiveChartButton('bar');
+}
+
+// Функція для вибору кругового графіка
+function selectPieChart() {
+    updateActiveChartButton('pie');
+}
+
+// Загальна функція для оновлення активної кнопки графіка
+function updateActiveChartButton(type) {
+    document.querySelector('.charts-buttons .active')?.classList.remove('active');
+    document.querySelector(`button[data-chart-type="${type}"]`).classList.add('active');
+}
+
+// Закриваємо модальне вікно при натисканні на фон
+modalOverlay.addEventListener('click', closeChartsModal);
+
+// Функція для підрахунку подій за категоріями
+function eventCategoryAndCount() {
+    const activeButton = document.querySelector('.charts-buttons .active');
+
+    // Перевірка, чи обрана кнопка
+    if (!activeButton) {
+        alert('Будь ласка, виберіть тип графіка: стовпчастий або круговий.'); // Повідомлення, якщо графік не вибрано
+        return; // Вихід з функції, якщо кнопка не вибрана
+    }
+
+    closeChartsModal();
+    updateCategoryChart();
+}
+
+
+async function updateCategoryChart() {
+    const categoryCount = {}; // Об'єкт для підрахунку кількості подій по категоріях
+
+    // Підрахунок кількості подій
+    eventsData.forEach(event => {
+        categoryCount[event.category] = (categoryCount[event.category] || 0) + 1;
+    });
+
+    const labels = Object.keys(categoryCount); // Отримання міток категорій
+    const data = Object.values(categoryCount); // Отримання даних для графіка
+
+    // Оновлення графіка в залежності від вибраного типу
+    const activeButton = document.querySelector('.charts-buttons .active');
+    if (activeButton) {
+        const chartType = activeButton.dataset.chartType;
+        if (chartType === "bar") {
+            updateBarChart(labels, data); // Оновлення стовпчастого графіка
+        } else if (chartType === "pie") {
+            updatePieChart(labels, data); // Оновлення кругового графіка
+        }
+    }
+
+    toggleNewChartVisibility(); // Перемикання видимості нових графіків
+}
+
+
+// Функція для оновлення стовпчастого графіка
+function updateBarChart(labels, data) {
+    if (chart) {
+        chart.destroy(); // Знищення старого графіка
+    }
+
+    chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Кількість подій за категоріями',
+                data: data,
+                backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    chart.update(); // Оновлення графіка
+}
+
+// Функція для оновлення кругового графіка
+function updatePieChart(labels, data) {
+    if (chart) {
+        chart.destroy(); // Знищення старого графіка
+    }
+
+    chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Кількість подій за категоріями',
+                data: data,
+                backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(255, 206, 86, 0.5)'],
+                borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: true,
+        }
+    });
+    chart.update(); // Оновлення графіка
+}
+
+function toggleNewChartVisibility() {
+    const chartCanvas = document.getElementById('chart');
+
+    if (chart) {
+        chartCanvas.style.display = 'block'; // Показати старий графік
+    } else {
+        chartCanvas.style.display = 'none'; // Сховати старий графік
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 
 let observer; // Объявляем переменную для MutationObserver
 let selectingAll = false; // Флаг для отслеживания выделения всех строк
