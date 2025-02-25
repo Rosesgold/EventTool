@@ -605,9 +605,6 @@ function loadAll() {
             <td><a href="${event.url}" target="_blank">Перейти</a></td>
         `;
 
-        // Добавляем обработчик для выделения строки
-        row.addEventListener("click", () => toggleRowSelection(row));
-
         tableBody.appendChild(row);
     });
 
@@ -1200,7 +1197,6 @@ function eventCategoryAndCount() {
     updateCategoryChart();
 }
 
-
 async function updateCategoryChart() {
     const categoryCount = {}; // Об'єкт для підрахунку кількості подій по категоріях
 
@@ -1216,19 +1212,19 @@ async function updateCategoryChart() {
     const activeButton = document.querySelector('.charts-buttons .active');
     if (activeButton) {
         const chartType = activeButton.dataset.chartType;
+        const chartLabel = 'Кількість подій за категоріями'; // Мітка для графіка
         if (chartType === "bar") {
-            updateBarChart(labels, data); // Оновлення стовпчастого графіка
+            updateBarChart(labels, data, chartLabel); // Оновлення стовпчастого графіка
         } else if (chartType === "pie") {
-            updatePieChart(labels, data); // Оновлення кругового графіка
+            updatePieChart(labels, data, chartLabel); // Оновлення кругового графіка
         }
     }
 
     toggleNewChartVisibility(); // Перемикання видимості нових графіків
 }
 
-
 // Функція для оновлення стовпчастого графіка
-function updateBarChart(labels, data) {
+function updateBarChart(labels, data, label) {
     if (chart) {
         chart.destroy(); // Знищення старого графіка
     }
@@ -1238,7 +1234,7 @@ function updateBarChart(labels, data) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Кількість подій за категоріями',
+                label: label, // Використовуємо передану мітку
                 data: data,
                 backgroundColor: 'rgba(75, 192, 192, 0.5)',
                 borderColor: 'rgba(75, 192, 192, 1)',
@@ -1249,7 +1245,7 @@ function updateBarChart(labels, data) {
             scales: {
                 y: {
                     beginAtZero: true
-                }
+                },
             }
         }
     });
@@ -1257,7 +1253,7 @@ function updateBarChart(labels, data) {
 }
 
 // Функція для оновлення кругового графіка
-function updatePieChart(labels, data) {
+function updatePieChart(labels, data, label) {
     if (chart) {
         chart.destroy(); // Знищення старого графіка
     }
@@ -1267,7 +1263,7 @@ function updatePieChart(labels, data) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Кількість подій за категоріями',
+                label: label, // Використовуємо передану мітку
                 data: data,
                 backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(255, 206, 86, 0.5)'],
                 borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
@@ -1279,6 +1275,141 @@ function updatePieChart(labels, data) {
         }
     });
     chart.update(); // Оновлення графіка
+}
+
+// Функція для створення графіка часових рядів
+async function createTimeSeriesChart() {
+    const activeButton = document.querySelector('.charts-buttons .active');
+
+    if (!activeButton) {
+        alert('Будь ласка, виберіть тип графіка: стовпчастий або круговий.');
+        return; // Вихід з функції, якщо кнопка не вибрана
+    }
+
+    closeChartsModal(); // Закриваємо модальне вікно
+    await updateTimeSeriesChart(); // Оновлення графіка
+}
+
+async function updateTimeSeriesChart() {
+    const eventCountByDate = {}; // Об'єкт для підрахунку кількості подій по датах
+
+    // Підрахунок кількості подій
+    eventsData.forEach(event => {
+        const date = new Date(event.date).toLocaleDateString(); // Приведення дати до формату 'дд.мм.рррр'
+        eventCountByDate[date] = (eventCountByDate[date] || 0) + 1; // Підрахунок подій
+    });
+
+    const labels = Object.keys(eventCountByDate); // Отримання міток дат
+    const data = Object.values(eventCountByDate); // Отримання даних для графіка
+
+    // Оновлення графіка в залежності від вибраного типу
+    const activeButton = document.querySelector('.charts-buttons .active');
+    if (activeButton) {
+        const chartType = activeButton.dataset.chartType;
+        const chartLabel = 'Кількість подій за датами'; // Мітка для графіка
+        if (chartType === "bar") {
+            updateBarChart(labels, data, chartLabel); // Оновлення стовпчастого графіка
+        } else if (chartType === "pie") {
+            updatePieChart(labels, data, chartLabel); // Оновлення кругового графіка
+        }
+    }
+
+    toggleNewChartVisibility(); // Перемикання видимості нових графіків
+}
+
+// Масив стоп-слів
+const stopWords = ['to', 'the', 'of', 'and', 'in', 'a', 'is', 'it', 'for', 'on', 'with', 'as', 'that', 'at', 'this', 'by', 'be', 'are', 'was', 'were', 'an', 'or', 'not', 'but', 'if', 'from', 'all', 'any'];
+
+// Функція для створення хмари слів
+function createWordCloud() {
+    const activeButton = document.querySelector('.charts-buttons .active');
+
+    if (!activeButton) {
+        alert('Будь ласка, виберіть тип графіка: стовпчастий або круговий.');
+        return;
+    }
+
+    closeChartsModal();
+    updateWordCloudChart();
+}
+
+// Оновлена функція для оновлення графіка хмари слів
+async function updateWordCloudChart() {
+    const wordCount = {};
+
+    eventsData.forEach(event => {
+        const words = event.title.split(/\W+/); // Розділення за не-словесними символами
+        words.forEach(word => {
+            word = word.toLowerCase();
+
+            // Перевірка на стоп-слово і довжину
+            if (!stopWords.includes(word) && word.length > 1 && word.length <= 15) {
+                wordCount[word] = (wordCount[word] || 0) + 1;
+            }
+        });
+    });
+
+    const sortedWords = Object.entries(wordCount)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10);
+
+    const labels = sortedWords.map(entry => entry[0]);
+    const data = sortedWords.map(entry => entry[1]);
+
+    const activeButton = document.querySelector('.charts-buttons .active');
+    if (activeButton) {
+        const chartType = activeButton.dataset.chartType;
+        const chartLabel = 'Найвживаніші слова'; // Мітка для графіка
+        if (chartType === "bar") {
+            updateBarChart(labels, data, chartLabel);
+        } else if (chartType === "pie") {
+            updatePieChart(labels, data, chartLabel);
+        }
+    }
+
+    toggleNewChartVisibility();
+}
+
+async function createTopCategoriesChart() {
+    const activeButton = document.querySelector('.charts-buttons .active');
+
+    if (!activeButton) {
+        alert('Будь ласка, виберіть тип графіка: стовпчастий або круговий.');
+        return;
+    }
+
+    closeChartsModal();
+    await updateTopCategoriesChart();
+}
+
+// Функція для оновлення графіка топ-категорій
+async function updateTopCategoriesChart() {
+    const categoryCount = {}; // Об'єкт для підрахунку кількості подій по категоріях
+
+    // Підрахунок кількості подій
+    eventsData.forEach(event => {
+        categoryCount[event.category] = (categoryCount[event.category] || 0) + 1;
+    });
+
+    const sortedCategories = Object.entries(categoryCount)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10); // Отримання топ-10 категорій
+
+    const labels = sortedCategories.map(entry => entry[0]); // Отримання міток категорій
+    const data = sortedCategories.map(entry => entry[1]); // Отримання даних для графіка
+
+    const activeButton = document.querySelector('.charts-buttons .active');
+    if (activeButton) {
+        const chartType = activeButton.dataset.chartType;
+        const chartLabel = 'Топ категорії подій'; // Мітка для графіка
+        if (chartType === "bar") {
+            updateBarChart(labels, data, chartLabel);
+        } else if (chartType === "pie") {
+            updatePieChart(labels, data, chartLabel);
+        }
+    }
+
+    toggleNewChartVisibility(); // Перемикання видимості нових графіків
 }
 
 function toggleNewChartVisibility() {
@@ -1293,7 +1424,66 @@ function toggleNewChartVisibility() {
 
 
 
-
+//async function createCorrelationChart() {
+//    const activeButton = document.querySelector('.charts-buttons .active');
+//
+//    if (!activeButton) {
+//        alert('Будь ласка, виберіть тип графіка: стовпчастий або круговий.');
+//        return; // Вихід з функції, якщо кнопка не вибрана
+//    }
+//
+//    closeChartsModal(); // Закриваємо модальне вікно
+//    await updateCorrelationChart(); // Оновлення графіка
+//}
+//
+//async function updateCorrelationChart() {
+//    const categoryCount = {}; // Об'єкт для підрахунку кількості подій по категоріях
+//
+//    // Підрахунок кількості подій
+//    eventsData.forEach(event => {
+//        categoryCount[event.category] = (categoryCount[event.category] || 0) + 1;
+//    });
+//
+//    const categories = Object.keys(categoryCount);
+//    const counts = Object.values(categoryCount);
+//
+//    // Розрахунок кореляції
+//    const correlation = calculateCorrelation(counts);
+//
+//    // Оновлення графіка
+//    const activeButton = document.querySelector('.charts-buttons .active');
+//    if (activeButton) {
+//        const chartType = activeButton.dataset.chartType;
+//        const labels = categories;
+//        const data = counts;
+//
+//        if (chartType === "bar") {
+//            updateBarChart(labels, data); // Оновлення стовпчастого графіка
+//        } else if (chartType === "pie") {
+//            updatePieChart(labels, data); // Оновлення кругового графіка
+//        }
+//
+//        alert(`Коефіцієнт кореляції: ${correlation}`); // Показуємо коефіцієнт кореляції
+//    }
+//
+//    toggleNewChartVisibility(); // Перемикання видимості нових графіків
+//}
+//
+//// Функція для розрахунку коефіцієнта кореляції
+//function calculateCorrelation(data) {
+//    const n = data.length;
+//    const sumX = data.reduce((a, b) => a + b, 0);
+//    const sumY = n * (n + 1) / 2; // Припустимо, що y - це індекси 1, 2, 3, ...
+//    const sumXY = data.reduce((acc, x, i) => acc + (x * (i + 1)), 0);
+//    const sumX2 = data.reduce((acc, x) => acc + (x * x), 0);
+//    const sumY2 = n * (n + 1) * (2 * n + 1) / 6; // Сума квадратів індексів
+//
+//    // Розрахунок коефіцієнта кореляції
+//    const numerator = (n * sumXY) - (sumX * sumY);
+//    const denominator = Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
+//
+//    return denominator !== 0 ? numerator / denominator : 0; // Повертаємо коефіцієнт кореляції
+//}
 
 
 

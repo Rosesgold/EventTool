@@ -1203,7 +1203,7 @@ body.dark-mode #mark-selection-panel:hover {
 /* Стиль для активной кнопки */
 .charts-buttons button.active {
     background-color: #d6d6d6; /* Колір фону для активної кнопки */
-    color: white; /* Колір тексту для активної кнопки */
+    color: black; /* Колір тексту для активної кнопки */
     border: 1px solid none; /* Рамка для активної кнопки */
 }
 
@@ -1337,7 +1337,6 @@ body.dark-mode .chart-item:hover {
     background-color: #3B4252; /* Более тёмный фон при наведении */
     border-radius: 5px;
 }
-
 
 #table-wrapper {
     padding: 0 5px;  /* Отступы справа и слева по 5 пикселей */
