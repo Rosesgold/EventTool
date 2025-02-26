@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;added diagram and charts button with styles and functional&quot;">
+    <list default="true" id="c1fa04f4-0014-438c-a7ce-8a4042c07217" name="Changes" comment="&quot;added different chart and diagrams&quot;">
+      <change afterPath="$PROJECT_DIR$/app/static/images/diagram-line.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/css/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/images/diagram-bar.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/images/diagram-pie.svg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/static/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/script.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/index.html" afterDir="false" />
     </list>
@@ -454,7 +457,14 @@
       <option name="project" value="LOCAL" />
       <updated>1740425129808</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="&quot;added different chart and diagrams&quot;">
+      <created>1740485547970</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1740485547970</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -481,7 +491,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="&quot;updated html&quot;" />
     <MESSAGE value="&quot;updated html, added parsing by parts&quot;" />
     <MESSAGE value="&quot;updated html, added dark mode. added register page&quot;" />
     <MESSAGE value="&quot;updated styles, added button and form to select currencies&quot;" />
@@ -506,6 +515,7 @@
     <MESSAGE value="&quot;added load all rows button [load button and load all in container]&quot;" />
     <MESSAGE value="&quot;added Up button with styles&quot;" />
     <MESSAGE value="&quot;added diagram and charts button with styles and functional&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;added diagram and charts button with styles and functional&quot;" />
+    <MESSAGE value="&quot;added different chart and diagrams&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;added different chart and diagrams&quot;" />
   </component>
 </project>

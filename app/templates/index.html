@@ -127,7 +127,7 @@
     </div>
     <div id="charts-modal-form">
         <div class="h2-modal-form-block">
-            <span>Select chart and diagram</span>
+            <span>Select diagram</span>
             <button type="button" class="close-btn-modal-form" onclick="closeChartsModal()">x</button>
         </div>
         <div class="content-modal-form-block">
@@ -138,6 +138,12 @@
                 </button>
                 <button data-chart-type="pie" onclick="selectPieChart()">
                     <img src="/static/images/diagram-pie.svg" alt="Diagram-pie-btn" class="chart-diagram-btn-icon">
+                </button>
+                <button data-chart-type="line" onclick="selectLineChart()">
+                    <img src="/static/images/diagram-line.svg" alt="Diagram-line-btn" class="chart-diagram-btn-icon">
+                </button>
+                <button data-chart-type="radar" onclick="selectRadarChart()">
+                    <img src="/static/images/diagram-radar.svg" alt="Diagram-radar-btn" class="chart-diagram-btn-icon">
                 </button>
             </div>
             <!-- Нижняя часть для списка -->

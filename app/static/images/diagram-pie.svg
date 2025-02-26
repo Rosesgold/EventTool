@@ -1,12 +1,12 @@
-<?xml version="1.0" ?>
-<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-<svg width="800px" height="800px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<style>.cls-1{fill:none;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style>
-</defs>
-<title/>
-<g data-name="Layer 48" id="Layer_48">
-<path class="cls-1" d="M57.11,34.71A27.92,27.92,0,1,1,29.19,6.79V34.71Z"/>
-<path class="cls-1" d="M62.69,30.31A28.94,28.94,0,0,0,33.75,1.38V30.31Z"/>
-</g>
-</svg>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg height="800px" width="800px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+	 viewBox="0 0 46.628 46.628" xml:space="preserve">
+<g>
+	<path style="fill:#010002;" d="M19.477,0.048C8.417,1.939,0,11.572,0,23.17c0,12.956,10.503,23.458,23.458,23.458
+		c11.599,0,21.231-8.418,23.122-19.478c0.372-2.178-1.454-3.981-3.664-3.981H27.458c-2.209,0-4-1.791-4-4V3.712
+		C23.458,1.503,21.655-0.324,19.477,0.048z"/>
+	<path style="fill:#010002;" d="M27.291,6.317V16.66c0,1.478,1.198,2.676,2.676,2.676H40.31c1.478,0,2.7-1.207,2.451-2.664
+		c-1.117-6.534-6.273-11.691-12.807-12.808C28.498,3.617,27.291,4.839,27.291,6.317z"/>
+</g>
+</svg>

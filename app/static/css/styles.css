@@ -147,6 +147,10 @@ body.dark-mode .open-modal-btn {
     border: 1px solid #444; /* Граница кнопки */
 }
 
+body.dark-mode .open-modal-btn img{
+    #filter: brightness(0) invert(1); /* Применяем фильтр, чтобы иконка стала белой */
+}
+
 body.dark-mode .open-modal-btn:hover {
     background-color: #3B4252; /* Чуть светлее при наведении */
 }

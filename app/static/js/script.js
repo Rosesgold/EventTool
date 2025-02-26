@@ -127,7 +127,6 @@ async function loadChartData() {
                                     return `${tooltipItems[0].label}`;
                                 }
                             }
-
                         }
                     },
                     zoom: {
@@ -1174,6 +1173,16 @@ function selectPieChart() {
     updateActiveChartButton('pie');
 }
 
+// Функція для вибору лінійного графіка
+function selectLineChart() {
+    updateActiveChartButton('line');
+}
+
+// Функція для вибору радарного графіка
+function selectRadarChart() {
+    updateActiveChartButton('radar');
+}
+
 // Загальна функція для оновлення активної кнопки графіка
 function updateActiveChartButton(type) {
     document.querySelector('.charts-buttons .active')?.classList.remove('active');
@@ -1189,38 +1198,12 @@ function eventCategoryAndCount() {
 
     // Перевірка, чи обрана кнопка
     if (!activeButton) {
-        alert('Будь ласка, виберіть тип графіка: стовпчастий або круговий.'); // Повідомлення, якщо графік не вибрано
+        alert('Будь ласка, виберіть тип графіка'); // Повідомлення, якщо графік не вибрано
         return; // Вихід з функції, якщо кнопка не вибрана
     }
 
     closeChartsModal();
     updateCategoryChart();
-}
-
-async function updateCategoryChart() {
-    const categoryCount = {}; // Об'єкт для підрахунку кількості подій по категоріях
-
-    // Підрахунок кількості подій
-    eventsData.forEach(event => {
-        categoryCount[event.category] = (categoryCount[event.category] || 0) + 1;
-    });
-
-    const labels = Object.keys(categoryCount); // Отримання міток категорій
-    const data = Object.values(categoryCount); // Отримання даних для графіка
-
-    // Оновлення графіка в залежності від вибраного типу
-    const activeButton = document.querySelector('.charts-buttons .active');
-    if (activeButton) {
-        const chartType = activeButton.dataset.chartType;
-        const chartLabel = 'Кількість подій за категоріями'; // Мітка для графіка
-        if (chartType === "bar") {
-            updateBarChart(labels, data, chartLabel); // Оновлення стовпчастого графіка
-        } else if (chartType === "pie") {
-            updatePieChart(labels, data, chartLabel); // Оновлення кругового графіка
-        }
-    }
-
-    toggleNewChartVisibility(); // Перемикання видимості нових графіків
 }
 
 // Функція для оновлення стовпчастого графіка
@@ -1277,12 +1260,120 @@ function updatePieChart(labels, data, label) {
     chart.update(); // Оновлення графіка
 }
 
+// Функція для оновлення лінійного графіка
+function updateLineChart(labels, data, label) {
+    if (chart) {
+        chart.destroy(); // Знищення старого графіка
+    }
+
+    chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: label,
+                data: data,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 2,
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    chart.update(); // Оновлення графіка
+}
+
+// Функція для оновлення радарного графіка з налаштуванням ширини сітки
+function updateRadarChart(labels, data, label) {
+    if (chart) {
+        chart.destroy(); // Знищення старого графіка
+    }
+
+    chart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: label, // Використовуємо передану мітку
+                data: data,
+                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 2,
+                pointBackgroundColor: 'rgba(153, 102, 255, 1)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgba(153, 102, 255, 1)'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                r: {
+                    beginAtZero: true,
+                    grid: {
+                        lineWidth: 2 // Встановлення ширини ліній сітки
+                    }
+                }
+            }
+        }
+    });
+
+    chart.update(); // Оновлення графіка
+}
+
+// Оновлена функція для оновлення графіка за категоріями
+async function updateCategoryChart() {
+    const categoryCount = {};
+
+    // Підрахунок подій за категоріями
+    eventsData.forEach(event => {
+        categoryCount[event.category] = (categoryCount[event.category] || 0) + 1;
+    });
+
+    const labels = Object.keys(categoryCount);
+    const data = Object.values(categoryCount);
+
+    const activeButton = document.querySelector('.charts-buttons .active');
+    if (activeButton) {
+        const chartType = activeButton.dataset.chartType;
+        const chartLabel = 'Кількість подій за категоріями';
+
+        if (openModalBtnSpan) {
+            openModalBtnSpan.textContent = chartLabel;
+        }
+        const icon = document.querySelector('.open-modal-btn img');
+        icon.src = `/static/images/diagram-${chartType}.svg`;
+
+        if (chartType === "bar") {
+            updateBarChart(labels, data, chartLabel);
+        } else if (chartType === "pie") {
+            updatePieChart(labels, data, chartLabel);
+        } else if (chartType === "line") {
+            updateLineChart(labels, data, chartLabel);
+        } else if (chartType === "radar") {
+            updateRadarChart(labels, data, chartLabel);
+        }
+    }
+
+    toggleNewChartVisibility();
+}
+
 // Функція для створення графіка часових рядів
 async function createTimeSeriesChart() {
     const activeButton = document.querySelector('.charts-buttons .active');
 
     if (!activeButton) {
-        alert('Будь ласка, виберіть тип графіка: стовпчастий або круговий.');
+        alert('Будь ласка, виберіть тип графіка');
         return; // Вихід з функції, якщо кнопка не вибрана
     }
 
@@ -1290,31 +1381,41 @@ async function createTimeSeriesChart() {
     await updateTimeSeriesChart(); // Оновлення графіка
 }
 
+// Оновлена функція для оновлення графіка за датами
 async function updateTimeSeriesChart() {
-    const eventCountByDate = {}; // Об'єкт для підрахунку кількості подій по датах
+    const eventCountByDate = {};
 
-    // Підрахунок кількості подій
     eventsData.forEach(event => {
-        const date = new Date(event.date).toLocaleDateString(); // Приведення дати до формату 'дд.мм.рррр'
-        eventCountByDate[date] = (eventCountByDate[date] || 0) + 1; // Підрахунок подій
+        const date = new Date(event.date).toLocaleDateString();
+        eventCountByDate[date] = (eventCountByDate[date] || 0) + 1;
     });
 
-    const labels = Object.keys(eventCountByDate); // Отримання міток дат
-    const data = Object.values(eventCountByDate); // Отримання даних для графіка
+    const labels = Object.keys(eventCountByDate);
+    const data = Object.values(eventCountByDate);
 
-    // Оновлення графіка в залежності від вибраного типу
     const activeButton = document.querySelector('.charts-buttons .active');
     if (activeButton) {
         const chartType = activeButton.dataset.chartType;
-        const chartLabel = 'Кількість подій за датами'; // Мітка для графіка
+        const chartLabel = 'Кількість подій за датами';
+
+        if (openModalBtnSpan) {
+            openModalBtnSpan.textContent = chartLabel;
+        }
+        const icon = document.querySelector('.open-modal-btn img');
+        icon.src = `/static/images/diagram-${chartType}.svg`;
+
         if (chartType === "bar") {
-            updateBarChart(labels, data, chartLabel); // Оновлення стовпчастого графіка
+            updateBarChart(labels, data, chartLabel);
         } else if (chartType === "pie") {
-            updatePieChart(labels, data, chartLabel); // Оновлення кругового графіка
+            updatePieChart(labels, data, chartLabel);
+        } else if (chartType === "line") {
+            updateLineChart(labels, data, chartLabel);
+        } else if (chartType === "radar") {
+            updateRadarChart(labels, data, chartLabel);
         }
     }
 
-    toggleNewChartVisibility(); // Перемикання видимості нових графіків
+    toggleNewChartVisibility();
 }
 
 // Масив стоп-слів
@@ -1325,7 +1426,7 @@ function createWordCloud() {
     const activeButton = document.querySelector('.charts-buttons .active');
 
     if (!activeButton) {
-        alert('Будь ласка, виберіть тип графіка: стовпчастий або круговий.');
+        alert('Будь ласка, виберіть тип графіка');
         return;
     }
 
@@ -1360,10 +1461,21 @@ async function updateWordCloudChart() {
     if (activeButton) {
         const chartType = activeButton.dataset.chartType;
         const chartLabel = 'Найвживаніші слова'; // Мітка для графіка
+
+        if (openModalBtnSpan) {
+            openModalBtnSpan.textContent = "Найвживаніші слова"; // Меняет текст внутри элемента
+        }
+        const icon = document.querySelector('.open-modal-btn img');
+        icon.src = `/static/images/diagram-${chartType}.svg`;
+
         if (chartType === "bar") {
             updateBarChart(labels, data, chartLabel);
         } else if (chartType === "pie") {
             updatePieChart(labels, data, chartLabel);
+        } else if (chartType === "line") {
+            updateLineChart(labels, data, chartLabel);
+        } else if (chartType === "radar") {
+            updateRadarChart(labels, data, chartLabel);
         }
     }
 
@@ -1374,7 +1486,7 @@ async function createTopCategoriesChart() {
     const activeButton = document.querySelector('.charts-buttons .active');
 
     if (!activeButton) {
-        alert('Будь ласка, виберіть тип графіка: стовпчастий або круговий.');
+        alert('Будь ласка, виберіть тип графіка');
         return;
     }
 
@@ -1402,10 +1514,22 @@ async function updateTopCategoriesChart() {
     if (activeButton) {
         const chartType = activeButton.dataset.chartType;
         const chartLabel = 'Топ категорії подій'; // Мітка для графіка
+
+        if (openModalBtnSpan) {
+            openModalBtnSpan.textContent = "Топ категорії подій"; // Меняет текст внутри элемента
+        }
+
+        const icon = document.querySelector('.open-modal-btn img');
+        icon.src = `/static/images/diagram-${chartType}.svg`;
+
         if (chartType === "bar") {
             updateBarChart(labels, data, chartLabel);
         } else if (chartType === "pie") {
             updatePieChart(labels, data, chartLabel);
+        } else if (chartType === "line") {
+            updateLineChart(labels, data, chartLabel);
+        } else if (chartType === "radar") {
+            updateRadarChart(labels, data, chartLabel);
         }
     }
 
