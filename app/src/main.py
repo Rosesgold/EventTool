@@ -1,12 +1,12 @@
 import json
 from datetime import datetime
 
-from fastapi import FastAPI, Depends, APIRouter, Form, Query, Response
+from fastapi import FastAPI, Depends, APIRouter, Form, Query, Response, Cookie
 from fastapi_users import FastAPIUsers
 from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
-from starlette.responses import HTMLResponse, FileResponse
+from starlette.responses import HTMLResponse, FileResponse, JSONResponse
 from fastapi import HTTPException
 from starlette.staticfiles import StaticFiles
 
@@ -255,6 +255,30 @@ async def get_events_by_date(
 #     return events
 
 
-@app.get("/auth-form")
+@app.get("/auth-form/login")
 def return_auth_form(request: Request):
-    return templates.TemplateResponse("register.html", {"request": request})
+    return templates.TemplateResponse("auth_login.html", {"request": request})
+
+
+@app.get("/auth-form/create-account")
+def return_auth_form(request: Request):
+    return templates.TemplateResponse("auth_register.html", {"request": request})
+
+
+@app.get("/auth/check-session")
+async def check_session(fastapiusersauth: str = Cookie(None)):
+    if fastapiusersauth:
+        # Здесь вы можете добавить дополнительную логику для проверки валидности куки
+        # Например, проверка в базе данных или в другом источнике данных
+        return JSONResponse(content={"isLoggedIn": True})
+    else:
+        return JSONResponse(content={"isLoggedIn": False})
+
+
+# @app.get("/auth/check-is-verified")
+# def return_user_is_verified_status(user: UserORM = Depends(fastapi_users.current_user)):
+#
+#     if user.is_verified:
+#         return {"is_verified": True}
+#     else:
+#         return {"is_verified": False}

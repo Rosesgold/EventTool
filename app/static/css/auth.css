@@ -72,6 +72,15 @@ body {
     color: #fff;
 }
 
+.input-container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #2c2c3a;
+    color: #fff;
+}
+
 p {
     color: #aaa;
     margin: 20px 0;

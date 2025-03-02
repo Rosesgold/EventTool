@@ -249,9 +249,9 @@ modalOverlay.addEventListener('click', function() {
     modalOverlay.style.display = 'none';
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-    loadChartData();
-});
+//document.addEventListener("DOMContentLoaded", function() {
+//    loadChartData();
+//});
 
 document.addEventListener("DOMContentLoaded", function() {
     flatpickr("#calendar", {
@@ -1708,3 +1708,171 @@ function removeSelectAllButton() {
         observer = null;
     }
 }
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    loadChartData();
+    updateLoginButton(); // Вызов функции для обновления состояния кнопки
+});
+
+async function checkSession() {
+    try {
+        const response = await fetch('/auth/check-session', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("access_token")}`
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            return data.isLoggedIn; // Предполагается, что сервер возвращает { isLoggedIn: true/false }
+        } else {
+            return false; // Если произошла ошибка, считаем, что пользователь не залогинен
+        }
+    } catch (error) {
+        console.error("Error checking session:", error);
+        return false;
+    }
+}
+
+async function updateLoginButton() {
+    const loginButton = document.querySelector(".signup-btn");
+    const isLoggedIn = await checkSession();
+
+    if (isLoggedIn) {
+        // Якщо користувач залогінений, оновлюємо кнопку
+        loginButton.textContent = "Log out"; // Змінюємо текст на "Log out"
+        loginButton.onclick = async function() {
+            // Логіка виходу з акаунта
+            try {
+                const response = await fetch('/auth/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem("access_token")}` // Відправляємо токен, якщо потрібно
+                    }
+                });
+
+                if (response.ok) {
+                    // Успішний вихід
+                    localStorage.removeItem("access_token");
+                    localStorage.removeItem("isLoggedIn");
+                    document.cookie = "fastapiusersauth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; // Видаляємо куку
+                    updateLoginButton(); // Оновлюємо кнопку для відображення статусу
+                } else {
+                    // Обробка помилки
+                    console.error("Logout failed:", response.statusText);
+                    alert("Logout failed. Please try again.");
+                }
+            } catch (error) {
+                console.error("Error during logout:", error);
+                alert("An error occurred during logout. Please try again.");
+            }
+        };
+    } else {
+        // Якщо користувач не залогінений, встановлюємо текст кнопки "Log in"
+        loginButton.textContent = "Log in"; // Якщо не аутентифікований, залишаємо "Log in"
+        loginButton.onclick = function() {
+            window.location.href = '/auth-form/login'; // Перенаправляємо на сторінку входу
+        };
+    }
+}
+
+
+
+
+
+
+
+
+
+//document.addEventListener("DOMContentLoaded", function () {
+//    const form = document.querySelector(".email-login-form");
+//
+//    // Перевірка на наявність форми
+//    if (!form) {
+//        console.error("Form element not found");
+//        return; // Виходимо, якщо форма не знайдена
+//    }
+//
+//    form.addEventListener("submit", async function (event) {
+//        event.preventDefault();
+//
+//        const email = form.querySelector('input[type="email"]').value;
+//        const password = form.querySelector('input[type="password"]').value;
+//
+//        const formData = new URLSearchParams();
+//        formData.append("grant_type", "password");
+//        formData.append("username", email);
+//        formData.append("password", password);
+//        formData.append("scope", "");
+//        formData.append("client_id", "");
+//        formData.append("client_secret", "");
+//
+//        try {
+//            const response = await fetch("/auth/login", {
+//                method: "POST",
+//                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+//                body: formData
+//            });
+//
+//            console.log("Response status:", response.status);
+//
+//            const text = await response.text(); // Читаем как текст
+//            console.log("Raw response:", text);
+//
+//            let data;
+//            try {
+//                data = JSON.parse(text); // Пробуем распарсить JSON
+//            } catch (error) {
+//                console.warn("Empty response or invalid JSON", error);
+//                data = {};
+//            }
+//
+//            if (response.ok) {
+//                alert("Login successful!");
+//                console.log("Token:", data.access_token);
+//                localStorage.setItem("access_token", data.access_token);
+//
+//                const button = document.querySelector('.signup-btn');
+//                if (button && button.textContent === 'Log in') {
+//                    button.textContent = 'Log out';
+//                }
+//
+//                window.location.href = "/";
+//            } else {
+//                alert(`Login failed: ${data.detail || "Unknown error"}`);
+//            }
+//        } catch (error) {
+//            console.error("Error:", error);
+//            alert("An error occurred while logging in.");
+//        }
+//    });
+//});
+
+
+
+
+
+
+
+
+//function checkCookie() {
+//    const cookieName = "fastapiusersauth";
+//    const cookie = document.cookie.split('; ').find(row => row.startsWith(cookieName + "="));
+//
+//    const button = document.getElementById("actionButton");
+//
+//    if (!cookie) {
+//        button.innerHTML = "🔄 Обновить сессию"; // Новый текст кнопки
+//        button.style.backgroundColor = "red"; // Меняем цвет
+//        button.onclick = () => alert("Сессия истекла, обновите данные!"); // Действие
+//    }
+//}
+//
+//// Запускаем проверку каждые 5 секунд
+//setInterval(checkCookie, 5000);

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="/static/css/auth.css">
+    <script src="/static/js/auth_login.js" defer></script>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Welcome back</h2>
+
+        <button class="login-btn metamask">🦊 Log in with Metamask</button>
+        <button class="login-btn google">🌐 Log in with Google</button>
+        <button class="login-btn twitter">🐦 Log in with Twitter</button>
+
+        <p>or use</p>
+
+        <form action="/login" method="POST" class="email-login-form">
+            <div class="input-container">
+                <input type="email" placeholder="Your email" required>
+            </div>
+            <div class="input-container">
+                <input type="password" placeholder="Your password" required>
+            </div>
+            <button type="submit" class="login-btn email-login">Log in</button>
+        </form>
+
+        <p>New to our platform? <a href="/auth-form/create-account">Create an account</a></p>
+    </div>
+</body>
+</html>
